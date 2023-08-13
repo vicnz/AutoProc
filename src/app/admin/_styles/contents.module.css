@@ -1,0 +1,42 @@
+.container {
+    height: 56px;
+    width: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 15px;
+    border-bottom: 1px solid lightgray;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 5px;
+}
+
+.title {
+    font-size: 1.2em;
+}
+
+.wrapper {
+    display: grid;
+    grid-template-rows: 56px 1fr;
+    height: 100%;
+    width: 100%;
+}
+
+.contentOverflow {
+    position: relative;
+    height: inherit;
+    width: inherit;
+    overflow-y: auto;
+}
+
+.content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: auto;
+    width: inherit;
+}

@@ -26,6 +26,7 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.env*.production
 
 # vercel
 .vercel
@@ -37,3 +38,10 @@ next-env.d.ts
 # test files
 *.test.*
 /*.tests/*
+
+
+# Pocketbase
+pb_data/
+
+# Development Scratch
+.scratch/*

@@ -1,0 +1,39 @@
+.wrapper {
+    height: 100vh;
+    width: 100vw;
+    /* background-color: whitesmoke; */
+    position: relative;
+}
+
+.contentProvider {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    height: calc(100vh - 56px);
+}
+
+.content {
+    background-color: transparent;
+    height: 100%;
+    width: 100%;
+    /* border-top-left-radius: 12px; */
+    /* background-color: white; */
+}
+
+/* Admin Page Is Only Accessible Using Wide Screen Device */
+@media screen and (max-width: 700px) {
+    .wrapper::before {
+        content: "⚠️ THIS PAGE IS ONLY AVAILABLE TO WIDE SCREEN ⚠️";
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        position: fixed;
+        background: #C0252A;
+        z-index: 10000;
+        display: grid;
+        place-items: center;
+        align-items: center;
+        font-size: 1rem;
+        color: white;
+    }
+}

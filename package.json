@@ -6,24 +6,31 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "dev:db": "pocketbase.exe serve"
   },
   "dependencies": {
     "@ant-design/cssinjs": "^1.16.1",
     "@ant-design/icons": "^5.1.4",
     "antd": "^5.7.3",
+    "chart.js": "^4.3.3",
+    "eventsource": "^2.0.2",
     "iron-session": "^6.3.1",
+    "js-cookie": "^3.0.5",
     "mysql2": "^3.5.2",
     "next": "13.4.12",
+    "pocketbase": "^0.16.0",
     "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "typescript": "5.1.6"
+    "react-chartjs-2": "^5.2.0",
+    "react-dom": "18.2.0"
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.3",
     "@types/node": "^20.4.5",
     "@types/react": "^18.2.17",
     "@types/react-dom": "^18.2.7",
     "eslint": "^8.46.0",
-    "eslint-config-next": "^13.4.12"
+    "eslint-config-next": "^13.4.12",
+    "typescript": "^5.1.6"
   }
 }

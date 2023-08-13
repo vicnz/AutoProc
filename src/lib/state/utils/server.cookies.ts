@@ -1,0 +1,18 @@
+import { cookies } from "next/headers";
+import { encodeNextPBCookie } from "./cookie.encode";
+import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
+
+export async function getNextjsCookie(request_cookie?: RequestCookie) {
+    try {
+        if (request_cookie) {
+            const cookie = encodeNextPBCookie(request_cookie)
+            return cookie;
+        }
+        const next_cookie = cookies().get('pb_auth')
+        const cookie = encodeNextPBCookie(next_cookie)
+        return cookie;
+    } catch (error: any) {
+        console.log("issue getting next-cookie  === ", error)
+        return "";
+    }
+}

@@ -1,0 +1,16 @@
+[LEGEND]:
+(-) - waiting todo
+(~) - pending todo
+(+) - fixed todo
+
+
+DEBUG:
+~ (CACHE MISS) Middlewares & Pocketbase Auth Object
+~ Data Fetching Methods [Server Actions vs. Client Fetching]
+~ Preloading Component Data
+
+FUTURE:
+- Document Print Generator
+- Document Print
+- Tracking
+

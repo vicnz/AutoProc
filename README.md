@@ -1,34 +1,32 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+![Page Logo](/src/lib/media/logo-large.png "AutoProc Logo")
+# AUTOPROC
+> **Monitoring** & **Tracking** Document System ✒️designed & 👷🏻‍♂️build by `N30NZ0N3`.
+ 
+ AutoProc is used as a Procurement Monitoring System intended to be used in the *Batanes State College's Procurement Management*.
 
-## Getting Started
+ ## Features
+ The System has the following features that addresses the common problems of an office when it comes to the process of thier documents.
 
-First, run the development server:
+1. Purchase Requests can be created by the client himself without visiting the office of the Procurement Officer.
+2. Monitoring of document location and status can be viewed instantly without tracking the document thru papers and non consencial records.
+3. Procurement Requests are immediately timed-tracked upon approval of the president to monitor it's completion status.
+4. Notify for Incoming Delivery or Deadline.
+## Theme & Logo
+![Theme Logo](/src/lib/media/logo-small.png)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+Automata Procurare
+<div style="display: flex;justify-content:flex-start;gap: 10px">
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+<div style="height: 100px; width: 100px; background-color: rgb(255, 180, 30); border-radius: 8px;display:grid;place-items:center;color:#800000;font-weight:bold">
+    #FFFFD500
+</div>
+<div style="height: 100px; width: 100px; background: linear-gradient(90deg, rgb(255, 180, 30), #800000); border-radius: 8px"></div>
+<div style="height: 100px; width: 100px; background-color: #800; border-radius: 8px;display:grid;place-items:center;color:rgb(255, 180, 0);font-weight:bold">
+    #800000
+</div>
+</div>
+<br/>
+Color Used:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- <span style="color: rgb(255, 180, 30)">ORANGE</span>
+- <span style="color: #800">MAROON</span>

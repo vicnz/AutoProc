@@ -1,0 +1,38 @@
+.wrapper {
+    background-color: whitesmoke;
+    height: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 15px;
+}
+
+.itemActive {
+    position: relative;
+}
+
+.itemActive::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(192, 37, 42, 0.2);
+    border-radius: 5px;
+    z-index: 1;
+}
+
+.itemActive::before {
+    z-index: 2;
+    content: "";
+    position: absolute;
+    width: 4px;
+    height: 50%;
+    background-color: rgba(192, 37, 42);
+    left: -2px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 2px;
+}
