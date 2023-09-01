@@ -1,4 +1,4 @@
-import StyleComponentRegistry from '@lib/Ant-Design'
+import StyleComponentRegistry from '@/lib/theme/antd'
 import './globals.css'
 import { Metadata } from 'next'
 
