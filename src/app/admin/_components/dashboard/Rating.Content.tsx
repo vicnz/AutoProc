@@ -36,7 +36,7 @@ const RatingContent = function () {
         <>
             <Descriptions title="BEN INC. CO" colon layout='vertical'>
                 <Descriptions.Item label="Trademark">
-                    <Image alt="" src="/autoproc-logo-small.png" height={50} width={60} />
+                    <Image alt="" src="/vercel.svg" height={50} width={60} />
                 </Descriptions.Item>
                 <Descriptions.Item label="Owner">BENJAMIN TABILO</Descriptions.Item>
                 <Descriptions.Item label="Representative(s)">John Doe, Apple Seed</Descriptions.Item>
