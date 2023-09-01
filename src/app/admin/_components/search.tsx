@@ -1,63 +1,76 @@
-'use client';
+'use client'
 
-import { Button, Input, Tag, Tooltip } from 'antd'
-import { ClearOutlined, CloseOutlined, SearchOutlined } from '@ant-design/icons'
-import { useEffect, useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
-function SearchBar() {
-    const router = useRouter()
-    const ref = useRef<any>(null)
-    const [query, setQuery] = useState("")
-    const [isActive, setActive] = useState<boolean>(false)
+import { AuditOutlined, CheckCircleOutlined, ClearOutlined, CloseOutlined, EyeOutlined, LikeOutlined, SearchOutlined, SolutionOutlined, TeamOutlined, UserOutlined } from "@ant-design/icons";
+import { Button, Divider, Empty, Input, Modal, Space, Tag, theme } from "antd";
+import { ReactNode, useEffect, useRef, useState } from "react";
 
-    const clearText = () => {
-        setActive(true)
-    }
-    const focusSearch = (e: KeyboardEvent) => {
-        if (e.key === '/' && e.ctrlKey) {
-            ref.current?.focus()
-        }
-    }
+const { useToken } = theme
 
-    const onEnter = (e: KeyboardEvent) => {
-        if (e.key === 'Enter' && query.length > 2) {
-            const parsedQuery = encodeURI(query)
-            setQuery("")
-            router.push(`/admin/search?q=${parsedQuery}`)
-        }
-    }
-
-    useEffect(() => {
-        ref.current?.input?.addEventListener('focus', clearText)
-        ref.current?.input?.addEventListener('keydown', onEnter)
-        window?.addEventListener('keydown', focusSearch)
-        return () => {
-            ref.current?.input?.removeEventListener('focus', clearText)
-            ref.current?.input?.removeEventListener('keydown', onEnter)
-            window?.removeEventListener('keydown', focusSearch)
-        }
-    }, [])
-
+const SearchBar = () => {
+    const [isShown, showModal] = useState(false)
+    // const token = useToken();
     return (
         <>
             <Input
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                ref={ref}
-                prefix={<SearchOutlined />}
-                placeholder="Search Tip: for Values you can Specify < number"
-                style={{ width: '50%' }}
-                addonAfter={<span style={{ fontFamily: 'aoki' }}>CTRL+/</span>}
-                suffix={
-                    isActive && query.length !== 0 ?
-                        <Tooltip title="Clear">
-                            <Button icon={<ClearOutlined />} type='text' onClick={() => setQuery('')} size='small' />
-                        </Tooltip> :
-                        null
-                }
+                style={{ width: '25%' }}
+                placeholder="Search Records, User, Suppliers, and Offices"
+                onClick={() => showModal(!isShown)}
+                readOnly
             />
+            <Modal open={isShown} onCancel={() => showModal(false)} footer={null} style={{ top: '56px' }} closeIcon={null}>
+                <SearchBarModal />
+            </Modal>
         </>
     )
 }
 
+
+const SearchBarModal = () => {
+    const token = useToken()
+    const [active, setActive] = useState<{ name: string } | null>(null)
+    const [query, setQuery] = useState('')
+
+    return (
+        <Space direction="vertical" style={{ width: '100%' }}>
+            <Input
+                style={{ width: '100%' }}
+                prefix={
+                    <Tag icon={<EyeOutlined />} closable onClose={() => setActive(null)} style={{ display: `${active !== null ? 'block' : 'none'}` }}>{active?.name}</Tag>
+                }
+                placeholder={`Search ${active === null ? 'All Sections...' : `for ${active.name}...`}`}
+                onChange={(e) => setQuery(e.target.value)}
+                addonBefore={
+                    <SearchOutlined />
+                }
+                autoFocus
+            />
+
+            <Space wrap>
+                <span>Search For : </span>
+                <Button icon={<AuditOutlined />} onClick={() => { setActive({ ...active, name: 'Records' }); }}>Records</Button>
+                <Button icon={<TeamOutlined />} onClick={() => { setActive({ ...active, name: 'Users' }); }}>Users</Button>
+                <Button icon={<SolutionOutlined />} onClick={() => { setActive({ ...active, name: 'Suppliers' }); }}>Suppliers</Button>
+            </Space>
+
+            <Divider>Searching <span style={{ color: token.token.colorPrimary }}>{`"${query}"`}</span></Divider>
+            <div style={{ position: 'relative', height: '40vh', width: '100%', overflow: 'auto', display: 'grid', placeItems: 'center', }}>
+                {
+                    true ?
+                        <Empty description='Not Found' /> :
+                        <Space style={{ position: 'absolute', top: 0, left: 0, height: 'auto', width: 'inherit' }}>
+                        </Space>
+                }
+            </div>
+        </Space>
+    )
+}
+
+//TODO render autocomplete here
+const Result = () => {
+    const items = [];
+    return (
+        <>
+        </>
+    )
+}
 export default SearchBar;

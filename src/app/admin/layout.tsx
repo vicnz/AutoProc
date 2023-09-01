@@ -1,12 +1,30 @@
-import Layout from './_components/layout'
+'use client';
 
-import ThemeMode, { useToggleTheme } from '@lib/theme/theme.context'
-export default function WelcomeLayout(props: any) {
+import ThemeContextWrapper from '@lib/theme/theme'
+import { PropsWithChildren } from 'react'
+import { theme } from 'antd'
+import Style from './layout.module.css'
+import Topbar from './_components/topbar'
+import Navbar from './_components/navbar'
+
+const { useToken } = theme
+//Preload System Shared Data Here
+const AdminRootLayout = (props: PropsWithChildren<any>) => {
+    const { token } = useToken()
     return (
-        <ThemeMode>
-            <Layout>
-                {props.children}
-            </Layout>
-        </ThemeMode>
+        <ThemeContextWrapper>
+            <div className={Style.layout_wrapper} style={{ background: token.colorBgContainer }}>
+                <Topbar />
+                <div className={Style.content_provider} style={{ background: token.colorBgContainer }}>
+                    <Navbar />
+                    <div className={Style.content} style={{ background: 'transparent' }}>
+                        {props.children}
+                    </div>
+                </div>
+            </div>
+        </ThemeContextWrapper>
     )
 }
+
+
+export default AdminRootLayout;

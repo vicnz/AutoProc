@@ -1,78 +1,88 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
+import { AuditOutlined, BellOutlined, CalendarOutlined, DesktopOutlined, HomeOutlined, QuestionOutlined, SettingOutlined, SolutionOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Space, Tooltip, theme } from 'antd';
-import NavbarStyle from '../_styles/navbar.module.css';
-import { ShoppingCartOutlined, StockOutlined, QuestionOutlined, SettingOutlined, MessageOutlined, NotificationOutlined, TeamOutlined, PaperClipOutlined, PieChartOutlined, HomeOutlined, UserOutlined, SecurityScanOutlined, SolutionOutlined, AuditOutlined } from '@ant-design/icons';
 import Link from 'next/link';
-const { useToken } = theme
+import { usePathname } from 'next/navigation';
+import Style from './navbar.module.css';
+
+type INavbarItemType = {
+    key: string,
+    href: string,
+    icon?: any,
+    label?: string,
+    disabled?: boolean,
+    type?: 'separator'
+}
+//Navbar Items
+const NavbarItems: { top: INavbarItemType[], bottom: INavbarItemType[] } = {
+    top: [
+        { key: 'dashboard', href: '/admin', icon: HomeOutlined, label: 'Dashboard', },
+        { key: 'records', href: '/admin/records', icon: AuditOutlined, label: 'Records' },
+        { key: 'users', href: '/admin/users', icon: UserOutlined, label: 'Users' },
+        { key: 'separator1', type: 'separator', href: '' },
+        { key: 'suppliers', href: '/admin/suppliers', icon: SolutionOutlined, label: 'Suppliers' },
+        { key: 'offices', href: '/admin/offices', icon: DesktopOutlined, label: 'Offices' },
+        { key: 'separator2', type: 'separator', href: '' }
+
+    ],
+    bottom: [
+        { key: 'help', href: '/admin/help', icon: QuestionOutlined, label: 'Help & Feedback' },
+        { key: 'settings', href: '/admin/settings', icon: SettingOutlined, label: 'Settings' },
+    ]
+}
 function Navbar() {
     const pathname = usePathname()
-    const { token } = useToken()
+    const { token } = theme.useToken()
     return (
-        <div className={NavbarStyle.wrapper} style={{ backgroundColor: token.colorBgContainer }}>
+        <div className={Style.wrapper} style={{ backgroundColor: token.colorBgContainer }}>
             <Space direction='vertical'>
-                <Link href={'/admin'}>
-                    <Button type="text" icon={<HomeOutlined />} className={`${isActive(pathname, '/admin') ? NavbarStyle.itemActive : ''}`} />
-                </Link>
-                <hr />
-                {/* Dashboard Button */}
-                <Tooltip title="Dashboard" placement='right'>
-                    <Link href={'/admin/dashboard'} prefetch={true}>
-                        <Button type={'text'} icon={<StockOutlined />} className={`${isActive(pathname, '/admin/dashboard') ? NavbarStyle.itemActive : ''}`} />
-                    </Link>
+                {
+                    NavbarItems.top.map((item: INavbarItemType) => {
+                        if (item?.type === 'separator') {
+                            return (<hr key={item?.key} />)
+                        } else {
+                            const NavIcon = typeof item.icon !== 'undefined' ? item.icon : null;
+                            return (
+                                <Tooltip title={item.label} placement='right' key={item.key}>
+                                    <Link href={item.href}>
+                                        <Button type='text' icon={<NavIcon />} className={isActive(pathname, item.href, Style.itemActive)} />
+                                    </Link>
+                                </Tooltip>
+                            )
+                        }
+                    })
+                }
+                {/* !TODO */}
+                <Tooltip title="Schedules" placement='right'>
+                    <Button type='text' icon={<CalendarOutlined />} disabled />
                 </Tooltip>
-                {/* Dashboard Button */}
-                <Tooltip title="Purchase Requests" placement='right'>
-                    <Link href={'/admin/pr'} prefetch={true}>
-                        <Button type={'text'} icon={<ShoppingCartOutlined />} className={`${isActive(pathname, '/admin/pr') ? NavbarStyle.itemActive : ''}`} />
-                    </Link>
+                <Tooltip title="Annoucements" placement='right'>
+                    <Button type='text' icon={<BellOutlined />} disabled />
                 </Tooltip>
-                {/* Dashboard Button */}
-                <Tooltip title="Purchase Order" placement='right'>
-                    <Link href={'/admin/po'} prefetch={true}>
-                        <Button type={'text'} icon={<AuditOutlined />} className={`${isActive(pathname, '/admin/po') ? NavbarStyle.itemActive : ''}`} />
-                    </Link>
-                </Tooltip>
-                <hr />
-                {/* Users Button */}
-                <Tooltip title="Users" placement='right'>
-                    <Link href={'/admin/users'} prefetch={true}>
-                        <Button type={'text'} icon={<TeamOutlined />} className={`${isActive(pathname, '/admin/users') ? NavbarStyle.itemActive : ''}`} />
-                    </Link>
-                </Tooltip>
-                {/* Dashboard Button */}
-                <Tooltip title="Suppliers" placement='right'>
-                    <Link href={'/admin/users'} prefetch={true}>
-                        <Button type={'text'} icon={<SolutionOutlined />} className={`${isActive(pathname, '/admin/suppliers') ? NavbarStyle.itemActive : ''}`} />
-                    </Link>
-                </Tooltip>
-
+                {/* !TODO */}
             </Space>
-            <Space direction="vertical">
-                {/* Help & Feedback */}
-                <Tooltip title="Help & Feedback" placement='right'>
-                    <Link href={'/admin/help'} prefetch={true}>
-                        <Button type="text" icon={<QuestionOutlined />} className={`${isActive(pathname, '/admin/help') ? NavbarStyle.itemActive : ''}`} />
-                    </Link>
-                </Tooltip>
-                {/* Settings */}
-                <Tooltip title="Settings" placement='right'>
-                    <Link href={'/admin/settings'} prefetch={true}>
-                        <Button type="text" icon={<SettingOutlined />} className={`${isActive(pathname, '/admin/settings') ? NavbarStyle.itemActive : ''}`} />
-                    </Link>
-                </Tooltip>
+            <Space direction='vertical'>
+                {
+                    NavbarItems.bottom.map((item: INavbarItemType) => {
+                        const NavIcon = typeof item.icon !== 'undefined' ? item.icon : null;
+                        return (
+                            <Tooltip title={item.label} placement='right' key={item.key}>
+                                <Link href={item.href}>
+                                    <Button type='text' icon={<NavIcon />} className={isActive(pathname, item.href, Style.itemActive)} />
+                                </Link>
+                            </Tooltip>
+                        )
+                    })
+                }
             </Space>
         </div>
     )
 }
 
-//is Active
-const isActive = (path: string, url: string): boolean => {
-    const activeIndicator = {
-        // color: 
-    }
-    return path === url
+//determine nav item is active?
+const isActive = (path: string, url: string, className: any): string => {
+    return `${path === url ? className : ''}`
 }
 
 export default Navbar;
