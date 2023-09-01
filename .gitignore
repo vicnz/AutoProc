@@ -45,11 +45,11 @@ next-env.d.ts
 
 # Pocketbase
 pb_data/
-pocketbase.exe.old
+./pocketbase.exe.old
 
 # Development Scratch
 .scratch/*
 package.to.install.txt
 
 # Visual Studio Code Config
-.vscode
+.vscode/*
