@@ -9,7 +9,6 @@ export async function GET(request: NextRequest) {
     let page = searchParams.get('page')
     let count = searchParams.get('count')
 
-    console.log(page, count)
     return NextResponse.json({ data: mockdata })
 }
 
