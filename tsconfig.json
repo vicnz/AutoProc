@@ -32,6 +32,16 @@
       ],
       "@media/*": [
         "./src/media/*"
+      ],
+      "@components/admin/*": [
+        "./src/app/admin/_components/*"
+      ],
+      "@components/client/*": [
+        "./src/app/client/_components/*"
+      ],
+      "@components/shared/*": [
+        "./src/app/admin/_components/shared/*",
+        "./src/app/client/_components/shared/*"
       ]
     }
   },
