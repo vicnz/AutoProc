@@ -1,6 +1,6 @@
 'use client';
 
-import ThemeContextWrapper from '@lib/theme/theme'
+import ThemeContextWrapper from '@lib/theme/theme.context'
 import { PropsWithChildren } from 'react'
 import { theme } from 'antd'
 import Style from './layout.module.css'

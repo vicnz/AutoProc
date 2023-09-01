@@ -8,8 +8,8 @@ import Search from './search'
 import Notification from './notification'
 
 //Images
-import LogoSmall from '@images/small.png'
-import LogoMedium from '@images/medium.png'
+import LogoSmall from '@media/small.png'
+import LogoMedium from '@media/medium.png'
 
 const { useToken } = theme
 

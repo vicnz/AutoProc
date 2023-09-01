@@ -1,5 +1,4 @@
 import StyleComponentRegistry from '@lib/Ant-Design'
-import AuthListener from '@lib/state/hooks/AuthListener'
 import './globals.css'
 import { Metadata } from 'next'
 
@@ -20,11 +19,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <AuthListener>
-          <StyleComponentRegistry>
-            {children}
-          </StyleComponentRegistry>
-        </AuthListener>
+        <StyleComponentRegistry>
+          {children}
+        </StyleComponentRegistry>
       </body>
     </html>
   )
