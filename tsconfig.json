@@ -29,10 +29,6 @@
       ],
       "@lib/*": [
         "./src/lib/*"
-      ],
-      "@components/*": [
-        "./src/components/*",
-        "./src/app/_components/*"
       ]
     }
   },
