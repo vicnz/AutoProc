@@ -27,6 +27,7 @@ yarn-error.log*
 # local env files
 .env*.local
 .env*.production
+.env
 
 # vercel
 .vercel
@@ -38,6 +39,8 @@ next-env.d.ts
 # test files
 *.test.*
 /*.tests/*
+.tests
+.scratch
 
 
 # Pocketbase
@@ -47,3 +50,6 @@ pocketbase.exe.old
 # Development Scratch
 .scratch/*
 package.to.install.txt
+
+# Visual Studio Code Config
+.vscode
