@@ -1,6 +1,6 @@
 'use client';
 
-import { Space, theme } from 'antd';
+import { Button, Divider, Space, Tooltip, theme } from 'antd';
 import Image from 'next/image'
 //components
 import Styles from './topbar.module.css';
@@ -10,6 +10,7 @@ import Notification from './notification'
 //Images
 import LogoSmall from '@media/small.png'
 import LogoMedium from '@media/medium.png'
+import { QuestionOutlined } from '@ant-design/icons';
 
 const { useToken } = theme
 
@@ -30,7 +31,13 @@ export default function Topbar() {
         <nav className={Styles.navbar} style={{ backgroundColor: token.colorBgContainer }}>
             <BrandName />
             <Search />
-            <Notification />
+            <div>
+                <Notification />
+                <Divider type='vertical' />
+                <Tooltip placement='bottomLeft' title="Tour With Me">
+                    <Button icon={<QuestionOutlined />} type="text" />
+                </Tooltip>
+            </div>
         </nav>
     )
 }
