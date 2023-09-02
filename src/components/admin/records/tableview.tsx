@@ -1,9 +1,11 @@
 'use client';
 import { ApartmentOutlined, BarsOutlined, FolderOpenOutlined, FontSizeOutlined, MoneyCollectOutlined, NumberOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Result, Skeleton, Table, TableColumnsType } from 'antd';
-import { useQuery } from './util/useRecord';
 import Link from 'next/link';
 import { useEffect, useState, useTransition } from 'react';
+
+//mock data
+import MockData from '../../../../.tests/mockdata/pr'
 
 const TableColumns: TableColumnsType = [
     {
@@ -78,18 +80,7 @@ const TableColumns: TableColumnsType = [
 ]
 
 const TableView = function () {
-    const { data, isError, isLoading } = useQuery()
-    if (isError) {
-        return (
-            <Result status={'error'} />
-        )
-    } else {
-        if (isLoading) {
-            return <div style={{ padding: '15px' }}><Skeleton paragraph active /></div>
-        } else {
-            return <Table columns={TableColumns as any} dataSource={data?.data} sticky pagination={false} loading={isLoading} />
-        }
-    }
+    return <Table columns={TableColumns as any} dataSource={MockData} sticky pagination={false} />
 }
 
 const ViewItem = function ({ key }: { key: string }) {

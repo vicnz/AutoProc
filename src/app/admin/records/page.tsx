@@ -1,9 +1,9 @@
-import { ContentWrapperHasHeader } from '../_components/shared/content'
-import Header from '../_components/records/headersection'
-import SuspenseLoading from '../_components/shared/loading'
+import { ContentWrapperHasHeader } from '@components/shared/content'
+import Header from '@components/admin/records/header'
 import dynamic from 'next/dynamic'
+import { Skeleton } from 'antd'
 
-const TableView = dynamic(async () => await import('../_components/records/TableView'), { ssr: false, loading: () => <SuspenseLoading /> })
+const TableView = dynamic(async () => await import('@components/admin/records/tableview'), { ssr: false, loading: () => <div><Skeleton paragraph /></div> })
 
 const RecordsMain = () => {
     return (

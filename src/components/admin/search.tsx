@@ -65,12 +65,4 @@ const SearchBarModal = () => {
     )
 }
 
-//TODO render autocomplete here
-const Result = () => {
-    const items = [];
-    return (
-        <>
-        </>
-    )
-}
 export default SearchBar;

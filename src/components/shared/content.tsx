@@ -2,7 +2,7 @@
 
 import { PropsWithChildren, ReactNode } from 'react';
 import { theme } from 'antd'
-import Styles from './content.module.css'
+import Styles from './styles/content.module.css'
 
 const { useToken } = theme
 export const ContentWrapper = (props: PropsWithChildren<any>) => {

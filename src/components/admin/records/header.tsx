@@ -1,7 +1,7 @@
 'use client';
 
 import { Button, Divider, Space } from 'antd';
-import Header from '../shared/header'
+import Header from '@components/shared/header'
 import { ArrowLeftOutlined, ArrowRightOutlined, FileAddOutlined, MoreOutlined, PlusCircleOutlined, ReloadOutlined } from '@ant-design/icons';
 import Help from './help'
 

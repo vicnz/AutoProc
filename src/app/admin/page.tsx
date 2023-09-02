@@ -1,6 +1,6 @@
-import { ContentWrapperHasHeader } from './_components/shared/content'
-import Header from './_components/dashboard/headersection'
-import DashboardContent from './_components/dashboard/TabSwitcher'
+import DashboardContent from '@components/admin/dashboard/tabs'
+import { ContentWrapperHasHeader } from '@components/shared/content'
+import Header from '@components/admin/dashboard/header'
 
 export default function AdminRootPage() {
     return (

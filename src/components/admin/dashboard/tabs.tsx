@@ -1,13 +1,14 @@
 'use client';
-import { BoxPlotOutlined, CompassOutlined, FundProjectionScreenOutlined, LineChartOutlined, SolutionOutlined } from '@ant-design/icons';
-import { Badge, Skeleton, Tabs, Tag, Tooltip } from 'antd'
-import TabView from './TabView'
+
+import { CompassOutlined, LineChartOutlined, SolutionOutlined } from '@ant-design/icons';
+import { Skeleton, Tabs, Tag } from 'antd';
+import TabView from './tab';
 import dynamic from 'next/dynamic';
 import { useEffect } from 'react';
 import { Chart as ChartJS, registerables } from 'chart.js';
-import Rating from './Rating';
 
-const Overview = dynamic(async () => await import('./Overview'), { loading: () => <Skeleton paragraph /> })
+const Overview = dynamic(async () => await import('./overview'), { loading: () => <Skeleton paragraph /> })
+const Rating = dynamic(async () => await import('./rating'), { loading: () => <Skeleton paragraph /> })
 
 const Section = [
     {

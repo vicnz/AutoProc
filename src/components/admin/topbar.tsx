@@ -3,7 +3,7 @@
 import { Button, Divider, Space, Tooltip, theme } from 'antd';
 import Image from 'next/image'
 //components
-import Styles from './topbar.module.css';
+import Styles from './styles/topbar.module.css';
 import Search from './search'
 import Notification from './notification'
 

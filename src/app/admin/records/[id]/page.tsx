@@ -1,7 +1,7 @@
 
-import { ContentWrapperHasHeader } from '../../_components/shared/content';
-import Header from '../../_components/recordsview/headersection';
-import RecordViewLayout from '../../_components/recordsview/layout';
+import { ContentWrapperHasHeader } from '@components/shared/content';
+import Header from '@components/admin/recordview/header';
+import RecordViewLayout from '@components/admin/recordview/layout';
 
 const RecordItem = () => {
     return (

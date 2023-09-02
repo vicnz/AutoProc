@@ -1,8 +1,7 @@
 'use client';
 
 
-import { ArrowRightOutlined } from "@ant-design/icons";
-import { Button, StepProps, Steps } from "antd";
+import { StepProps, Steps } from "antd";
 
 const Items: StepProps[] = [
     {

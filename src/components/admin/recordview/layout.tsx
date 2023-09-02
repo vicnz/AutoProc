@@ -1,11 +1,11 @@
 'use client';
 
 import { ClockCircleOutlined, ReloadOutlined } from '@ant-design/icons';
-import Styles from './layout.module.css'
-import TabSwitch from './TabSwitch'
+import Styles from '../styles/recordview.module.css'
+import TabSwitch from './tabs'
 import { theme, Spin, Button } from 'antd'
 import dynamic from 'next/dynamic';
-const DocumentStatus = dynamic(async () => await import('./Status'), { ssr: false, loading: () => <div style={{ height: '50vh', width: '250px', display: 'grid', placeItems: 'center' }}><Spin /></div> })
+const DocumentStatus = dynamic(async () => await import('./status'), { ssr: false, loading: () => <div style={{ height: '50vh', width: '250px', display: 'grid', placeItems: 'center' }}><Spin /></div> })
 
 
 const { useToken } = theme
@@ -23,7 +23,6 @@ const RecordViewLayout = function () {
                 </div>
                 <div className={Styles.status_panel}>
                     <div className={Styles.status_panel_scroll}>
-                        {/* SHOW DOCUMENT STATUS HERE */}
                         <DocumentStatus />
                     </div>
                 </div>

@@ -2,7 +2,6 @@
     height: 100vh;
     width: 100vw;
     position: relative;
-    /* background-color: whitesmoke; */
 }
 
 .content_provider {
@@ -15,8 +14,6 @@
     background-color: transparent;
     height: 100%;
     width: 100%;
-    /* border-top-left-radius: 12px; */
-    /* background-color: white; */
 }
 
 /* Admin Page Is Only Accessible Using Wide Screen Device */

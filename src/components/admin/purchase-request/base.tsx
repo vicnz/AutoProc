@@ -1,6 +1,5 @@
-import { AppleOutlined, AppstoreOutlined, BarsOutlined, CheckOutlined, CommentOutlined, CustomerServiceOutlined, DatabaseOutlined, EditOutlined, ExportOutlined, EyeFilled, EyeOutlined, FolderViewOutlined } from "@ant-design/icons";
-import { Button, Divider, FloatButton, Form, Input, Popover, Segmented, SegmentedProps, Space, Switch, Tooltip } from "antd";
-import { SegmentedLabeledOption, SegmentedValue } from "antd/es/segmented";
+import { AppleOutlined, CheckOutlined, DatabaseOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
+import { Form, Input, Popover, Segmented, Switch } from "antd";
 
 const items = [
     {

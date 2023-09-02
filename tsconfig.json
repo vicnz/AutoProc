@@ -34,14 +34,13 @@
         "./src/media/*"
       ],
       "@components/admin/*": [
-        "./src/app/admin/_components/*"
+        "./src/components/admin/*"
       ],
       "@components/client/*": [
-        "./src/app/client/_components/*"
+        "./src/components/client/*"
       ],
       "@components/shared/*": [
-        "./src/app/admin/_components/shared/*",
-        "./src/app/client/_components/shared/*"
+        "./src/components/shared/*"
       ]
     }
   },

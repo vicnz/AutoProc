@@ -1,7 +1,7 @@
 'use client';
 
 import { Button, Divider } from 'antd';
-import Header from '../shared/header'
+import Header from '@components/shared/header'
 import { useRouter } from 'next/navigation'
 import { ArrowLeftOutlined, QuestionCircleOutlined, ReloadOutlined } from '@ant-design/icons';
 import { memo } from 'react'

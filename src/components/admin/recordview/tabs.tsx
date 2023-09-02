@@ -1,10 +1,11 @@
 'use client';
 import { FileOutlined, FolderOutlined, ShopOutlined } from '@ant-design/icons';
-import { Tabs } from 'antd';
-import TabView from './TabView';
+import { Skeleton, Tabs } from 'antd';
+import TabView from './tab';
 import { useEffect } from 'react';
 import { Chart as ChartJS, registerables } from 'chart.js';
-import PurchaseOrder from './request/layout'
+import dynamic from 'next/dynamic';
+const PurchaseOrder = dynamic(async () => await import('@components/admin/purchase-request/base'), { loading: () => <Skeleton paragraph /> })
 
 
 const Section = [
