@@ -1,6 +1,5 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,18 +9,57 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Records {
-  id        String  @id @default(cuid())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  author    User?   @relation(fields: [authorId], references: [id])
-  authorId  Int?
+model Departments {
+  id          String       @id @default(cuid())
+  name        String
+  description String?
+  Sector      Sectors[]
+  ClientUser  ClientUser[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @default(now()) @updatedAt()
 }
 
-model User {
-  id    Int       @id @default(autoincrement())
-  email String    @unique
-  name  String?
-  posts Records[]
+model Sectors {
+  id           String      @id @default(cuid())
+  name         String
+  description  String?
+  departmentId String
+  department   Departments @relation(fields: [departmentId], references: [id])
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @default(now()) @updatedAt()
 }
+
+enum Role {
+  ADMIN
+  USER
+  UTIL
+}
+
+model ClientUser {
+  id           String      @id @default(cuid())
+  username     String
+  email        String?     @unique
+  userType     Role        @default(USER)
+  password     String
+  fname        String
+  mname        String?
+  lname        String
+  suffix       String?
+  departmentId String
+  department   Departments @relation(fields: [departmentId], references: [id])
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @default(now()) @updatedAt()
+}
+
+model Suppliers {
+  id             String   @id @default(cuid())
+  name           String
+  description    String
+  owner          String
+  representative String
+  location       String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @default(now()) @updatedAt()
+}
+
+//TODO add records & monitoring
