@@ -1,22 +1,51 @@
-import { CheckOutlined, SaveOutlined } from "@ant-design/icons";
-import { Button, Divider, Popover, Switch, Tag } from "antd"
+import { CheckOutlined, PrinterOutlined, QrcodeOutlined, SaveOutlined } from "@ant-design/icons";
+import { Button, Divider, Dropdown, Popover, Switch, Tag } from "antd"
 import ToggleView from "./toggleview";
 import { memo } from 'react'
 import { useManager } from "./manager";
+import { useReactToPrint } from 'react-to-print'
 
-const PurchaseRequestHeader = function () {
+const PurchaseRequestHeader = function (props: { printRef?: any }) {
     const [state, dispatch] = useManager()
 
-    const onSave = () => {
-        console.log(state)
-    }
+    const onPrint = useReactToPrint({
+        content: () => props.printRef?.current
+    })
     return (
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '56px', paddingRight: '25px', }}>
-            <div>PURCHASE REQUEST <Divider type='vertical' /> <Tag color="success">Approved</Tag></div>
+            <div>
+                PURCHASE REQUEST
+                <Divider type='vertical' />
+                <Popover title="Final" content="Document is Approved and Ready for Release">
+                    <Switch />
+                </Popover>
+            </div>
             <ToggleView />
-            <Popover title={"APPROVED"} content={<div>Mark the Document as Final</div>} placement="bottomRight">
-                <Button icon={<SaveOutlined />} type="primary" onClick={onSave}>Save</Button>
-            </Popover>
+            <div>
+                <Dropdown.Button
+                    icon={<PrinterOutlined />}
+                    type='primary'
+                    onClick={() => { alert("Save Button Clicked") }}
+                    menu={{
+                        items: [
+                            {
+                                key: '1',
+                                label: 'Tracking',
+                                icon: <QrcodeOutlined />,
+                                onClick: () => { }
+                            },
+                            {
+                                key: '2',
+                                label: 'Print',
+                                icon: <PrinterOutlined />,
+                                onClick: () => { onPrint() }
+                            },
+                        ],
+                    }}
+                >
+                    Save
+                </Dropdown.Button>
+            </div>
         </div>
     )
 }
