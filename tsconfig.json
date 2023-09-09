@@ -33,9 +33,18 @@
       "@media/*": [
         "./src/media/*"
       ],
+      //Administrator Area
       "@components/admin/*": [
-        "./src/components/admin/*"
+        "./src/components/admin/*",
+        "./src/app/administrator/_components/*"
       ],
+      "@styles/admin/*": [
+        "./src/app/administrator/_styles/*"
+      ],
+      "@state/admin/*": [
+        "./src/app/administrator/_state/*"
+      ],
+      //End-User Area
       "@components/client/*": [
         "./src/components/client/*"
       ],
