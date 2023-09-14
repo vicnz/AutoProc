@@ -1,7 +1,8 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextIndex", "fullTextSearch"]
 }
 
 datasource db {
@@ -9,24 +10,28 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Departments {
-  id          String       @id @default(cuid())
+model departments {
+  id          String     @id @default(uuid())
   name        String
   description String?
-  Sector      Sectors[]
-  ClientUser  ClientUser[]
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @default(now()) @updatedAt()
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  sections    sections[]
+  users       users[]
+
+  @@fulltext([name])
 }
 
-model Sectors {
-  id           String      @id @default(cuid())
+model sections {
+  id           String       @id @default(uuid())
   name         String
   description  String?
-  departmentId String
-  department   Departments @relation(fields: [departmentId], references: [id])
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @default(now()) @updatedAt()
+  departmentId String?
+  department   departments? @relation(fields: [departmentId], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  @@fulltext([name])
 }
 
 enum Role {
@@ -35,31 +40,183 @@ enum Role {
   UTIL
 }
 
-model ClientUser {
-  id           String      @id @default(cuid())
-  username     String
-  email        String?     @unique
-  userType     Role        @default(USER)
+model users {
+  id           String       @id @default(uuid())
+  username     String       @unique
+  email        String?      @unique
+  userType     Role         @default(USER) // user can only be ADMIN, USER, UTIL
   password     String
   fname        String
   mname        String?
-  lname        String
+  lname        String?
   suffix       String?
-  departmentId String
-  department   Departments @relation(fields: [departmentId], references: [id])
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @default(now()) @updatedAt()
+  profile      Bytes?       @db.MediumBlob //profile image minimum 5MB size
+  departmentId String? //department id can be empty
+  department   departments? @relation(fields: [departmentId], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  pr           pr[]
+
+  @@fulltext([username, email, fname, lname])
 }
 
-model Suppliers {
-  id             String   @id @default(cuid())
+model pr {
+  id                   String             @id @default(uuid())
+  pr_no                String?            @unique
+  sai                  String?
+  obr                  String?
+  issue_date           DateTime           @default(now()) //by default issue data is generated from the creation of the document
+  reference            String? //reference number
+  final                Boolean            @default(false) //mark document as approved and final NOTE: this toggle can bypass the tracing
+  enduserId            String?
+  enduser              users?             @relation(fields: [enduserId], references: [id], onUpdate: Cascade, onDelete: SetNull)
+  particulars          Json               @default(dbgenerated("JSON_ARRAY()"))
+  tracking             Json               @default(dbgenerated("JSON_ARRAY()"))
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+  recommendation       recommendation[]
+  request_for_quoation price_quotations[]
+  abstract             abstract[]
+  awarding             awards[]
+  po                   po[]
+  monitor              monitor[]
+
+  @@fulltext([pr_no, reference])
+}
+
+model recommendation {
+  id        String   @id @default(uuid())
+  tracking  Json     @default(dbgenerated("JSON_ARRAY()"))
+  final     Boolean  @default(false)
+  prId      String
+  pr        pr       @relation(fields: [prId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model price_quotations {
+  id        String     @id @default(uuid())
+  suppliers Json       @default(dbgenerated("JSON_ARRAY()"))
+  tracking  Json       @default(dbgenerated("JSON_ARRAY()"))
+  final     Boolean    @default(false)
+  prId      String
+  pr        pr         @relation(fields: [prId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  abstract  abstract[]
+}
+
+model abstract {
+  id              String            @id @default(uuid())
+  quotations      Json              @default(dbgenerated("JSON_ARRAY()"))
+  biddingPlace    String?
+  tracking        Json              @default(dbgenerated("JSON_ARRAY()"))
+  final           Boolean           @default(false)
+  prId            String
+  pr              pr                @relation(fields: [prId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  rfqId           String?
+  price_quotation price_quotations? @relation(fields: [rfqId], references: [id], onUpdate: Cascade, onDelete: SetNull)
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  awarding        awards[]
+}
+
+model awards {
+  id            String    @id @default(uuid())
+  lowest_bidder String?
+  lowest_cost   Decimal?
+  tracking      Json      @default(dbgenerated("JSON_ARRAY()"))
+  final         Boolean   @default(false)
+  prId          String
+  pr            pr        @relation(fields: [prId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  abstractId    String?
+  abstract      abstract? @relation(fields: [abstractId], references: [id], onUpdate: Cascade, onDelete: SetNull)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model po {
+  id                String    @id @default(uuid())
+  supplier          Json      @default(dbgenerated("JSON_ARRAY()"))
+  po_num            String    @unique
+  issue_date        DateTime? @default(now())
+  delivery_location String?
+  delivery_date     DateTime
+  delivery_duration Int       @default(3) //need to be reassigned
+  delivery_term     String
+  payment_term      String
+  tracking          Json      @default(dbgenerated("JSON_ARRAY()"))
+  final             Boolean   @default(false)
+  particulars       Json      @default(dbgenerated("JSON_ARRAY()")) //format {data: [name: string, unit: string, description: string, qty: number, unitCost: number, amount: number, isDelevered: boolean]}
+  prId              String
+  pr                pr        @relation(fields: [prId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  monitor           monitor[]
+
+  @@fulltext([po_num])
+}
+
+model monitor {
+  id        String   @id @default(uuid())
+  prId      String
+  pr        pr       @relation(fields: [prId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  poId      String
+  po        po       @relation(fields: [poId], references: [id], onUpdate: Cascade, onDelete: NoAction)
+  startDate DateTime @default(now())
+  endDate   DateTime
+  urgent    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum NotifType {
+  ADMIN
+  STD
+  SYSTEM
+  USER
+}
+
+enum NotifLevel {
+  DANGER
+  INFO
+  WARNING
+  SUCCESS
+}
+
+model notifications {
+  id          String     @id @default(uuid())
+  title       String
+  subtitle    String?
+  description Json       @default(dbgenerated("JSON_ARRAY()"))
+  particulars Json?      @default(dbgenerated("JSON_ARRAY()"))
+  type        NotifType  @default(STD)
+  level       NotifLevel @default(INFO)
+  resolved    Boolean    @default(false)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model suppliers {
+  id             String   @id @default(uuid())
   name           String
-  description    String
-  owner          String
-  representative String
-  location       String
+  representative String?
+  address        String?
+  tin            String
   createdAt      DateTime @default(now())
-  updatedAt      DateTime @default(now()) @updatedAt()
+  updatedAt      DateTime @updatedAt
+
+  @@index([tin])
+  @@fulltext([name, representative, tin])
 }
 
-//TODO add records & monitoring
+//options
+model settings {
+  id          String   @id @default(uuid())
+  name        String
+  value       String
+  particulars String
+  updatedAt   DateTime @updatedAt()
+
+  @@ignore
+}
