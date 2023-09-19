@@ -1,4 +1,5 @@
 import StyleComponentRegistry from '@/lib/theme/antd'
+import SWRConfig from '@lib/data-fetching/config'
 import './globals.css'
 import { Metadata } from 'next'
 
@@ -19,9 +20,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <StyleComponentRegistry>
-          {children}
-        </StyleComponentRegistry>
+        <SWRConfig>
+          <StyleComponentRegistry>
+            {children}
+          </StyleComponentRegistry>
+        </SWRConfig>
       </body>
     </html>
   )

@@ -19,3 +19,5 @@ export const UNIT_OF_MEASUREMENTS = [
     { value: 'tb', name: 'Tube' },
     { value: 'un', name: 'Unit' },
 ]
+
+export const PRIMARY_COLOR = '#C0252A'

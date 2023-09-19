@@ -11,7 +11,6 @@ const Services = [
     { label: 'Fiscal Year Procurement Cost', value: Intl.NumberFormat('en-US', { style: 'currency', currency: 'PHP', }).format(2322.23) }
 ]
 //states
-import useDashboardData, { ReqType } from '../../administrator/preload'
 //
 const Overview = function () {
     return (
@@ -26,36 +25,21 @@ const Overview = function () {
 
 
 const Outline = function () {
-    const { data, error, isLoading } = useDashboardData(ReqType.OUTLINE)
-    if (error) {
-        return (
-            <Result status={"error"} />
-        )
-    } else {
-        return (
-            <>
+    return (
+        <>
+            <Space wrap>
                 {
-                    (isLoading === true) ?
-                        <Skeleton paragraph={{ rows: 4 }} />
-                        :
-                        <Space wrap>
-                            {
-                                data?.data.map((item: { name: string, description: string, value: any }, idx: number) => {
-                                    return (
-                                        <Card key={idx} style={{ minWidth: '150px' }}>
-                                            <Statistic
-                                                title={<span style={{ textTransform: 'capitalize' }}>{item.name}</span>}
-                                                value={item.value}
-                                            />
-                                        </Card>
-                                    )
-                                })
-                            }
-                        </Space>
+                    Services.map(item => {
+                        return (
+                            <Card key={item.value} style={{ minWidth: 150 }}>
+                                <Statistic title={<span style={{ textTransform: 'capitalize' }}>{item.label}</span>} value={item.value} />
+                            </Card>
+                        )
+                    })
                 }
-            </>
-        )
-    }
+            </Space>
+        </>
+    )
 }
 
 const OverviewGraph = function () {
