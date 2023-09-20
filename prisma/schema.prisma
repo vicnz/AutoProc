@@ -30,6 +30,7 @@ model sections {
   department   departments? @relation(fields: [departmentId], references: [id], onDelete: SetNull, onUpdate: Cascade)
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
+  users        users[]
 
   @@fulltext([name])
 }
@@ -53,6 +54,8 @@ model users {
   profile      Bytes?       @db.MediumBlob //profile image minimum 5MB size
   departmentId String? //department id can be empty
   department   departments? @relation(fields: [departmentId], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  sectionId    String?
+  section      sections?    @relation(fields: [sectionId], references: [id], onDelete: SetNull, onUpdate: Cascade)
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
   pr           pr[]
@@ -65,7 +68,7 @@ model pr {
   pr_no                String?            @unique
   sai                  String?
   obr                  String?
-  issue_date           DateTime           @default(now()) //by default issue data is generated from the creation of the document
+  date                 DateTime           @default(now()) //by default issue data is generated from the creation of the document
   reference            String? //reference number
   final                Boolean            @default(false) //mark document as approved and final NOTE: this toggle can bypass the tracing
   enduserId            String?
@@ -79,9 +82,8 @@ model pr {
   abstract             abstract[]
   awarding             awards[]
   po                   po[]
-  monitor              monitor[]
 
-  @@fulltext([pr_no, reference])
+  @@fulltext([pr_no, reference, sai, obr])
 }
 
 model recommendation {
@@ -136,31 +138,29 @@ model awards {
 }
 
 model po {
-  id                String    @id @default(uuid())
-  supplier          Json      @default(dbgenerated("JSON_ARRAY()"))
-  po_num            String    @unique
-  issue_date        DateTime? @default(now())
-  delivery_location String?
-  delivery_date     DateTime
-  delivery_duration Int       @default(3) //need to be reassigned
-  delivery_term     String
-  payment_term      String
-  tracking          Json      @default(dbgenerated("JSON_ARRAY()"))
-  final             Boolean   @default(false)
-  particulars       Json      @default(dbgenerated("JSON_ARRAY()")) //format {data: [name: string, unit: string, description: string, qty: number, unitCost: number, amount: number, isDelevered: boolean]}
-  prId              String
-  pr                pr        @relation(fields: [prId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
-  monitor           monitor[]
+  id          String    @id @default(uuid())
+  supplier    Json      @default(dbgenerated("JSON_ARRAY()"))
+  po_num      String    @unique
+  date        DateTime? @default(now())
+  d_location  String?
+  d_date      DateTime
+  d_duration  Int       @default(3) //need to be reassigned
+  d_term      String
+  d_payment   String
+  tracking    Json      @default(dbgenerated("JSON_ARRAY()"))
+  final       Boolean   @default(false)
+  particulars Json      @default(dbgenerated("JSON_ARRAY()")) //format {data: [name: string, unit: string, description: string, qty: number, unitCost: number, amount: number, isDelevered: boolean]}
+  prId        String
+  pr          pr        @relation(fields: [prId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  monitor     monitor[]
 
   @@fulltext([po_num])
 }
 
 model monitor {
   id        String   @id @default(uuid())
-  prId      String
-  pr        pr       @relation(fields: [prId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   poId      String
   po        po       @relation(fields: [poId], references: [id], onUpdate: Cascade, onDelete: NoAction)
   startDate DateTime @default(now())

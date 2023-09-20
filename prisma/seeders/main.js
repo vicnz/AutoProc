@@ -18,11 +18,11 @@ async function seeder() {
         await sections(prisma),
         await suppliers(prisma),
         await users(prisma),
-        await pr(prisma),
-        await recommendation(prisma),
-        await rfq(prisma),
-        await abstract(prisma),
-        await awarding(prisma)
+        // await pr(prisma),
+        // await recommendation(prisma),
+        // await rfq(prisma),
+        // await abstract(prisma),
+        // await awarding(prisma)
     ])
 }
 //run seeder
