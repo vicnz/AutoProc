@@ -7,24 +7,23 @@ import NextLink from 'next/link';
 const { Link } = Typography
 export const TableColumns: TableColumnsType = [
     {
-        title: <span><NumberOutlined /> PR No.</span>,
-        dataIndex: "number",
+        title: <span><NumberOutlined /> No.</span>,
+        dataIndex: "pr_no",
         key: "number",
         width: 100,
         ellipsis: true,
-        fixed: 'left'
     },
     {
-        title: <span><NumberOutlined /> Ref No.</span>,
+        title: <span><NumberOutlined /> Reference</span>,
         dataIndex: "reference",
         key: "number",
         width: 100,
         ellipsis: true
     },
     {
-        title: <span><UserOutlined /> Client</span>,
-        dataIndex: "client",
-        key: "number",
+        title: <span><UserOutlined /> End User</span>,
+        dataIndex: "enduser",
+        key: "string",
         width: 100,
         ellipsis: true,
     },
@@ -53,26 +52,20 @@ export const TableColumns: TableColumnsType = [
         title: <span><BarsOutlined /> Particulars</span>,
         dataIndex: "particulars",
         key: "particulars",
-        width: 100,
-        ellipsis: true
-    },
-    {
-        title: <span><MoneyCollectOutlined /> Total</span>,
-        dataIndex: "total",
-        key: "total",
-        width: 100,
-        ellipsis: true
+        ellipsis: true,
+        width: 100
     },
     {
         title: 'View',
         fixed: 'right',
         width: 75,
-        dataIndex: '',
+        dataIndex: 'id',
         key: 'x',
         render: (e: any) => {
+            console.log(e)
             return (
-                <NextLink href={`/administrator/records/${e.key}`} passHref>
-                    <Button icon={<EditOutlined />}>Edit</Button>
+                <NextLink href={`/administrator/records/${e}`} passHref>
+                    <Button icon={<EditOutlined />} type='text'>View</Button>
                 </NextLink>
             )
         },
