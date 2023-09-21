@@ -71,6 +71,7 @@ model pr {
   date                 DateTime           @default(now()) //by default issue data is generated from the creation of the document
   reference            String? //reference number
   final                Boolean            @default(false) //mark document as approved and final NOTE: this toggle can bypass the tracing
+  purpose              String?
   enduserId            String?
   enduser              users?             @relation(fields: [enduserId], references: [id], onUpdate: Cascade, onDelete: SetNull)
   particulars          Json               @default(dbgenerated("JSON_ARRAY()"))
