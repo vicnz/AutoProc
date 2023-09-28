@@ -1,11 +1,10 @@
-import { PlusCircleOutlined } from "@ant-design/icons";
-import { Form, Space, Input, DatePicker, Divider, Button, FormInstance, App, InputNumber } from "antd";
-import { useRef, useState } from "react";
+import { MinusCircleOutlined, PlusCircleOutlined, PlusOutlined, UserOutlined } from "@ant-design/icons";
+import { Form, Space, Input, DatePicker, Divider, Button, FormInstance, App, InputNumber, AutoComplete, AutoCompleteProps, Avatar, Card, Select } from "antd";
+import { forwardRef, useCallback, useRef, useState } from "react";
 import dayjs from "dayjs";
 //coomponents
+import { UNIT_OF_MEASUREMENTS } from "@/lib/contants";
 import PRNumber from '../../_components/shared/pr-no';
-import SelectEndUser from './select-user';
-import SelectParticulars from './select-particulars';
 //configs
 const initialValue = {
     date: dayjs(),
@@ -72,7 +71,7 @@ const AddForm = function (props: { close: () => any, users: any[] }) {
             <Divider>Particulars</Divider>
             {/* Particulars */}
             <Form.Item label="Particulars" rules={[{ required: true }]} required>
-                <SelectParticulars />
+                <Particulars />
             </Form.Item>
             {/* Particulars */}
             <Divider />
@@ -81,5 +80,131 @@ const AddForm = function (props: { close: () => any, users: any[] }) {
         </Form>
     )
 }
+
+
+const Particulars = forwardRef((props, ref) => {
+    return (
+        <Form.List
+            name="particulars"
+            rules={[{
+                validator(rule, value) {
+                    if (value?.length < 1) {
+                        return Promise.reject('Empty Particulars')
+                    } else {
+                        return Promise.resolve("resolved")
+                    }
+                },
+                message: "Add At Least One Item"
+            }]}
+        >
+            {(fields, { add, remove }, { errors }) => (
+                <>
+                    {fields.map((field) => (
+                        <Space key={field.key} style={{ marginBottom: 16 }}>
+                            <Form.Item noStyle name={[field.name, 'qty']} rules={[{ required: true }]}>
+                                <InputNumber placeholder="Quantity" style={{ width: 75 }} min={1} />
+                            </Form.Item>
+                            <Form.Item noStyle name={[field.name, 'unit']} rules={[{ required: true }]}>
+                                <SelectUnitOfMeasurement />
+                            </Form.Item>
+                            <Form.Item noStyle name={[field.name, 'description']} rules={[{ required: true }]}>
+                                <Input placeholder="Item Description" style={{ width: 175 }} />
+                            </Form.Item>
+                            <Form.Item noStyle name={[field.name, 'stock_no']} rules={[{ required: true }]}>
+                                <Input placeholder="Stock Number" />
+                            </Form.Item>
+                            <Form.Item noStyle name={[field.name, 'price']} rules={[{ required: true }]}>
+                                <InputNumber placeholder="Unit Price" addonBefore={<>&#8369;</>} style={{ width: 150 }} min={1} />
+                            </Form.Item>
+                            <MinusCircleOutlined
+                                onClick={() => {
+                                    remove(field.name);
+                                }}
+                            />
+                        </Space>
+                    ))}
+                    <Form.Item>
+                        <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+                            Add Item
+                        </Button>
+                    </Form.Item>
+                    <Form.ErrorList errors={errors} />
+                </>
+            )}
+        </Form.List>
+    )
+})
+
+let index = 0;
+const SelectUnitOfMeasurement = forwardRef((props, ref) => {
+    return (
+        <Select
+            {...props}
+            ref={ref as any}
+            style={{ width: 135 }}
+            placeholder="Unit of Issue"
+            options={UNIT_OF_MEASUREMENTS.map((item) => ({ label: item.name, value: item.value }))}
+        />
+    )
+})
+
+
+interface user {
+    id: string,
+    fname: string,
+    mname?: string,
+    lname: string,
+    suffix?: string,
+    profile?: any,
+    department?: { name: string, description: string },
+    section?: { name: string, description: string }
+}
+
+const SelectEndUser = forwardRef((props: AutoCompleteProps & { data: user[] }, ref) => {
+    const [options, setOptions] = useState<Array<user>>(props.data)
+    const [selected, setSelected] = useState<user | null>()
+
+    const handleSearch = useCallback((value: string) => {
+        setOptions(!value ? [] : props.data.filter((item: user) => item.fname.toLowerCase().startsWith(value.toLowerCase())))
+    }, [options])
+
+    const onSelect = (value: any) => {
+        setSelected(options.find((item: user) => (item.id === value)))
+    }
+
+    const onClear = () => {
+        setSelected(null)
+    }
+
+    return (
+        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '10px' }} >
+            <AutoComplete
+                {...props}
+                ref={ref as any}
+                options={...options.map((item: user) => (
+                    { value: item.id, label: `${item.fname} ${item.mname ? item.mname + " " : ''} ${item.lname}${item.suffix ? ' ' + item.suffix : ''}` }
+                ))}
+                onSearch={handleSearch}
+                onSelect={onSelect}
+                style={{ width: 'inherit' }}
+                allowClear
+                onClear={onClear}
+                virtual
+
+            />
+            {
+                selected ?
+                    <Card style={{ width: '100%' }}>
+                        <Card.Meta
+                            avatar={selected.profile ? <Avatar src={selected?.profile} /> : <Avatar icon={<UserOutlined />} />}
+                            title={`${selected.fname} ${selected.mname ? selected.mname + " " : ''} ${selected.lname}${selected.suffix ? ' ' + selected.suffix : ''}`}
+                            description={<span>{selected.department?.description} | <i>{selected?.section?.description}</i></span>}
+                        />
+                    </Card>
+                    : null
+            }
+        </div>
+    )
+})
 
 export default AddForm;

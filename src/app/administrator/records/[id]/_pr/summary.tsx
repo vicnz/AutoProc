@@ -1,13 +1,14 @@
 import { Table } from "antd";
+import type { IParticular } from './types'
 
 //RENDER TABLE SUMMARY
-const RenderSummary = (pageData: any[]) => {
+const RenderSummary = (pageData: IParticular[]) => {
     let totalCost = 0;
     let count = pageData.length
 
     //COMPUTE THE TOTAL AMOUNT
-    pageData.forEach(item => {
-        totalCost += item.price * item.qty
+    pageData.forEach((item: IParticular) => {
+        totalCost += item.total
     })
 
     //CONVERT TOTAL NUMBER TO CURRENCY

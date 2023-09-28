@@ -6,10 +6,11 @@ import useSWR, { mutate } from "swr";
 import SetFinal from './set-final'
 import dynamic from "next/dynamic";
 const Form = dynamic(async () => await import('./form'), { loading: () => <Skeleton active /> })
+import { IAPIReturnType } from './types'
 
-const EditForm = function (props: { data: any }) {
+const EditForm = function (props: { data: IAPIReturnType }) {
     const [open, setOpen] = useState(false)
-    const { data, error, isLoading, isValidating } = useSWR('/administrator/api/user?reqtype=selection', (...params) => fetch(...params).then(res => res.json()))
+    const { data: endusers, error, isLoading, isValidating } = useSWR('/administrator/api/user?reqtype=selection', (...params) => fetch(...params).then(res => res.json())) //change this in api routes
 
     const onClose = async function () {
         await mutate(`/administrator/api/records/pr?_id=${props.data?.id}`)
@@ -26,14 +27,14 @@ const EditForm = function (props: { data: any }) {
                 title="Edit Purchase Request"
                 extra={
                     <Space>
-                        <SetFinal id={props?.data.id} />
-                        <Button icon={<DeleteOutlined />} danger type='primary' disabled={data?.final}>Delete</Button>
+                        <SetFinal id={props?.data.id} final={props.data.final} close={() => setOpen(false)} />
+                        <Button icon={<DeleteOutlined />} danger type='primary' disabled={props.data?.final} title="TODO">Delete</Button>
                     </Space>
                 }
             >
                 {
-                    !data ? <Skeleton /> :
-                        <Form data={props.data} close={() => onClose()} users={data} />
+                    !endusers ? <Skeleton /> :
+                        <Form data={props.data} close={() => onClose()} users={endusers} />
                 }
             </Drawer>
         </>

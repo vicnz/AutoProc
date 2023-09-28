@@ -10,6 +10,7 @@ import PreviewPane from './preview';
 import useSWR from "swr";
 import { usePrId } from '../pr-id-context'
 import Pattern from '../_components/pattern'
+import type { IAPIReturnType } from './types'
 //configs
 const { useToken } = theme
 //
@@ -21,7 +22,7 @@ const PurchaseRequest = function () {
         content: () => printableComponent.current
     })
 
-    const { data, isLoading, error } = useSWR(`/administrator/api/records/pr?_id=${prId}`)
+    const { data, isLoading, error } = useSWR<IAPIReturnType | null>(`/administrator/api/records/pr?_id=${prId}`)
 
     if (error) {
         return (
@@ -32,21 +33,24 @@ const PurchaseRequest = function () {
         return <Skeleton active />
     }
     else {
+        console.log(prId)
         return (
-            <div style={{ display: 'grid', gridTemplateRows: '56px 1fr', width: '100%', height: 'calc(100vh - 112px)' }}>
-                <div style={{ height: '56px', borderBottom: 'solid lightgray 1px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <p>Purchase Request</p>
-                    <Space>
-                        <Tag color={`${data.final ? 'success' : 'blue'}`}>{data.final ? 'Approved' : 'Pending...'}</Tag>
-                        <Divider type="vertical" />
-                        <Button icon={<PrinterOutlined />} onClick={handlePrint}>Print</Button>
-                        <EditForm data={data} />
-                    </Space>
+            <>
+                <div style={{ display: 'grid', gridTemplateRows: '56px 1fr', width: '100%', height: 'calc(100vh - 112px)' }}>
+                    <div style={{ height: '56px', borderBottom: 'solid lightgray 1px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <p>Purchase Request</p>
+                        <Space>
+                            <Tag color={`${data.final ? 'success' : 'blue'}`}>{data.final ? 'Approved' : 'Pending...'}</Tag>
+                            <Divider type="vertical" />
+                            <Button icon={<PrinterOutlined />} onClick={handlePrint}>Print</Button>
+                            <EditForm data={data} />
+                        </Space>
+                    </div>
+                    <Pattern>
+                        <PreviewPane ref={printableComponent} data={data} />
+                    </Pattern>
                 </div>
-                <Pattern>
-                    <PreviewPane ref={printableComponent} data={data} />
-                </Pattern>
-            </div>
+            </>
         )
     }
 }

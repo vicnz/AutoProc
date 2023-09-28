@@ -3,7 +3,7 @@ import { Alert, Popconfirm, Button, App } from "antd"
 import { memo, useState } from "react"
 
 const { useApp } = App
-const MarkedFinal = function (props: { id: string }) {
+const MarkedFinal = function (props: { id: string, final: boolean, close: any }) {
     const [open, setOpen] = useState(false)
     const [loading, setLoading] = useState(false)
     const { message } = useApp()
@@ -22,6 +22,8 @@ const MarkedFinal = function (props: { id: string }) {
             setLoading(false)
             setOpen(false)
         }
+
+        props.close()
     }
 
     let content = (
@@ -34,7 +36,7 @@ const MarkedFinal = function (props: { id: string }) {
     )
     return (
         <Popconfirm title={'Mark as Final'} description={content} placement="bottomLeft" open={open} onConfirm={setFinal} onCancel={() => setOpen(false)} okText="Make Final" destroyTooltipOnHide>
-            <Button icon={<LockOutlined />} onClick={() => setOpen(true)} loading={loading}>Mark as Final</Button>
+            <Button icon={<LockOutlined />} onClick={() => setOpen(true)} loading={loading} disabled={props.final}>Mark as Final</Button>
         </Popconfirm>
     )
 }

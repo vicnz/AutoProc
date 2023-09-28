@@ -3,6 +3,7 @@ import { Descriptions, Table, TableColumnsType } from 'antd';
 import dayjs from 'dayjs';
 import { ForwardedRef, forwardRef, memo } from 'react';
 //components
+import type { IAPIReturnType } from './types'
 import PreviewHeader from '../_components/previewheader';
 import ApprovalBlock from './approval';
 import RenderSummary from './summary';
@@ -73,24 +74,23 @@ const columns: TableColumnsType = [
     },
     {
         title: 'Total',
-        dataIndex: "",
+        dataIndex: "total",
         key: "total",
         width: 100,
         ellipsis: true,
         render: (e: any) => {
-            let total = (e.price * e.qty)
             const number = Intl.NumberFormat('en-US', {
                 style: 'currency',
                 currency: 'PHP'
-            }).format(total)
+            }).format(e)
             return (
-                <span key={e} style={{ whiteSpace: 'normal' }}>{number}</span>
+                <span style={{ whiteSpace: 'normal' }} key={e}>{number}</span>
             )
         },
     },
 ]
 //
-const PreviewPurchaseRequest = forwardRef(function (props: { data: any }, ref: ForwardedRef<any>) {
+const PreviewPurchaseRequest = forwardRef(function (props: { data: IAPIReturnType }, ref: ForwardedRef<any>) {
     return (
         <div ref={ref} style={{ minWidth: 'inherit', backgroundColor: 'white', borderRadius: 8, color: 'darkslategray', display: 'grid', gridTemplateRows: 'auto auto 1fr auto' }}>
             {/* PREVIEW HEAD */}
@@ -102,16 +102,16 @@ const PreviewPurchaseRequest = forwardRef(function (props: { data: any }, ref: F
             {/* PR DETAILS */}
             <Descriptions bordered size='small' style={{ padding: '5px 25px' }} column={{ lg: 3, md: 3, xl: 3 }} layout='vertical'>
                 <Descriptions.Item label="PR Number" span={2}>{props.data?.pr_no}</Descriptions.Item>
-                <Descriptions.Item label="Date">{dayjs(props.data?.data as string).format('MM/DD/YYYY')}</Descriptions.Item>
+                <Descriptions.Item label="Date">{dayjs(props.data.date).format('MM/DD/YYYY')}</Descriptions.Item>
                 <Descriptions.Item label="Reference No.">BAC-RESO No. {props.data?.reference}</Descriptions.Item>
                 <Descriptions.Item label="OBR">{props.data?.obr}</Descriptions.Item>
                 <Descriptions.Item label="SAI">{props.data?.sai}</Descriptions.Item>
-                <Descriptions.Item label="Department">{props.data?.enduser?.department?.description}</Descriptions.Item>
-                <Descriptions.Item label="Section">{props.data?.enduser?.section?.description || 'N/A'}</Descriptions.Item>
+                <Descriptions.Item label="Department">{props.data.department}</Descriptions.Item>
+                <Descriptions.Item label="Section">{props.data.section}</Descriptions.Item>
             </Descriptions>
             {/* PR DETAILS */}
             {/* PR PARTICULARS */}
-            <Table bordered columns={columns as any} dataSource={(props.data?.particulars).map((item: any, idx: number) => ({ ...item, key: idx }))} style={{ padding: '5px 25px' }} pagination={false} summary={RenderSummary as any} />
+            <Table bordered columns={columns as any} dataSource={props.data.particulars} style={{ padding: '5px 25px' }} pagination={false} summary={RenderSummary as any} />
             {/* PR PARTICULARS */}
             <div style={{ padding: '5px 25px', width: 'inherit' }}>
                 {/* PR PURPOSE */}

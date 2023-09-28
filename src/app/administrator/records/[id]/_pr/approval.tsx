@@ -1,10 +1,11 @@
 import { Descriptions, Typography } from "antd"
 import { memo, useState } from "react"
 
+import type { IAPIReturnType } from './types'
 const { Paragraph, Text } = Typography
 
 //APPROVAL BLOCK
-const ApprovalBlock = function (props: { data: any }) {
+const ApprovalBlock = function (props: { data: IAPIReturnType }) {
     const [approval, setApproval] = useState('Dr. Djovi Durante Regala')
     const [office, setOffice] = useState('College President')
 
@@ -14,8 +15,8 @@ const ApprovalBlock = function (props: { data: any }) {
                 {/* END USER FIELD */}
                 <Descriptions.Item label="End-User">
                     <div style={{ height: 100, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', }}>
-                        <Text style={{ width: '100%', borderBottom: 'solid lightgray 2px', fontWeight: 'bold', textTransform: 'uppercase', textAlign: 'center' }}>{`${props?.data?.enduser?.fname} ${props?.data?.enduser?.mname ? props?.data?.enduser?.mname + '. ' : ''}${props?.data?.enduser?.lname}`}</Text>
-                        <Text style={{ width: '100%', textAlign: 'center' }}>{props?.data?.enduser.department.description}</Text>
+                        <Text style={{ width: '100%', borderBottom: 'solid lightgray 2px', fontWeight: 'bold', textTransform: 'uppercase', textAlign: 'center' }}>{props.data.enduser}</Text>
+                        <Text style={{ width: '100%', textAlign: 'center' }}>{props?.data?.department}</Text>
                     </div>
                 </Descriptions.Item>
                 {/* END USER FIELD */}

@@ -4,12 +4,17 @@ import { useRef, useState } from "react";
 import dayjs from "dayjs";
 //coomponents
 import PRNumber from '../../../_components/shared/pr-no';
-import SelectEndUser from '../../_components/select-user';
-import SelectParticulars from '../../_components/select-particulars';
+import SelectEndUser from './selectuser';
+import SelectParticulars from './particulars';
+import type { IAPIReturnType } from './types'
 //configs
 const { useApp } = App
 //
-const AddForm = function (props: { close: () => any, users: any[], data: any }) {
+const AddForm = function (props: { close: () => any, users: any[], data: IAPIReturnType }) {
+    const initialValues = {
+        ...props.data,
+        date: dayjs(props.data.date)
+    }
     const formRef = useRef<FormInstance>(null)
     const [saving, setSaving] = useState(false)
     const { message } = useApp()
@@ -17,7 +22,7 @@ const AddForm = function (props: { close: () => any, users: any[], data: any }) 
     //submit data
     const onFinish = async () => {
         setSaving(true)
-        let response = await fetch(`/administrator/api/records/pr?_id=${props.data?.id}`, {
+        let response = await fetch(`/administrator/api/records/pr?_id=${props.data.id}`, {
             method: 'PUT',
             body: JSON.stringify({
                 ...formRef.current?.getFieldsValue(),
@@ -27,16 +32,16 @@ const AddForm = function (props: { close: () => any, users: any[], data: any }) 
         })
         if (response.ok) {
             setSaving(false)
-            message.success('Saved Procurement Record', 5)
+            message.success('Save Purchase Request', 5)
             props.close()
         } else {
             setSaving(false)
-            message.error('Error, Please Try Again')
+            message.error('Error, Please Try Again', 5)
         }
     }
 
     return (
-        <Form layout="vertical" ref={formRef} onFinish={onFinish} autoComplete="false" initialValues={{ ...props.data, date: dayjs(props.data?.date) }} colon disabled={props.data.final}>
+        <Form layout="vertical" ref={formRef} onFinish={onFinish} autoComplete="false" initialValues={initialValues} colon disabled={props.data.final}>
             {/* purchase reqest number */}
             <Form.Item name="pr_no" label="Purchase Request Number" tooltip="Auto Generated PR Numbers are traced based from the latest PR Record " rules={[{ pattern: /\d\d\d\d-\d\d-\d\d[A-Z,a-z,0-9]{2}/i, message: 'Invalid PR Number Format' }, { len: 12, message: 'PR Number Format : 0000-00-0000' }, { required: true, message: 'Required PR Number' }]} >
                 <PRNumber allowClear instance={formRef} />{/*TODO  Disable Form*/}
@@ -53,7 +58,7 @@ const AddForm = function (props: { close: () => any, users: any[], data: any }) 
                     <Input allowClear addonBefore={`BAC-RESO-`} />
                 </Form.Item>
                 <Form.Item name="date" label="Issued Date" rules={[{ required: true }]}>
-                    <DatePicker disabled />
+                    <DatePicker />
                 </Form.Item>
             </Space>
             <Space align="start" style={{ width: '100%', display: 'grid', gridTemplateColumns: '1fr 30%' }}>

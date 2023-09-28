@@ -3,30 +3,16 @@ import { NextResponse } from 'next/server'
 import { NextRequest } from 'next/server'
 
 //Get Function
+import { PRView, PRUPDATE, PRFINAL, PRCREATE } from './util'
 
 export const GET = async function (req: NextRequest) {
     const { searchParams } = new URL(req.url)
 
     try {
         const getId = searchParams.get('_id')
+
         if (typeof getId === 'string') {
-            const result = await prisma.pr.findFirst({
-                include: {
-                    enduser: {
-                        select: {
-                            id: true,
-                            fname: true,
-                            mname: true,
-                            lname: true,
-                            department: { select: { description: true } },
-                            section: { select: { description: true } }
-                        }
-                    }
-                },
-                where: {
-                    id: getId
-                }
-            })
+            const result = await PRView(getId)
             return NextResponse.json(result)
         }
     } catch (err) {
@@ -36,13 +22,10 @@ export const GET = async function (req: NextRequest) {
 
 //Add NEW PR RECORD
 export const POST = async function (req: NextRequest) {
-    const { searchParams } = new URL(req.url)
 
     try {
         const data = await req.json()
-        await prisma.pr.create({
-            data: { ...data, tracking: [] },
-        })
+        PRCREATE(data).catch(err => { throw new Error("PR Creation Error") })
         return NextResponse.json({ ok: true })
     } catch (err) {
         console.log(err)
@@ -57,25 +40,16 @@ export const PUT = async function (req: NextRequest) {
     try {
         const id = searchParams.get('_id')
         const isFinal = searchParams.get('_reqtype')
+
         if (typeof id === 'string') {
 
             if (isFinal === 'true') {
-
-                await prisma.pr.update({
-                    data: { final: true },
-                    where: {
-                        id
-                    }
-                })
-
+                PRFINAL(id).catch(err => { throw new Error('Pr Finalization Error') })
                 return NextResponse.json({ ok: true })
             }
 
             const body = await req.json()
-            await prisma.pr.update({
-                data: { ...body },
-                where: { id },
-            })
+            PRUPDATE(body, id).catch(err => { throw new Error('PR Update Error') })
             return NextResponse.json({ ok: true })
 
         }
