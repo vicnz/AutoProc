@@ -24,7 +24,7 @@ export const GET = async function (req: NextRequest) {
                     }
                 },
                 where: {
-                    id: { equals: getId }
+                    id: getId
                 }
             })
             return NextResponse.json(result)

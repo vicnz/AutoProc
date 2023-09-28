@@ -10,6 +10,11 @@ export const GET = async function (req: NextRequest) {
     try {
         const getId = searchParams.get('_id')
         if (typeof getId === 'string') {
+
+            const abstractFinal = await prisma.abstract.findFirst({
+                select: { id: true, final: true },
+                where: { prId: getId }
+            })
             const result = await prisma.awards.findFirst({
                 include: {
                     abstract: {
@@ -25,13 +30,13 @@ export const GET = async function (req: NextRequest) {
                                 }
                             }
                         }
-                    }
+                    },
                 },
                 where: {
                     prId: getId
                 }
             })
-            return NextResponse.json(result || {})
+            return NextResponse.json({ result, final: [abstractFinal || { final: false }] } || {})
         }
     } catch (err) {
         return new Response('', { status: 500 })
@@ -45,7 +50,7 @@ export const POST = async function (req: NextRequest) {
     try {
         const prId = searchParams.get('_id')
         if (typeof prId === 'string') {
-            await prisma.recommendation.create({
+            await prisma.awards.create({
                 data: {
                     final: false,
                     tracking: [],
