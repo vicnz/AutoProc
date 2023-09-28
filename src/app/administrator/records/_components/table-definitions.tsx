@@ -1,50 +1,49 @@
 'use client';
 
-import { NumberOutlined, UserOutlined, ApartmentOutlined, FontSizeOutlined, BarsOutlined, MoneyCollectOutlined, EditOutlined } from "@ant-design/icons";
+import { NumberOutlined, UserOutlined, ApartmentOutlined, FontSizeOutlined, BarsOutlined, MoneyCollectOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { Button, TableColumnsType, Typography } from "antd";
 import NextLink from 'next/link';
 
-const { Link } = Typography
 export const TableColumns: TableColumnsType = [
     {
         title: <span><NumberOutlined /> No.</span>,
         dataIndex: "pr_no",
-        key: "number",
+        key: "pr_no",
         width: 100,
         ellipsis: true,
     },
     {
         title: <span><NumberOutlined /> Reference</span>,
         dataIndex: "reference",
-        key: "number",
+        key: "reference",
         width: 100,
         ellipsis: true
     },
     {
         title: <span><UserOutlined /> End User</span>,
         dataIndex: "enduser",
-        key: "string",
+        key: "enduser",
         width: 100,
         ellipsis: true,
     },
     {
         title: <span><ApartmentOutlined /> Department</span>,
         dataIndex: "department",
-        key: "number",
+        key: "department",
         width: 100,
         ellipsis: true
     },
     {
         title: <span><ApartmentOutlined /> Section</span>,
         dataIndex: "section",
-        key: "number",
+        key: "section",
         width: 100,
         ellipsis: true
     },
     {
         title: <span><FontSizeOutlined /> Purpose</span>,
         dataIndex: "purpose",
-        key: "number",
+        key: "purpose",
         width: 200,
         ellipsis: true
     },
@@ -62,10 +61,9 @@ export const TableColumns: TableColumnsType = [
         dataIndex: 'id',
         key: 'x',
         render: (e: any) => {
-            console.log(e)
             return (
                 <NextLink href={`/administrator/records/${e}`} passHref>
-                    <Button icon={<EditOutlined />} type='text'>View</Button>
+                    <Button icon={<EyeOutlined />} type='text'>View</Button>
                 </NextLink>
             )
         },

@@ -1,17 +1,17 @@
 'use client';
 
 //libs
-import { FolderFilled } from '@ant-design/icons'
-import { TabsProps } from 'antd'
+import { FolderFilled, FolderOutlined } from '@ant-design/icons'
+import { Skeleton, TabsProps } from 'antd'
 import dynamic from 'next/dynamic';
 import { PropsWithChildren } from 'react'
 //components
-const PurchaseRequest = dynamic(async () => await import('../_pr/index'))
-const Recommendation = dynamic(async () => await import('../_recomend/index'))
-const RFQ = dynamic(async () => await import('../_rfq/index'))
-const Abstract = dynamic(async () => await import('../_abstract/index'))
-const Awarding = dynamic(async () => await import('../_awarding/index'))
-const PurchaseOrder = dynamic(async () => await import('../_po/index'))
+const PurchaseRequest = dynamic(async () => await import('../_pr/index'), { loading: () => <Skeleton active /> })
+const Recommendation = dynamic(async () => await import('../_recomend/index'), { loading: () => <Skeleton active /> })
+const RFQ = dynamic(async () => await import('../_rfq/index'), { loading: () => <Skeleton active /> })
+const Abstract = dynamic(async () => await import('../_abstract/index'), { loading: () => <Skeleton active /> })
+const Awarding = dynamic(async () => await import('../_awarding/index'), { loading: () => <Skeleton active /> })
+const PurchaseOrder = dynamic(async () => await import('../_po/index'), { loading: () => <Skeleton active /> })
 //configs
 const TabPaneWrapper = function (props: PropsWithChildren<any>) {
     return (
@@ -26,7 +26,7 @@ const TabPaneWrapper = function (props: PropsWithChildren<any>) {
 const TabPanes: TabsProps['items'] = [
     {
         key: 'pr',
-        label: <span><FolderFilled /> Purchase Request</span>,
+        label: <span><FolderOutlined /> Purchase Request</span>,
         destroyInactiveTabPane: true,
         tabKey: 'pr',
         children: (
@@ -37,7 +37,7 @@ const TabPanes: TabsProps['items'] = [
     },
     {
         key: 'recommend',
-        label: <span><FolderFilled /> Recommendation</span>,
+        label: <span><FolderOutlined /> Recommendation</span>,
         destroyInactiveTabPane: true,
         tabKey: 'recommend',
         children: (
@@ -48,7 +48,7 @@ const TabPanes: TabsProps['items'] = [
     },
     {
         key: 'rfq',
-        label: <span><FolderFilled /> Request Quotation</span>,
+        label: <span><FolderOutlined /> Request Quotation</span>,
         destroyInactiveTabPane: true,
         tabKey: 'rfq',
         children: (
@@ -59,7 +59,7 @@ const TabPanes: TabsProps['items'] = [
     },
     {
         key: 'abstract',
-        label: <span><FolderFilled /> Abstract of Quotation</span>,
+        label: <span><FolderOutlined /> Abstract of Quotation</span>,
         destroyInactiveTabPane: true,
         tabKey: 'abstract',
         children: (
@@ -70,7 +70,7 @@ const TabPanes: TabsProps['items'] = [
     },
     {
         key: 'award',
-        label: <span><FolderFilled /> Awarding & Release</span>,
+        label: <span><FolderOutlined /> Awarding & Release</span>,
         destroyInactiveTabPane: true,
         tabKey: 'award',
         children: (
@@ -81,7 +81,7 @@ const TabPanes: TabsProps['items'] = [
     },
     {
         key: 'po',
-        label: <span><FolderFilled /> Purchase Order</span>,
+        label: <span><FolderOutlined /> Purchase Order</span>,
         destroyInactiveTabPane: true,
         tabKey: 'po',
         children: (
@@ -92,7 +92,7 @@ const TabPanes: TabsProps['items'] = [
     },
     {
         key: 'delivery',
-        label: <span><FolderFilled /> Delivery Status</span>,
+        label: <span><FolderOutlined /> Delivery Status</span>,
         destroyInactiveTabPane: true,
         tabKey: 'delivery',
         children: (

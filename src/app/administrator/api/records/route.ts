@@ -1,15 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from '@lib/db'
 
-import MockData, { IPurchaseRequestPreview } from './data.test'
-
-//TODO paginate Prisma Data
 
 export const GET = async function (req: NextRequest) {
     const { searchParams } = new URL(req.url)
     try {
         const page: number = Number.parseInt(searchParams.get('page') as string)
-        let data = await filtered(MockData as any, page, 8)
+        const size: number = Number.parseInt(searchParams.get('size') as string)
 
         const result = await prisma.pr.findMany({
             select: {
@@ -26,8 +23,8 @@ export const GET = async function (req: NextRequest) {
                 po: true,
                 final: true,
             },
-            skip: 0,
-            take: 10,
+            skip: page,
+            take: size || 8,
             orderBy: {
                 updatedAt: 'desc'
             }
@@ -46,40 +43,10 @@ export const GET = async function (req: NextRequest) {
                 section: item.enduser?.section?.description,
             }
         })
-        //TODO
-        console.log(parsed)
 
         return NextResponse.json(parsed)
     } catch (err) {
-        return NextResponse.error()
+        return new Response('', { status: 500 })
     }
 
-}
-
-//filter data
-const filtered = (data: Array<IPurchaseRequestPreview>, page: number, count: number) => {
-    const countNumber = page + count;
-    return new Promise<IPurchaseRequestPreview[]>(
-        (res, rej) => {
-            let filter = data.filter((item, idx) => {
-                if (item.key >= page && item.key <= (countNumber)) {
-                    return item;
-                }
-            })
-            return res(filter)
-        }
-    )
-
-}
-
-const functionTotal = function (params: boolean[]) {
-    const count = params.length;
-    let i = 0;
-    params.forEach(item => {
-        if (item === true) {
-            i++;
-        }
-    })
-
-    return count / i * 100
 }

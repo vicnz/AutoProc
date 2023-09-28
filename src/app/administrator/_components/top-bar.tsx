@@ -8,6 +8,7 @@ import { NotificationOutlined, QuestionOutlined } from '@ant-design/icons';
 import LogoSmall from '@media/small.png'
 import LogoMedium from '@media/medium.png'
 import SearchBar from './search-bar'
+import { memo } from 'react';
 //
 const { useToken } = theme
 const topBarStyle = {
@@ -43,4 +44,4 @@ const Topbar = function () {
     )
 }
 
-export default Topbar;
+export default memo(Topbar);

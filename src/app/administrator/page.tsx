@@ -1,3 +1,4 @@
+'use client'
 //libs
 import { Tabs } from 'antd';
 //components

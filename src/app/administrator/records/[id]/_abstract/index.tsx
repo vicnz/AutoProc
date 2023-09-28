@@ -1,39 +1,64 @@
 'use client';
-import useSWR from 'swr';
-import { EditOutlined, PrinterOutlined, SaveOutlined } from "@ant-design/icons";
-import { Button, Divider, Dropdown, Result, Segmented, Space, Switch, Watermark, theme } from "antd";
-import dynamic from "next/dynamic";
-import { createContext, useContext, useRef, useState } from "react";
-import EditForm from './edit'
+//libs
+import { LockOutlined, PrinterOutlined } from "@ant-design/icons";
+import { Button, Divider, Result, Skeleton, Space, Tag, theme } from "antd";
+import { useRef } from "react";
 import { useReactToPrint } from 'react-to-print';
-import PreviewPane from './preview'
-
+//components
+import type { PrismaModels } from '@lib/db'
+import EditForm from './edit';
+import PreviewPane from './preview';
+import useSWR from "swr";
+import { usePrId } from '../pr-id-context'
+import Pattern from '../_components/pattern'
+import AddNewDocument from './addnew'
+import MakeFinalDocument from '../_components/document-need-final'
+//configs
 const { useToken } = theme
-const PurchaseRequest = function () {
+//
+const AbstractOfQuotation = function () {
+    const prId = usePrId()
     const { token } = useToken()
     const printableComponent = useRef(null)
     const handlePrint = useReactToPrint({
         content: () => printableComponent.current
     })
 
-    return (
-        <div style={{ display: 'grid', gridTemplateRows: '56px 1fr', width: '100%', height: 'calc(100vh - 112px)' }}>
-            <div style={{ height: '56px', borderBottom: 'solid lightgray 1px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <p>Abstract of Quotations</p>
-                <Space>
-                    <EditForm />
-                    <Button icon={<PrinterOutlined />} onClick={handlePrint}>Print</Button>
-                </Space>
-            </div>
-            <div style={{ position: 'relative', height: '100%', width: '100%', overflowY: 'auto', background: `linear-gradient(90deg, ${token.colorBgLayout}, calc(22px - 2px), transparent 1%) center / 22px 22px, linear-gradient(${token.colorBgLayout}, calc(22px - 2px), transparent 1%) center / 22px 22px, ${token.colorPrimary}` }}>
-                <div style={{ position: 'absolute', height: 'auto', top: 0, left: 0, padding: '15px 0', display: 'grid', placeItems: 'center', width: 'inherit' }}>
-                    <div style={{ display: 'grid', placeItems: 'center', width: 669, }}>
-                        <PreviewPane ref={printableComponent} />
+    const { data, isLoading, error } = useSWR(`/administrator/api/records/abstract?_id=${prId}`)
+
+    if (error) {
+        return (
+            <Result status={'500'} title="Network Error" subTitle="Please Try Again Later or Refresh the Page" />
+        )
+    }
+    if (isLoading || !data) {
+        return <Skeleton active />
+    } else {
+        if (!(data.final as Array<{ id: string, final: boolean }>).every(item => item.final === true)) {
+            return <MakeFinalDocument title="Complete Purchase Request and Price Quotation" subTitle="Purchase Request and Price Quotation first needs to be completed" />
+        } else {
+            if (data.result === null) {
+                return <AddNewDocument data={data.result} id={prId} />
+            } else {
+                return (
+                    <div style={{ display: 'grid', gridTemplateRows: '56px 1fr', width: '100%', height: 'calc(100vh - 112px)' }}>
+                        <div style={{ height: '56px', borderBottom: 'solid lightgray 1px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <p>Abstract Of Quotation</p>
+                            <Space>
+                                <Tag color={`${data.result.final ? 'success' : 'blue'}`}>{data.result.final ? 'Approved' : 'Pending...'}</Tag>
+                                <Divider type="vertical" />
+                                <Button icon={<PrinterOutlined />} onClick={handlePrint}>Print</Button>
+                                <EditForm data={data.result} />
+                            </Space>
+                        </div>
+                        <Pattern>
+                            <PreviewPane ref={printableComponent} data={data.result} />
+                        </Pattern>
                     </div>
-                </div>
-            </div>
-        </div>
-    )
+                )
+            }
+        }
+    }
 }
 
-export default PurchaseRequest;
+export default AbstractOfQuotation;

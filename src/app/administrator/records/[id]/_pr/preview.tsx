@@ -1,21 +1,136 @@
 'use client';
-import { Descriptions } from 'antd';
-import { ForwardedRef, forwardRef } from 'react'
+import { Descriptions, Table, TableColumnsType } from 'antd';
+import dayjs from 'dayjs';
+import { ForwardedRef, forwardRef, memo } from 'react';
+//components
+import PreviewHeader from '../_components/previewheader';
+import ApprovalBlock from './approval';
+import RenderSummary from './summary';
+//configs
+const columns: TableColumnsType = [
+    {
+        title: 'Qty',
+        dataIndex: "qty",
+        key: "qty",
+        ellipsis: true,
+        width: 75,
+        render: (e: any) => {
+            return (<span style={{ whiteSpace: 'normal' }} key={e}>{e}</span>)
+        }
 
-const PreviewPurchaseRequest = forwardRef(function (props, ref: ForwardedRef<any>) {
+    },
+    {
+        title: 'Unit',
+        dataIndex: "unit",
+        key: "unit",
+        ellipsis: true,
+        width: 50,
+        render: (e: string) => {
+            return (
+                <span style={{ whiteSpace: 'normal' }} key={e}>{e}</span>
+            )
+        }
+    },
+    {
+        title: 'Item Description',
+        dataIndex: "description",
+        key: "description",
+        ellipsis: true,
+        width: 200,
+        render: (e: string) => {
+            return (
+                <span style={{ whiteSpace: 'normal' }} key={e}>
+                    {e}
+                </span>
+            )
+        }
+    },
+    {
+        title: 'Stock',
+        dataIndex: "stock_no",
+        key: "stock_no",
+        ellipsis: true,
+        width: 75,
+        render: (e: any) => {
+            return (<span style={{ whiteSpace: 'normal' }} key={e}>{e}</span>)
+        }
+    },
+    {
+        title: 'Unit Price',
+        dataIndex: "price",
+        key: "price",
+        ellipsis: true,
+        width: 100,
+        render: (e: number) => {
+            const number = Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'PHP'
+            }).format(e)
+            return (
+                <span style={{ whiteSpace: 'normal' }} key={e}>{number}</span>
+            )
+        }
+    },
+    {
+        title: 'Total',
+        dataIndex: "",
+        key: "total",
+        width: 100,
+        ellipsis: true,
+        render: (e: any) => {
+            let total = (e.price * e.qty)
+            const number = Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'PHP'
+            }).format(total)
+            return (
+                <span key={e} style={{ whiteSpace: 'normal' }}>{number}</span>
+            )
+        },
+    },
+]
+//
+const PreviewPurchaseRequest = forwardRef(function (props: { data: any }, ref: ForwardedRef<any>) {
     return (
-        <div ref={ref} style={{ minWidth: '669px', backgroundColor: 'white', padding: '15px', borderRadius: 8 }}>
-            <div style={{ height: 100, display: 'grid', placeItems: 'center' }}>
-                Page Header
-            </div>
-            <Descriptions bordered>
-                <Descriptions.Item label="Name">Zachwaterson</Descriptions.Item>
-                <Descriptions.Item label="Name">Zachwaterson</Descriptions.Item>
-                <Descriptions.Item label="Name">Zachwaterson</Descriptions.Item>
+        <div ref={ref} style={{ minWidth: 'inherit', backgroundColor: 'white', borderRadius: 8, color: 'darkslategray', display: 'grid', gridTemplateRows: 'auto auto 1fr auto' }}>
+            {/* PREVIEW HEAD */}
+            <PreviewHeader>
+                <p style={{ textAlign: 'center', fontSize: '1.2em', fontWeight: 'bold' }}>Purchase Request</p>
+            </PreviewHeader>
+            {/* PREVIEW HEAD */}
+            <br />
+            {/* PR DETAILS */}
+            <Descriptions bordered size='small' style={{ padding: '5px 25px' }} column={{ lg: 3, md: 3, xl: 3 }} layout='vertical'>
+                <Descriptions.Item label="PR Number" span={2}>{props.data?.pr_no}</Descriptions.Item>
+                <Descriptions.Item label="Date">{dayjs(props.data?.data as string).format('MM/DD/YYYY')}</Descriptions.Item>
+                <Descriptions.Item label="Reference No.">BAC-RESO No. {props.data?.reference}</Descriptions.Item>
+                <Descriptions.Item label="OBR">{props.data?.obr}</Descriptions.Item>
+                <Descriptions.Item label="SAI">{props.data?.sai}</Descriptions.Item>
+                <Descriptions.Item label="Department">{props.data?.enduser?.department?.description}</Descriptions.Item>
+                <Descriptions.Item label="Section">{props.data?.enduser?.section?.description || 'N/A'}</Descriptions.Item>
             </Descriptions>
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nobis quo nemo nisi, eligendi fugit architecto corporis omnis dignissimos hic eos excepturi asperiores repudiandae quis molestiae vel aperiam! Quas modi maiores officia commodi eligendi! Animi perspiciatis iusto eius a incidunt. Dicta debitis dolores fugit error atque iusto, asperiores saepe doloremque eius recusandae. Ut ratione distinctio officiis, ipsam, soluta, laboriosam laudantium maxime exercitationem minus magni ullam. Tenetur, quasi sit. Cum suscipit, qui nobis nostrum delectus reprehenderit quasi itaque voluptatum, reiciendis deleniti officia sit distinctio deserunt mollitia. Voluptates officia magnam, omnis officiis est, necessitatibus repudiandae quia praesentium maiores molestias dolor aut error dolore obcaecati id tempora. Molestiae provident et molestias laborum porro odit, non iusto repellat. Saepe beatae quam veritatis eveniet alias, minus porro id, non officia consequatur ab aliquid? Velit aliquid, quibusdam recusandae atque rem unde, temporibus labore repellendus voluptates veritatis qui voluptatibus sapiente earum aperiam? Culpa alias minus laborum non a quas voluptatibus quia optio ipsam. Aperiam, libero quasi laboriosam unde ut maxime dolorem asperiores obcaecati perferendis culpa corrupti doloremque ullam architecto iste incidunt facere aliquam rerum sint cumque quisquam sunt sit! Totam, natus corrupti dicta illum earum autem praesentium possimus incidunt impedit cupiditate excepturi, dolorum et quibusdam illo eligendi rem! Laboriosam voluptas, aliquam ad voluptatibus totam quia deserunt possimus et minus iure commodi consequatur consequuntur ut aut voluptates aperiam asperiores minima necessitatibus non quae doloremque laborum at magni odio. Debitis dolore eaque pariatur iusto officia iure tempore doloribus delectus, dolores quis. Ad sunt, dolore illum tenetur delectus, quasi, commodi fugiat dolores nesciunt eos rem iure culpa libero! Corporis facere laudantium aspernatur culpa dicta facilis delectus repellat eaque eius expedita accusantium vero possimus, harum autem, assumenda et natus, necessitatibus fuga quam. Qui officiis dolores numquam odit provident repudiandae labore fuga nam aspernatur recusandae mollitia saepe commodi suscipit ratione maxime itaque quaerat placeat architecto, eos reprehenderit dignissimos autem dicta molestias quisquam. Debitis dolorem non expedita voluptate animi laudantium nesciunt? Hic quam ea possimus est eaque qui perspiciatis aliquam incidunt amet eos. Amet fugit, saepe veritatis tempore maxime similique perferendis at placeat ex? Veritatis iste voluptatibus dolore non sequi excepturi ex ipsum adipisci autem ea, illo magni nobis voluptatem laboriosam at odio perspiciatis qui ratione eum facilis maxime saepe dolorem. Voluptates soluta ratione enim assumenda adipisci labore mollitia ex et minus recusandae. Hic, excepturi debitis enim iste fugit mollitia tenetur dicta itaque, dignissimos odit praesentium quia aliquam deleniti ratione numquam quae officiis. Ullam labore laudantium quam porro est maxime delectus corporis sit et? Facere, ut asperiores ratione fuga odio porro blanditiis voluptates reprehenderit nesciunt saepe explicabo, voluptatem, soluta quae deleniti eaque mollitia magni necessitatibus ad pariatur maiores natus. Laborum id sequi soluta doloribus enim vitae deserunt nesciunt earum mollitia, maiores eaque ea eos ipsa voluptate eligendi amet perspiciatis nihil praesentium laudantium dolorem at ut autem voluptas? Natus placeat, expedita repellendus numquam esse suscipit unde modi deleniti earum impedit ipsum ipsam officia voluptatibus corporis ad non accusantium tempore id cum dolor beatae! Tenetur earum asperiores veritatis dolorem quam nemo, commodi unde voluptate officia magnam?</p>
-        </div>
+            {/* PR DETAILS */}
+            {/* PR PARTICULARS */}
+            <Table bordered columns={columns as any} dataSource={(props.data?.particulars).map((item: any, idx: number) => ({ ...item, key: idx }))} style={{ padding: '5px 25px' }} pagination={false} summary={RenderSummary as any} />
+            {/* PR PARTICULARS */}
+            <div style={{ padding: '5px 25px', width: 'inherit' }}>
+                {/* PR PURPOSE */}
+                <Descriptions layout='vertical' size='small' bordered>
+                    <Descriptions.Item label="Purpose">
+                        {props?.data?.purpose || <div style={{ height: 50 }}>N/A</div>}
+                    </Descriptions.Item>
+                </Descriptions>
+                {/* PR PURPOSE */}
+                <br />
+                {/* APPROVAL BLOCK */}
+                <ApprovalBlock data={props.data} />
+                {/* APPROVAL BLOCK */}
+            </div>
+            <br />
+        </div >
     )
 })
 
-export default PreviewPurchaseRequest;
+
+
+export default memo(PreviewPurchaseRequest);

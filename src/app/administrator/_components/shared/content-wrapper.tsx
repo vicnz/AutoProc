@@ -1,7 +1,7 @@
 'use client';
 
 //libs
-import { ReactNode } from 'react';
+import { ReactNode, memo } from 'react';
 import { theme } from 'antd';
 //components
 //configs
@@ -23,4 +23,4 @@ const ContentWrapper = function (props: { children: ReactNode, header?: ReactNod
     )
 }
 
-export default ContentWrapper;
+export default memo(ContentWrapper);

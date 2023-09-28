@@ -1,10 +1,10 @@
-import prisma from '@lib/db'
+'use client';
+//libs
 import { Tabs } from 'antd';
-
-import TabCols from './_components/tabs'
-import DocStatus from './_components/status'
-import { createContext, useContext } from 'react';
-import PrIdContext from './pr-id-context'
+//components
+import TabCols from './_components/tabs';
+import DocStatus from './_components/status';
+import PrIdContext from './pr-id-context';
 //configs
 //
 const RecordItem = async function ({ params }: { params: { id: string } }) {

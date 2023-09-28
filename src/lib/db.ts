@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, Prisma } from '@prisma/client'
 
 const prismaClientSingleton = () => {
     return new PrismaClient()
@@ -14,3 +14,15 @@ const prisma = globalForPrisma.prisma ?? prismaClientSingleton()
 export default prisma
 
 if ((process?.env?.NODE_ENV) as string !== '') globalForPrisma.prisma = prisma
+
+//types
+type ModelNames = Prisma.ModelName
+
+export type PrismaModels = {
+    [M in ModelNames]: Exclude<
+        Awaited<ReturnType<PrismaClient[Uncapitalize<M>]["findUnique"]>>,
+        null
+    >;
+}
+
+//usage type userId = PrismaModels["Users"]?[fieldname]

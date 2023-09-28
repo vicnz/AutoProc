@@ -8,6 +8,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 //components
 import ActiveClasses from '@styles/admin/nav-bar.module.css'
+import { memo } from "react"
 //config
 const NavbarWrapperStyle = {
     height: 'inherit',
@@ -93,4 +94,4 @@ const isLinkActive = (path: string, url: string, className: any): string => {
     return `${path === url ? className : ''}`
 }
 
-export default Navbar;
+export default memo(Navbar);

@@ -15,18 +15,14 @@ const Records = function () {
     if (error) {
         return (
             <div style={{ height: 'calc(100vh - 112px)' }} >
-                <Result
-                    status={'error'}
-                    title="Unable to Fetch Data"
-                    subTitle="Server Response Error"
-                />
+                <Result status={'500'} title="Network Error" subTitle="Please Try Again Later or Refresh the Page" />
             </div>
         )
     }
 
     return (
         <>
-            <Table bordered sticky columns={TableColumns as any} dataSource={data} pagination={false} loading={isLoading || isValidating} />
+            <Table bordered sticky columns={TableColumns as any} dataSource={data?.map((item: any) => ({ ...item, key: item.id }))} pagination={false} loading={isLoading || isValidating} />
         </>
     )
 }

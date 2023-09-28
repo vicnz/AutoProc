@@ -1,193 +1,85 @@
-import { CloseCircleOutlined, MinusCircleOutlined, PlusCircleOutlined, PlusOutlined, UserOutlined } from "@ant-design/icons";
-import { Form, Space, Input, DatePicker, Divider, Button, FormInstance, AutoComplete, Card, InputNumber, InputRef, Select, Avatar, Popconfirm, App, AutoCompleteProps } from "antd";
-import { forwardRef, useEffect, useRef, useState } from "react";
+import { PlusCircleOutlined } from "@ant-design/icons";
+import { Form, Space, Input, DatePicker, Divider, Button, FormInstance, App, InputNumber } from "antd";
+import { useRef, useState } from "react";
 import dayjs from "dayjs";
 //coomponents
 import PRNumber from '../../_components/shared/pr-no';
-import { UNIT_OF_MEASUREMENTS } from '@lib/contants'
+import SelectEndUser from './select-user';
+import SelectParticulars from './select-particulars';
 //configs
 const initialValue = {
-    issue_date: dayjs(),
+    date: dayjs(),
+    particulars: []
 }
 const { useApp } = App
 //
-const AddForm = function (props: { close: () => any }) {
+const AddForm = function (props: { close: () => any, users: any[] }) {
     const formRef = useRef<FormInstance>(null)
+    const [saving, setSaving] = useState(false)
     const { message } = useApp()
 
     //submit data
     const onFinish = async () => {
-        let response = await fetch('/administrator/api/records/pr', { method: 'POST', body: JSON.stringify(formRef.current?.getFieldsValue()), headers: [['Content-Type', 'application/json']] })
+        setSaving(true)
+        let response = await fetch('/administrator/api/records/pr', { method: 'POST', body: JSON.stringify({ ...formRef.current?.getFieldsValue(), date: dayjs(formRef.current?.getFieldValue('date')).toISOString() }), headers: [['Content-Type', 'application/json']] })
         if (response.ok) {
+            setSaving(false)
             message.success('Saved Procurement Record', 5)
+            props.close()
         } else {
+            setSaving(false)
             message.error('Error, Please Try Again')
         }
     }
 
     return (
-        <Form layout="vertical" ref={formRef} onFinish={onFinish} autoComplete="false" initialValues={initialValue} requiredMark={false}>
+        <Form layout="vertical" ref={formRef} onFinish={onFinish} autoComplete="false" initialValues={initialValue} colon>
             {/* purchase reqest number */}
-            <Form.Item name="pr_no" label="PR NO" tooltip="autogenerate pr number based from last generated id" rules={[{ pattern: /\d\d\d\d-\d\d-\d\d[A-Z,a-z,0-9]{2}/i, message: 'Invalid PR Number Format' }, { len: 12, message: 'PR Number Format : 0000-00-0000' }]}>
-                <PRNumber allowClear />
+            <Form.Item name="pr_no" label="Purchase Request Number" tooltip="Auto Generated PR Numbers are traced based from the latest PR Record " rules={[{ pattern: /\d\d\d\d-\d\d-\d\d[A-Z,a-z,0-9]{2}/i, message: 'Invalid PR Number Format' }, { len: 12, message: 'PR Number Format : 0000-00-0000' }, { required: true, message: 'Required Field' }]} >
+                <PRNumber allowClear instance={formRef} />
             </Form.Item>
             {/* Referenctial Number */}
             <Space style={{ width: '100%' }}>
-                <Form.Item name="sai" label="SAI" rules={[{ pattern: /\w\w\w-\d\d\d\d-\d\d\d/i, message: 'Invalid Format' }]}>
-                    <Input allowClear />
+                <Form.Item name="sai" label="SAI" rules={[{ pattern: /\w\w\w-\d\d\d\d-\d\d\d/i, message: 'Invalid Format' }, { required: true, message: 'Required Field' }]}>
+                    <Input allowClear placeholder="AAA-9999-999" />
                 </Form.Item>
-                <Form.Item name="obr" label="OBR" rules={[{ pattern: /\w\w\w-\d\d\d\d-\d\d\d/i, message: 'Invalid Format' }]}>
-                    <Input allowClear />
+                <Form.Item name="obr" label="OBR" rules={[{ pattern: /\w\w\w-\d\d\d\d-\d\d\d/i, message: 'Invalid Format' }, { required: true, message: 'Required Field' }]}>
+                    <Input allowClear placeholder="AAA-9999-999" />
                 </Form.Item>
-                <Form.Item name="ref_no" label="Reference Number" style={{ width: 200 }}>
+                <Form.Item name="reference" label="Reference Number" style={{ width: 200 }} rules={[{ required: true, message: 'Required Field' }]}>
                     <Input allowClear addonBefore={`BAC-RESO-`} />
                 </Form.Item>
-                <Form.Item name="issue_date" label="Issued Date" rules={[{ required: true }]}>
+                <Form.Item name="date" label="Issued Date" rules={[{ required: true, message: 'Required Field' }]}>
                     <DatePicker />
                 </Form.Item>
             </Space>
-            <Form.Item name="enduserId" label="End User" rules={[{ required: true }]}>
-                {/**@ts-ignore */}
-                <SelectEndUser placeholder="Type the User's name" allowClear />
-            </Form.Item>
+            <Space align="start" style={{ width: '100%', display: 'grid', gridTemplateColumns: '1fr 30%' }}>
+                <div>
+                    <Form.Item name="enduserId" label="End User" rules={[{ required: true }, { min: 1, len: 36 }]}>
+                        {/**@ts-ignore */}
+                        <SelectEndUser placeholder="Type the User's name" allowClear data={props.users} />
+                    </Form.Item>
+                </div>
+                <div>
+                    <Form.Item name="budget" label="Approved Budget" rules={[{ required: true, message: 'Required Field' }]}>
+                        <InputNumber min={0} style={{ width: '100%' }} addonBefore={<>&#8369;</>} />
+                    </Form.Item>
+                </div>
+            </Space>
             <Form.Item name="purpose" label="Purpose">
-                <Input.TextArea rows={5} allowClear />
+                <Input.TextArea rows={8} allowClear />
             </Form.Item>
             <Divider>Particulars</Divider>
             {/* Particulars */}
-            <Form.Item label="Particulars" rules={[{ required: true, message: 'Must Have At Least One Item', }]}>
-                <Particulars />
+            <Form.Item label="Particulars" rules={[{ required: true }]} required>
+                <SelectParticulars />
             </Form.Item>
             {/* Particulars */}
             <Divider />
             {/* Submit Button */}
-            <Space style={{ width: '100%' }}>
-                <Button block icon={<PlusCircleOutlined />} type='primary' htmlType="submit">Add PR</Button>
-                <Popconfirm
-                    title="Cancel Changes"
-                    description="Cancel Purchase Request Item?"
-                    onConfirm={() => props.close()}
-                    okText="Yes"
-                    cancelText="No"
-                >
-                    <Button block icon={<CloseCircleOutlined />} type='text'>Cancel</Button>
-                </Popconfirm>
-            </Space>
+            <Button block icon={<PlusCircleOutlined />} type='primary' htmlType="submit" size='large' loading={saving}>Add PR</Button>
         </Form>
     )
 }
 
 export default AddForm;
-
-//components
-const SelectEndUser = forwardRef((props: AutoCompleteProps, ref) => {
-    const [options, setOptions] = useState<Array<{ label: string, value: any }>>([])
-    const [items, setItems] = useState<Array<{ label: string, value: any }>>([])
-    const [selected, setSelected] = useState<{ label: string, value: any } | null>()
-
-    useEffect(() => {
-        async function getUsers() {
-            const response = await fetch('/administrator/api/user?reqtype=selection')
-            const json = await response.json()
-            let filtered = (json as Array<{ id: string, name: string, departmentId: string }>).map(item => ({ label: item.name, value: item.id }))
-            setOptions([...filtered])
-        }
-        getUsers()
-    }, [])
-
-    const handleSearch = (value: string) => {
-        setItems(!value ? [] : options.filter(item => item.label.toLowerCase().startsWith(value.toLocaleLowerCase())))
-    }
-
-
-    const onSelect = (value: any) => {
-        setSelected(options.find(item => item.value === value))
-    }
-
-    const onClear = () => {
-        setSelected(null)
-    }
-
-    return (
-        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '10px' }} >
-            <AutoComplete ref={ref as any} {...props} options={items} onSearch={handleSearch} onSelect={onSelect} style={{ width: 'inherit' }} allowClear onClear={onClear} />
-            {
-                selected ?
-                    <Card style={{ width: '100%' }}>
-                        <Card.Meta avatar={<Avatar icon={<UserOutlined />} />} title={selected.label.toUpperCase()} description={<span>Bids & Awards Committee : <i>Procurement Section</i></span>} />
-                    </Card>
-                    : null
-            }
-        </div>
-    )
-
-})
-
-const Particulars = forwardRef((props, ref) => {
-    return (
-        <Form.List
-            name="particulars"
-            rules={[
-                {
-                    validator: async (_, particulars) => {
-                        if (particulars.length === 0) {
-                            return Promise.reject(new Error("Empty Particulars"))
-                        }
-                    },
-                    message: 'Particulars Must Not Be Empty'
-                }
-            ]}
-        >
-            {(fields, { add, remove }, { errors }) => (
-                <>
-                    {fields.map((field) => (
-                        <Space key={field.key} style={{ marginBottom: 16 }}>
-                            <Form.Item noStyle name={[field.name, 'qty']} rules={[{ required: true }]}>
-                                <InputNumber placeholder="Quantity" style={{ width: 75 }} min={1} />
-                            </Form.Item>
-                            <Form.Item noStyle name={[field.name, 'unit']} rules={[{ required: true }]}>
-                                <SelectUnitOfMeasurement />
-                            </Form.Item>
-                            <Form.Item noStyle name={[field.name, 'description']} rules={[{ required: true }]}>
-                                <Input placeholder="Item Description" style={{ width: 175 }} />
-                            </Form.Item>
-                            <Form.Item noStyle name={[field.name, 'stock_no']} rules={[{ required: true }]}>
-                                <Input placeholder="Stock Number" />
-                            </Form.Item>
-                            <Form.Item noStyle name={[field.name, 'price']} rules={[{ required: true }]}>
-                                <InputNumber placeholder="Unit Price" addonBefore={<>&#8369;</>} style={{ width: 150 }} min={1} />
-                            </Form.Item>
-                            <MinusCircleOutlined
-                                onClick={() => {
-                                    remove(field.name);
-                                }}
-                            />
-                        </Space>
-                    ))}
-                    <Form.Item>
-                        <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                            Add Item
-                        </Button>
-                    </Form.Item>
-                </>
-            )}
-        </Form.List>
-    )
-})
-
-//select unit of measurement
-
-let index = 0;
-const SelectUnitOfMeasurement = forwardRef((props, ref) => {
-    return (
-        <Select
-            {...props}
-            ref={ref as any}
-            style={{ width: 135 }}
-            placeholder="Unit of Issue"
-            defaultValue={'pc'}
-            options={UNIT_OF_MEASUREMENTS.map((item) => ({ label: item.name, value: item.value }))}
-
-        />
-    )
-})

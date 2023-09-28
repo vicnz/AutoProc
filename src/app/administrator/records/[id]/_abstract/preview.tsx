@@ -1,21 +1,132 @@
 'use client';
-import { Descriptions } from 'antd';
-import { ForwardedRef, forwardRef } from 'react'
+import { Descriptions, Space, Table, TableColumnType, TableColumnsType, TableProps } from 'antd';
+import { ForwardedRef, forwardRef, useMemo } from 'react'
+import PreviewHeader from '../_components/previewheader'
+import type { PrismaModels } from '@lib/db'
+import dayjs from 'dayjs';
+import ApprovalBlock from './approval'
 
-const PreviewPurchaseRequest = forwardRef(function (props, ref: ForwardedRef<any>) {
+type AbstactofQuotation = Pick<PrismaModels['abstract'], 'biddingPlace' | 'final' | 'quotations' | 'prId' | 'id' | 'lowestAmount' | 'lowestBidder' | 'date'> & { pr: { particulars: Array<{ qty: number, description: string }> }, price_quotation: { suppliers: Array<{ id: string, name: string }> } }
+
+const AbstactofQuotation = forwardRef(function (props: { data: AbstactofQuotation }, ref: ForwardedRef<any>) {
+
+    const columns: TableColumnsType = useMemo(() => {
+        const columns = [
+            {
+                key: '',
+                dataIndex: 'key',
+                title: '#',
+                width: 25,
+                render: (e: number) => {
+                    return <span>{e + 1}</span>
+                }
+            },
+            {
+                key: 'supplier',
+                dataIndex: 'supplier',
+                title: 'Supplier',
+                width: 200,
+                render: (e: string) => {
+                    return <span style={{ whiteSpace: 'normal', fontSize: '.8em' }}>{e}</span>
+                }
+            },
+            ...(props.data.quotations as Array<{ supplier: string, items: Array<{ qty: number, description: string, price: number }> }>)[0].items
+                .map((item, idx) => {
+                    return {
+                        key: item.description,
+                        dataIndex: ['items'],
+                        width: 150,
+                        title: (<span style={{ fontSize: '.8em', whiteSpace: 'normal' }}>{item.description}</span>),
+                        render: (e: any) => {
+                            const total = e[idx].price * e[idx].qty
+                            return (<span style={{ fontSize: '.8em' }}>{total > 0 ? Intl.NumberFormat('en-US', { style: 'decimal' }).format(total) : 'none'}</span>)
+                        }
+                    }
+                }),
+            {
+                key: 'total',
+                title: 'Total',
+                dataIndex: ['items'],
+                render: (e: Array<{ price: number, qty: number }>) => {
+                    let total = 0
+                    e.map(item => { total += item.price * item.qty })
+                    return (<span style={{ whiteSpace: 'normal', fontSize: '.8em' }}>{Intl.NumberFormat('en-US', { style: 'currency', currency: 'PHP' }).format(total)}</span>)
+                }
+            }
+
+        ]
+        return columns;
+    }, [props.data])
+
+    const datasource = useMemo(() => {
+        const dataset = (props.data.quotations as Array<{ supplier: string, items: Array<{ qty: number, description: string, price: number }> }>)
+            .map((item, idx) => {
+                return ({ ...item, key: idx })
+            })
+        return dataset;
+    }, [props.data])
+
+
+
     return (
-        <div ref={ref} style={{ minWidth: '669px', backgroundColor: 'white', padding: '15px', borderRadius: 8 }}>
-            <div style={{ height: 100, display: 'grid', placeItems: 'center' }}>
-                Page Header
-            </div>
-            <Descriptions bordered>
-                <Descriptions.Item label="Name">Zachwaterson</Descriptions.Item>
-                <Descriptions.Item label="Name">Zachwaterson</Descriptions.Item>
-                <Descriptions.Item label="Name">Zachwaterson</Descriptions.Item>
+        <div ref={ref} style={{ minWidth: 'inherit', width: 'inherit', backgroundColor: 'white', borderRadius: 8, color: 'darkslategray', display: 'grid', gridTemplateRows: 'auto 1fr auto' }}>
+            <PreviewHeader>
+                <p style={{ textAlign: 'center', fontSize: '1.3em', fontWeight: 'bold' }}>Abstract of Quotation</p>
+            </PreviewHeader>
+            <br />
+            <Descriptions size={'small'} style={{ padding: '5px 25px' }} bordered layout='vertical' column={5}>
+                <Descriptions.Item label="Bidding Location" span={3}>
+                    <p style={{ textTransform: 'capitalize' }}>
+                        {props.data.biddingPlace}
+                    </p>
+                </Descriptions.Item>
+                <Descriptions.Item label="Date" span={2}>
+                    {
+                        dayjs(props.data.date).format('MM/DD/YYYY')
+                    }
+                </Descriptions.Item>
+                <Descriptions.Item span={4} label="Note">
+                    <div style={{ fontSize: '.9em' }}>
+                        {`(✅) Furnishing/delivery of supplies, and  materials or equipment`.padEnd(50)} <br></br>
+                        {`(✅) Furnishing Labor, services, etc.`} <br></br>
+                        {`(✅) Rental or use of transportation facilities equipment, quarters, rooms, lot or space, etc.`}
+                    </div>
+                </Descriptions.Item>
+                <Descriptions.Item label="Furnished At">
+                    {`Batanes State College`}
+                </Descriptions.Item>
+                <Descriptions.Item label={null} >
+                    <div style={{ fontSize: '.8em' }}>
+                        {`(State place or site of Office or project where articles or services be furnished or returned)`}
+                    </div>
+                </Descriptions.Item>
             </Descriptions>
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nobis quo nemo nisi, eligendi fugit architecto corporis omnis dignissimos hic eos excepturi asperiores repudiandae quis molestiae vel aperiam! Quas modi maiores officia commodi eligendi! Animi perspiciatis iusto eius a incidunt. Dicta debitis dolores fugit error atque iusto, asperiores saepe doloremque eius recusandae. Ut ratione distinctio officiis, ipsam, soluta, laboriosam laudantium maxime exercitationem minus magni ullam. Tenetur, quasi sit. Cum suscipit, qui nobis nostrum delectus reprehenderit quasi itaque voluptatum, reiciendis deleniti officia sit distinctio deserunt mollitia. Voluptates officia magnam, omnis officiis est, necessitatibus repudiandae quia praesentium maiores molestias dolor aut error dolore obcaecati id tempora. Molestiae provident et molestias laborum porro odit, non iusto repellat. Saepe beatae quam veritatis eveniet alias, minus porro id, non officia consequatur ab aliquid? Velit aliquid, quibusdam recusandae atque rem unde, temporibus labore repellendus voluptates veritatis qui voluptatibus sapiente earum aperiam? Culpa alias minus laborum non a quas voluptatibus quia optio ipsam. Aperiam, libero quasi laboriosam unde ut maxime dolorem asperiores obcaecati perferendis culpa corrupti doloremque ullam architecto iste incidunt facere aliquam rerum sint cumque quisquam sunt sit! Totam, natus corrupti dicta illum earum autem praesentium possimus incidunt impedit cupiditate excepturi, dolorum et quibusdam illo eligendi rem! Laboriosam voluptas, aliquam ad voluptatibus totam quia deserunt possimus et minus iure commodi consequatur consequuntur ut aut voluptates aperiam asperiores minima necessitatibus non quae doloremque laborum at magni odio. Debitis dolore eaque pariatur iusto officia iure tempore doloribus delectus, dolores quis. Ad sunt, dolore illum tenetur delectus, quasi, commodi fugiat dolores nesciunt eos rem iure culpa libero! Corporis facere laudantium aspernatur culpa dicta facilis delectus repellat eaque eius expedita accusantium vero possimus, harum autem, assumenda et natus, necessitatibus fuga quam. Qui officiis dolores numquam odit provident repudiandae labore fuga nam aspernatur recusandae mollitia saepe commodi suscipit ratione maxime itaque quaerat placeat architecto, eos reprehenderit dignissimos autem dicta molestias quisquam. Debitis dolorem non expedita voluptate animi laudantium nesciunt? Hic quam ea possimus est eaque qui perspiciatis aliquam incidunt amet eos. Amet fugit, saepe veritatis tempore maxime similique perferendis at placeat ex? Veritatis iste voluptatibus dolore non sequi excepturi ex ipsum adipisci autem ea, illo magni nobis voluptatem laboriosam at odio perspiciatis qui ratione eum facilis maxime saepe dolorem. Voluptates soluta ratione enim assumenda adipisci labore mollitia ex et minus recusandae. Hic, excepturi debitis enim iste fugit mollitia tenetur dicta itaque, dignissimos odit praesentium quia aliquam deleniti ratione numquam quae officiis. Ullam labore laudantium quam porro est maxime delectus corporis sit et? Facere, ut asperiores ratione fuga odio porro blanditiis voluptates reprehenderit nesciunt saepe explicabo, voluptatem, soluta quae deleniti eaque mollitia magni necessitatibus ad pariatur maiores natus. Laborum id sequi soluta doloribus enim vitae deserunt nesciunt earum mollitia, maiores eaque ea eos ipsa voluptate eligendi amet perspiciatis nihil praesentium laudantium dolorem at ut autem voluptas? Natus placeat, expedita repellendus numquam esse suscipit unde modi deleniti earum impedit ipsum ipsam officia voluptatibus corporis ad non accusantium tempore id cum dolor beatae! Tenetur earum asperiores veritatis dolorem quam nemo, commodi unde voluptate officia magnam?</p>
-        </div>
+            <Table bordered style={{ padding: '5px 25px' }} columns={columns as any} dataSource={datasource as any} pagination={false} />
+            <div style={{ padding: '5px 25px', width: 'inherit' }}>
+                <Descriptions size="small" bordered title="Lowest Calculated Bidder" layout='vertical'>
+                    <Descriptions.Item label="Lowest Calculated Amount">{Intl.NumberFormat('en-US', { style: 'currency', currency: 'PHP' }).format(Number.parseFloat(props.data.lowestAmount.toString()))}</Descriptions.Item>
+                    <Descriptions.Item label="Bidder">
+                        {
+                            !(props.data.lowestBidder === null || props.data.lowestBidder?.length < 1) ?
+                                (JSON.parse(props.data.lowestBidder).name) :
+                                'N/A'
+                        }
+                    </Descriptions.Item>
+                </Descriptions>
+                <br />
+                <ApprovalBlock
+                    enduser={{
+                        //@ts-ignore
+                        name: `${props?.data?.pr?.enduser?.fname} ${props?.data?.pr?.enduser?.mname ? props?.data?.pr?.enduser?.mname + '. ' : ''}${props?.data?.pr?.enduser?.lname}`,
+                        //@ts-ignore
+                        department: props?.data?.pr?.enduser?.department.description
+                    }}
+                />
+            </div>
+            <br /><br />
+        </div >
     )
 })
 
-export default PreviewPurchaseRequest;
+
+export default AbstactofQuotation;

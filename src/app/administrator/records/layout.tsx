@@ -1,26 +1,29 @@
 'use client'
 
 //libs
-import { Button, Divider, Progress } from 'antd'
+import { Button, Divider, Tag } from 'antd'
 import { PropsWithChildren, createContext, useMemo, useState } from 'react'
-import { usePathname, useRouter } from 'next/navigation'
-import { ArrowLeftOutlined, ArrowRightOutlined, FolderOpenOutlined, MoreOutlined, QrcodeOutlined, QuestionCircleOutlined } from '@ant-design/icons'
+import { usePathname, useRouter, useParams } from 'next/navigation'
+import { ArrowLeftOutlined, ArrowRightOutlined } from '@ant-design/icons'
 //components
 import ContentWrapper from '../_components/shared/content-wrapper'
 import { HeaderWithBack, Header } from '../_components/shared/header-wrapper'
 import useSWR from 'swr'
+//components
 import AddPr from './_components/add-record'
+import PrintQRCode from './qrcode'
 import HelpRecords from './_components/help-records'
+import { PAGINATION_SIZE } from '@lib/contants'
 //config
 export const RecordTypeContext = createContext<any>({})
 //
 const RecordsLayout = function (props: PropsWithChildren<any>) {
     const pathname = usePathname()
+    const params = useParams()
     const router = useRouter()
     const [page, setPage] = useState(0)
 
-    const swrContext = useSWR(`/administrator/api/records?page=${page}`, (...args) => fetch(...args).then(res => res.json()))
-
+    const swrContext = useSWR(`/administrator/api/records?page=${page}&size=${PAGINATION_SIZE}`, (...args) => fetch(...args).then(res => res.json()))
     //Add an Add Back Button
     const hasBack = useMemo(() => {
         if (!pathname.endsWith('/records')) {
@@ -30,15 +33,15 @@ const RecordsLayout = function (props: PropsWithChildren<any>) {
 
     //Set PreviousPage
     const prevPage = () => {
-        if (page > 8) {
-            setPage(page - 8)
+        if (page >= PAGINATION_SIZE) {
+            setPage(page - PAGINATION_SIZE)
         }
     }
 
     //Set NextPage
     const nextPage = () => {
-        if (!(swrContext.data.length === 0)) {
-            setPage(page + 8)
+        if ((swrContext?.data.length !== 0)) {
+            setPage(page + PAGINATION_SIZE)
         }
     }
 
@@ -54,10 +57,8 @@ const RecordsLayout = function (props: PropsWithChildren<any>) {
                         <Divider type='vertical' />
                         <HelpRecords />
                     </Header> :
-                    <HeaderWithBack title={"PURCHASE REQUEST"} back={<Button onClick={() => router.back()} type='text' icon={<ArrowLeftOutlined />}>Back</Button>}>
-                        <Progress percent={10} style={{ width: '200px' }} strokeColor={'#c0252a'} />
-                        <Divider type='vertical' />
-                        <Button icon={<QrcodeOutlined />} type='text'>Tracking</Button>
+                    <HeaderWithBack title={<>Record : <Tag>{params?.id}</Tag></>} back={<Button onClick={() => router.back()} type='text' icon={<ArrowLeftOutlined />}>Back</Button>}>
+                        <PrintQRCode id={params?.id as string} />
                         <Divider type='vertical' />
                         <HelpRecords />
                     </HeaderWithBack>

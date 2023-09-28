@@ -1,21 +1,80 @@
 'use client';
-import { Descriptions } from 'antd';
-import { ForwardedRef, forwardRef } from 'react'
 
-const PreviewPurchaseRequest = forwardRef(function (props, ref: ForwardedRef<any>) {
+//libs
+import { Space, Typography } from 'antd';
+import { ForwardedRef, forwardRef, memo, useMemo } from 'react';
+//components
+import PreviewHeader from '../_components/previewheader';
+import NumToWords from '@lib/numToWords';
+import ApprovalBlock from './aproval-block';
+import ContentEditable from '../../_components/content-editable';
+//config
+const { Paragraph, Text } = Typography
+//
+const PreviewRecommendingResolution = forwardRef(function (props: { data: any, approval: boolean }, ref: ForwardedRef<any>) {
+    const total = useMemo(() => {
+        let particulars = props.data.pr.particulars as any[]
+        let total = 0;
+        particulars.forEach((item, idx) => {
+            let sum = item.price * item.qty
+            total += sum;
+        })
+        return total
+
+    }, [props.data])
+
     return (
-        <div ref={ref} style={{ minWidth: '669px', backgroundColor: 'white', padding: '15px', borderRadius: 8 }}>
-            <div style={{ height: 100, display: 'grid', placeItems: 'center' }}>
-                Page Header
+        <div ref={ref} style={{ minWidth: 'inherit', width: 'inherit', backgroundColor: 'white', borderRadius: 8, color: 'darkslategray', display: 'grid', gridTemplateRows: 'auto 1fr auto' }}>
+            <PreviewHeader>
+                <div style={{ textAlign: 'center', padding: '10px 50px' }}>
+                    <ContentEditable style={{ textAlign: 'center', fontSize: '1.2em', fontWeight: 'bold', minWidth: 500 }} text={`Approval of BAC Resolution Recommending Alternative Mode of Procurement under Small Value Procurement`} />
+                </div>
+            </PreviewHeader>
+            <Space direction='vertical' style={{ width: '100%', padding: '5px 25px' }}>
+                <p style={{ textAlign: 'center', padding: 15 }}>BAC RESO {props?.data.pr?.reference}</p>
+                <Paragraph style={{ textIndent: '2em', textAlign: 'justify' }}>
+                    <Text style={{ textTransform: 'uppercase', fontWeight: 'bold' }}>WHEREAS</Text>, <ContentEditable text={`Section 48 Rule XVI of the Revised Implementing Rules and Regulations of RA 9184 allows Alternative Mode of Procurement subject to prior approval of the HOPE thru Annual Procurement Plan (APP) and only to promote economy and efficiency;`} />
+                </Paragraph>
+                <Paragraph style={{ textIndent: '2em', textAlign: 'justify' }}>
+                    <Text style={{ textTransform: 'uppercase', fontWeight: 'bold' }}>WHEREAS</Text>, <ContentEditable text={`Section 53.9 allows Small Value Procurement provided that the procurement does not fall under shopping in Section 52 of this IRR and the amount involved does not exceed the thresholds prescribed in Annex "H" of this IRR;`} />
+                </Paragraph>
+                <Paragraph style={{ textIndent: '2em', textAlign: 'justify' }}>
+                    <Text style={{ textTransform: 'uppercase', fontWeight: 'bold' }}>WHEREAS</Text>, <ContentEditable text={`Appendix 18, Section 3.e on the Guidelines for Shopping and Small Value Procurement provides an Abstract of Quotations shall be prepared setting forth the names of those who responded to the RFQ's right after the deadline for submission except for shopping under Section 52.1(b), where at least three (3) price quotations (RFQ) must be obtained;`} />
+                </Paragraph>
+                <Paragraph style={{ textIndent: '2em', textAlign: 'justify' }}>
+                    <Text style={{ textTransform: 'uppercase', fontWeight: 'bold' }}>WHEREAS</Text>, <ContentEditable text={`Annex "H" of the Consolidated Guidelines for the Alternative Methods of Procurement prescribed under Section V, Paragraph D.8.b.ii that the BAC shall prepare and send the RFQs/RFPs to at least three (3) suppliers, contractors or consultants of known qualifications where receipt of at least one (1) quotations is sufficient to proceed with the evaluation thererof`} />
+                </Paragraph>
+                <Paragraph style={{ textIndent: '2em', textAlign: 'justify' }}>
+                    <Text style={{ textTransform: 'uppercase', fontWeight: 'bold' }}>WHEREAS</Text>, Purchase Request No. {props.data?.pr?.pr_no} Amounting to {Intl.NumberFormat('en-US', { style: 'currency', currency: 'PHP' }).format(total)} ({NumToWords(total).toUpperCase()} PESOS) involves procurement of (<Text>{(props.data?.pr?.particulars as any[]).map((item, idx) => item.description).join(', ')}</Text>)  with the approved budget of {Intl.NumberFormat('en-US', { style: 'currency', currency: 'PHP' }).format(props?.data?.pr?.budget)}  ({NumToWords(props?.data?.pr?.budget).toUpperCase()} PESOS)
+                </Paragraph>
+                <Paragraph style={{ textIndent: '2em', textAlign: 'justify' }}>
+                    <Text style={{ textTransform: 'uppercase', fontWeight: 'bold' }}>WHEREAS</Text>, <ContentEditable text={`the default mode of evaluation shall be on a lot basis which means that the determination of the single/lowest calculated and responsive bid (S/LCRB) is the total amount of offered unit price multiply by the required quantity;`} />
+                </Paragraph>
+                {
+                    props.approval ?
+                        <Paragraph style={{ textIndent: '2em', textAlign: 'justify' }}>
+                            <Text style={{ textTransform: 'uppercase', fontWeight: 'bold' }}>NOW THEREFOR</Text>, I, <ContentEditable text={`DR.DJOVI R. DURANTE`} style={{ textTransform: 'uppercase', fontWeight: 'bold' }} />, <ContentEditable text={`Head of the Procuring Entity (HOPE) by virtue of the authority vested in me by the Board of Trustees of this Institution and after taking into consideration the merits and legal bases of the recommendation of the members of the Bids and Awards Committee (BAC) do hereby APPROVE the foregoing recommendation and adoption of Alternative Mode of Procurement under Small Value Procurement;`} />
+                        </Paragraph> :
+                        <Paragraph style={{ textIndent: '2em', textAlign: 'justify' }}>
+                            <Text style={{ textTransform: 'uppercase', fontWeight: 'bold' }}>NOW THEREFOR</Text>, we, the members of the Bids and Awards Committee hereby <Text style={{ textTransform: 'uppercase', fontWeight: 'bold' }}>RESOLVE</Text> as it is hereby <Text style={{ textTransform: 'uppercase', fontWeight: 'bold' }}>RESOLVED</Text> <ContentEditable text={`to recommend to the College President to adopt Alternative Mode of Procurement under Small Value Procurement for the said transaction;`} />
+                        </Paragraph>
+                }
+                <Paragraph style={{ textIndent: '2em', textAlign: 'justify' }}>
+                    <Text style={{ textTransform: 'uppercase', fontWeight: 'bold' }}>RESOLVED FINALLY</Text>, at the Batanes State College, this &nbsp;&nbsp;&nbsp;<Text underline>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Text>
+                </Paragraph>
+            </Space>
+            <div style={{ padding: '5px 25px', width: 'inherit' }}>
+                <ApprovalBlock
+                    appoval={props.approval}
+                    enduser={{
+                        name: `${props?.data?.pr?.enduser?.fname} ${props?.data?.pr?.enduser?.mname ? props?.data?.pr?.enduser?.mname + '. ' : ''}${props?.data?.pr?.enduser?.lname}`,
+                        department: props?.data?.pr?.enduser?.department.description
+                    }}
+                />
             </div>
-            <Descriptions bordered>
-                <Descriptions.Item label="Name">Zachwaterson</Descriptions.Item>
-                <Descriptions.Item label="Name">Zachwaterson</Descriptions.Item>
-                <Descriptions.Item label="Name">Zachwaterson</Descriptions.Item>
-            </Descriptions>
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nobis quo nemo nisi, eligendi fugit architecto corporis omnis dignissimos hic eos excepturi asperiores repudiandae quis molestiae vel aperiam! Quas modi maiores officia commodi eligendi! Animi perspiciatis iusto eius a incidunt. Dicta debitis dolores fugit error atque iusto, asperiores saepe doloremque eius recusandae. Ut ratione distinctio officiis, ipsam, soluta, laboriosam laudantium maxime exercitationem minus magni ullam. Tenetur, quasi sit. Cum suscipit, qui nobis nostrum delectus reprehenderit quasi itaque voluptatum, reiciendis deleniti officia sit distinctio deserunt mollitia. Voluptates officia magnam, omnis officiis est, necessitatibus repudiandae quia praesentium maiores molestias dolor aut error dolore obcaecati id tempora. Molestiae provident et molestias laborum porro odit, non iusto repellat. Saepe beatae quam veritatis eveniet alias, minus porro id, non officia consequatur ab aliquid? Velit aliquid, quibusdam recusandae atque rem unde, temporibus labore repellendus voluptates veritatis qui voluptatibus sapiente earum aperiam? Culpa alias minus laborum non a quas voluptatibus quia optio ipsam. Aperiam, libero quasi laboriosam unde ut maxime dolorem asperiores obcaecati perferendis culpa corrupti doloremque ullam architecto iste incidunt facere aliquam rerum sint cumque quisquam sunt sit! Totam, natus corrupti dicta illum earum autem praesentium possimus incidunt impedit cupiditate excepturi, dolorum et quibusdam illo eligendi rem! Laboriosam voluptas, aliquam ad voluptatibus totam quia deserunt possimus et minus iure commodi consequatur consequuntur ut aut voluptates aperiam asperiores minima necessitatibus non quae doloremque laborum at magni odio. Debitis dolore eaque pariatur iusto officia iure tempore doloribus delectus, dolores quis. Ad sunt, dolore illum tenetur delectus, quasi, commodi fugiat dolores nesciunt eos rem iure culpa libero! Corporis facere laudantium aspernatur culpa dicta facilis delectus repellat eaque eius expedita accusantium vero possimus, harum autem, assumenda et natus, necessitatibus fuga quam. Qui officiis dolores numquam odit provident repudiandae labore fuga nam aspernatur recusandae mollitia saepe commodi suscipit ratione maxime itaque quaerat placeat architecto, eos reprehenderit dignissimos autem dicta molestias quisquam. Debitis dolorem non expedita voluptate animi laudantium nesciunt? Hic quam ea possimus est eaque qui perspiciatis aliquam incidunt amet eos. Amet fugit, saepe veritatis tempore maxime similique perferendis at placeat ex? Veritatis iste voluptatibus dolore non sequi excepturi ex ipsum adipisci autem ea, illo magni nobis voluptatem laboriosam at odio perspiciatis qui ratione eum facilis maxime saepe dolorem. Voluptates soluta ratione enim assumenda adipisci labore mollitia ex et minus recusandae. Hic, excepturi debitis enim iste fugit mollitia tenetur dicta itaque, dignissimos odit praesentium quia aliquam deleniti ratione numquam quae officiis. Ullam labore laudantium quam porro est maxime delectus corporis sit et? Facere, ut asperiores ratione fuga odio porro blanditiis voluptates reprehenderit nesciunt saepe explicabo, voluptatem, soluta quae deleniti eaque mollitia magni necessitatibus ad pariatur maiores natus. Laborum id sequi soluta doloribus enim vitae deserunt nesciunt earum mollitia, maiores eaque ea eos ipsa voluptate eligendi amet perspiciatis nihil praesentium laudantium dolorem at ut autem voluptas? Natus placeat, expedita repellendus numquam esse suscipit unde modi deleniti earum impedit ipsum ipsam officia voluptatibus corporis ad non accusantium tempore id cum dolor beatae! Tenetur earum asperiores veritatis dolorem quam nemo, commodi unde voluptate officia magnam?</p>
-        </div>
+            <br /><br />
+        </div >
     )
 })
 
-export default PreviewPurchaseRequest;
+export default memo(PreviewRecommendingResolution);
