@@ -72,6 +72,7 @@ model pr {
   reference            String? //reference number
   final                Boolean            @default(false) //mark document as approved and final NOTE: this toggle can bypass the tracing
   purpose              String?
+  budget               Decimal            @default(0.00)
   enduserId            String?
   enduser              users?             @relation(fields: [enduserId], references: [id], onUpdate: Cascade, onDelete: SetNull)
   particulars          Json               @default(dbgenerated("JSON_ARRAY()"))
@@ -91,7 +92,7 @@ model recommendation {
   id        String   @id @default(uuid())
   tracking  Json     @default(dbgenerated("JSON_ARRAY()"))
   final     Boolean  @default(false)
-  prId      String
+  prId      String   @unique
   pr        pr       @relation(fields: [prId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -102,7 +103,8 @@ model price_quotations {
   suppliers Json       @default(dbgenerated("JSON_ARRAY()"))
   tracking  Json       @default(dbgenerated("JSON_ARRAY()"))
   final     Boolean    @default(false)
-  prId      String
+  date      DateTime   @default(now())
+  prId      String     @unique
   pr        pr         @relation(fields: [prId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
@@ -115,27 +117,28 @@ model abstract {
   biddingPlace    String?
   tracking        Json              @default(dbgenerated("JSON_ARRAY()"))
   final           Boolean           @default(false)
-  prId            String
+  lowestBidder    String?
+  lowestAmount    Decimal           @default(0.00)
+  date            DateTime          @default(now())
+  prId            String            @unique
   pr              pr                @relation(fields: [prId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   rfqId           String?
-  price_quotation price_quotations? @relation(fields: [rfqId], references: [id], onUpdate: Cascade, onDelete: SetNull)
+  price_quotation price_quotations? @relation(fields: [rfqId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
   awarding        awards[]
 }
 
 model awards {
-  id            String    @id @default(uuid())
-  lowest_bidder String?
-  lowest_cost   Decimal?
-  tracking      Json      @default(dbgenerated("JSON_ARRAY()"))
-  final         Boolean   @default(false)
-  prId          String
-  pr            pr        @relation(fields: [prId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  abstractId    String?
-  abstract      abstract? @relation(fields: [abstractId], references: [id], onUpdate: Cascade, onDelete: SetNull)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id         String    @id @default(uuid())
+  tracking   Json      @default(dbgenerated("JSON_ARRAY()"))
+  final      Boolean   @default(false)
+  prId       String    @unique
+  pr         pr        @relation(fields: [prId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  abstractId String?
+  abstract   abstract? @relation(fields: [abstractId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 }
 
 model po {
