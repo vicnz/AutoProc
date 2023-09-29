@@ -74,7 +74,7 @@ const AddForm = function (props: { close: () => any, users: any[], data: IAPIRet
                     </Form.Item>
                 </div>
             </Space>
-            <Form.Item name="purpose" label="Purpose">
+            <Form.Item name="purpose" label="Purpose" rules={[{ required: true, message: 'Please add a purpose to this Purchase Request' }]}>
                 <Input.TextArea rows={8} allowClear />
             </Form.Item>
             <Divider>Particulars</Divider>

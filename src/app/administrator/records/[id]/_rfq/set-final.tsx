@@ -1,3 +1,5 @@
+'use client';
+
 import { WarningOutlined, LockOutlined } from "@ant-design/icons"
 import { Alert, Popconfirm, Button, App } from "antd"
 import { memo, useState } from "react"

@@ -46,7 +46,6 @@ const RequestForQuotationForm = function (props: { data: any, suppliers: any[], 
 
     }
 
-
     return (
         <>
             <Form layout='vertical' form={form} onFinish={onFinish} initialValues={sanitizedData} disabled={props.data.final}>

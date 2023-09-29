@@ -2,26 +2,16 @@
 
 //libs
 import { Space, Typography } from 'antd';
-import { ForwardedRef, forwardRef, memo, useMemo } from 'react';
+import { ForwardedRef, forwardRef, memo } from 'react';
 //components
 import PreviewHeader from '../_components/previewheader';
-import NumToWords from '@lib/numToWords';
 import ApprovalBlock from './aproval-block';
 import ContentEditable from '../../_components/content-editable';
+import type { IRecommendation } from './type';
 //config
 const { Paragraph, Text } = Typography
 //
-const PreviewRecommendingResolution = forwardRef(function (props: { data: any, approval: boolean }, ref: ForwardedRef<any>) {
-    const total = useMemo(() => {
-        let particulars = props.data.pr.particulars as any[]
-        let total = 0;
-        particulars.forEach((item, idx) => {
-            let sum = item.price * item.qty
-            total += sum;
-        })
-        return total
-
-    }, [props.data])
+const PreviewRecommendingResolution = forwardRef(function (props: { data: IRecommendation, approval: boolean }, ref: ForwardedRef<any>) {
 
     return (
         <div ref={ref} style={{ minWidth: 'inherit', width: 'inherit', backgroundColor: 'white', borderRadius: 8, color: 'darkslategray', display: 'grid', gridTemplateRows: 'auto 1fr auto' }}>
@@ -31,7 +21,7 @@ const PreviewRecommendingResolution = forwardRef(function (props: { data: any, a
                 </div>
             </PreviewHeader>
             <Space direction='vertical' style={{ width: '100%', padding: '5px 25px' }}>
-                <p style={{ textAlign: 'center', padding: 15 }}>BAC RESO {props?.data.pr?.reference}</p>
+                <p style={{ textAlign: 'center', padding: 15 }}>BAC RESO {props.data.reference}</p>
                 <Paragraph style={{ textIndent: '2em', textAlign: 'justify' }}>
                     <Text style={{ textTransform: 'uppercase', fontWeight: 'bold' }}>WHEREAS</Text>, <ContentEditable text={`Section 48 Rule XVI of the Revised Implementing Rules and Regulations of RA 9184 allows Alternative Mode of Procurement subject to prior approval of the HOPE thru Annual Procurement Plan (APP) and only to promote economy and efficiency;`} />
                 </Paragraph>
@@ -45,7 +35,7 @@ const PreviewRecommendingResolution = forwardRef(function (props: { data: any, a
                     <Text style={{ textTransform: 'uppercase', fontWeight: 'bold' }}>WHEREAS</Text>, <ContentEditable text={`Annex "H" of the Consolidated Guidelines for the Alternative Methods of Procurement prescribed under Section V, Paragraph D.8.b.ii that the BAC shall prepare and send the RFQs/RFPs to at least three (3) suppliers, contractors or consultants of known qualifications where receipt of at least one (1) quotations is sufficient to proceed with the evaluation thererof`} />
                 </Paragraph>
                 <Paragraph style={{ textIndent: '2em', textAlign: 'justify' }}>
-                    <Text style={{ textTransform: 'uppercase', fontWeight: 'bold' }}>WHEREAS</Text>, Purchase Request No. {props.data?.pr?.pr_no} Amounting to {Intl.NumberFormat('en-US', { style: 'currency', currency: 'PHP' }).format(total)} ({NumToWords(total).toUpperCase()} PESOS) involves procurement of (<Text>{(props.data?.pr?.particulars as any[]).map((item, idx) => item.description).join(', ')}</Text>)  with the approved budget of {Intl.NumberFormat('en-US', { style: 'currency', currency: 'PHP' }).format(props?.data?.pr?.budget)}  ({NumToWords(props?.data?.pr?.budget).toUpperCase()} PESOS)
+                    <Text style={{ textTransform: 'uppercase', fontWeight: 'bold' }}>WHEREAS</Text>, Purchase Request No. {props.data.pr_no} {props.data.total} involves the procurement of ({props.data.particulars}) with the approved budget of {props.data.budget}
                 </Paragraph>
                 <Paragraph style={{ textIndent: '2em', textAlign: 'justify' }}>
                     <Text style={{ textTransform: 'uppercase', fontWeight: 'bold' }}>WHEREAS</Text>, <ContentEditable text={`the default mode of evaluation shall be on a lot basis which means that the determination of the single/lowest calculated and responsive bid (S/LCRB) is the total amount of offered unit price multiply by the required quantity;`} />
@@ -67,12 +57,12 @@ const PreviewRecommendingResolution = forwardRef(function (props: { data: any, a
                 <ApprovalBlock
                     appoval={props.approval}
                     enduser={{
-                        name: `${props?.data?.pr?.enduser?.fname} ${props?.data?.pr?.enduser?.mname ? props?.data?.pr?.enduser?.mname + '. ' : ''}${props?.data?.pr?.enduser?.lname}`,
-                        department: props?.data?.pr?.enduser?.department.description
+                        name: props.data.enduser,
+                        department: props.data.department
                     }}
                 />
             </div>
-            <br /><br />
+            <br />
         </div >
     )
 })

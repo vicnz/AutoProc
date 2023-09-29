@@ -11,8 +11,6 @@ import PreviewPane from './preview';
 import Pattern from '../_components/pattern';
 import { usePrId } from '../pr-id-context';
 import AddNewDocument from './addnew';
-import MakeSureItFinal from '../_components/document-need-final';
-import SetFinal from './set-final'
 //configs
 const { useToken } = theme
 //
@@ -35,35 +33,27 @@ const PurchaseRequest = function () {
     if (!data || isLoading) {
         return <Skeleton active />
     } else {
-        if (!(data.final as Array<{ id: string, final: boolean }>).every(item => item.final === true)) {
+        if (!data.exists) {
             return (
-                <MakeSureItFinal title="Complete Purchase Request" subTitle="Purchase Request first needs to be completed">
-                </MakeSureItFinal>
+                <AddNewDocument data={data.result} id={prId} />
             )
-        } else {
-            if (data?.result === null) {
-                return (
-                    <AddNewDocument data={data.result} id={prId} />
-                )
-            }
-            else {
-                return (
-                    <div style={{ display: 'grid', gridTemplateRows: '56px 1fr', width: '100%', height: 'calc(100vh - 112px)' }}>
-                        <div style={{ height: '56px', borderBottom: 'solid lightgray 1px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                            <p>BAC Resolution Recommendation</p>
-                            <Space>
-                                <SetFinal id={data.result.id} final={data.result.final} />
-                                <Divider type="vertical" />
-                                <Segmented defaultValue={'recommend'} options={[{ icon: <TeamOutlined />, label: 'Recommend', value: 'recommend' }, { icon: <UserOutlined />, label: "Approve", value: "approve" }]} onChange={e => setActivePane(e)} />
-                                <Button icon={<PrinterOutlined />} onClick={handlePrint}>Print</Button>
-                            </Space>
-                        </div>
-                        <Pattern>
-                            <PreviewPane ref={printableComponent} approval={activePane.toString() === 'approve'} data={data.result} /> :
-                        </Pattern>
+        }
+        else {
+            return (
+                <div style={{ display: 'grid', gridTemplateRows: '56px 1fr', width: '100%', height: 'calc(100vh - 112px)' }}>
+                    <div style={{ height: '56px', borderBottom: 'solid lightgray 1px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <p>BAC Resolution Recommendation</p>
+                        <Space>
+                            <Divider type="vertical" />
+                            <Segmented defaultValue={'recommend'} options={[{ icon: <TeamOutlined />, label: 'Recommend', value: 'recommend' }, { icon: <UserOutlined />, label: "Approve", value: "approve" }]} onChange={e => setActivePane(e)} />
+                            <Button icon={<PrinterOutlined />} onClick={handlePrint}>Print</Button>
+                        </Space>
                     </div>
-                )
-            }
+                    <Pattern>
+                        <PreviewPane ref={printableComponent} approval={activePane.toString() === 'approve'} data={data.result} /> :
+                    </Pattern>
+                </div>
+            )
         }
     }
 

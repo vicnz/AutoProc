@@ -11,7 +11,7 @@ import PreviewPane from './preview';
 import Pattern from '../_components/pattern';
 import AddNewDocument from './addnew';
 import { usePrId } from '../pr-id-context';
-import PRMustBeFinal from '../_components/document-need-final'
+import SupplierToPrint from './supplier-to-print';
 //configs
 const { useToken } = theme
 ///
@@ -35,50 +35,34 @@ const RequestForQuotation = function () {
     if (isLoading || !data) {
         return <Skeleton active />
     } else {
-        if (!(data.final as Array<{ id: string, final: boolean }>).every(item => item.final === true)) {
-            return (
-                <PRMustBeFinal title="Complete Purchase Request" subTitle="Purchase Request first needs to be completed">
-                </PRMustBeFinal>
-            )
+        if (data.result === null) {
+            return <AddNewDocument data={data.result} id={prId} />
         } else {
-            if (data.result === null) {
-                return <AddNewDocument data={data.result} id={prId} />
-            } else {
-                return (
-                    <div style={{ display: 'grid', gridTemplateRows: '56px 1fr', width: '100%', height: 'calc(100vh - 112px)' }}>
-                        <div style={{ height: '56px', borderBottom: 'solid lightgray 1px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                            <p>RFQ</p>
-                            <Space>
-                                <Tag color={`${data.result.final ? 'success' : 'blue'}`}>{data.result.final ? 'Approved' : 'Pending...'}</Tag>
-                                <Divider type="vertical" />
-                                {
-                                    !(isReceipt === 'reciept') ?
-                                        <>
-                                            <Space.Compact>
-                                                <Select defaultActiveFirstOption style={{ width: 150 }} value={openSupplier} onChange={e => setOpenSupplier(e)} placeholder='Display Supplier'>
-                                                    {
-                                                        (data?.result?.suppliers as any[]).map((item, idx) => {
-                                                            return (<Select.Option value={item?.name} key={item?.id}>{item.name}</Select.Option>)
-                                                        })
-                                                    }
-                                                </Select>
-                                                <Button icon={<PrinterOutlined />} onClick={handlePrint}>Print</Button>
-                                            </Space.Compact>
-                                        </> :
-                                        <>
-                                            <Button icon={<PrinterOutlined />} onClick={handlePrint}>Print</Button>
-                                        </>
-                                }
-                                <Segmented options={[{ icon: <FileProtectOutlined />, label: 'Request', value: 'rfq' }, { icon: <FileProtectOutlined />, label: 'Reciept', value: 'reciept' }]} defaultValue={'rfq'} onChange={e => setReceipt(e as string)} />
-                                <EditForm rfqData={data.result} />
-                            </Space>
-                        </div>
-                        <Pattern>
-                            <PreviewPane ref={printableComponent} data={data.result} reciept={isReceipt === 'reciept'} supplier={openSupplier} />
-                        </Pattern>
+            return (
+                <div style={{ display: 'grid', gridTemplateRows: '56px 1fr', width: '100%', height: 'calc(100vh - 112px)' }}>
+                    <div style={{ height: '56px', borderBottom: 'solid lightgray 1px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <p>RFQ</p>
+                        <Space>
+                            <Tag color={`${data.result.final ? 'success' : 'blue'}`}>{data.result.final ? 'Approved' : 'Pending...'}</Tag>
+                            <Divider type="vertical" />
+                            {
+                                !(isReceipt === 'reciept') ?
+                                    <>
+                                        <SupplierToPrint data={data?.result} handlePrint={handlePrint} activeSupplier={openSupplier} setSupplier={setOpenSupplier} />
+                                    </> :
+                                    <>
+                                        <Button icon={<PrinterOutlined />} onClick={handlePrint}>Print</Button>
+                                    </>
+                            }
+                            <Segmented options={[{ icon: <FileProtectOutlined />, label: 'Request', value: 'rfq' }, { icon: <FileProtectOutlined />, label: 'Reciept', value: 'reciept' }]} defaultValue={'rfq'} onChange={e => setReceipt(e as string)} />
+                            <EditForm rfqData={data.result} />
+                        </Space>
                     </div>
-                )
-            }
+                    <Pattern>
+                        <PreviewPane ref={printableComponent} data={data.result} reciept={isReceipt === 'reciept'} supplier={openSupplier} />
+                    </Pattern>
+                </div>
+            )
         }
     }
 

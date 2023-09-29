@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server'
 import { NextRequest } from 'next/server'
 
 //Get Function
+import { VIEW, CREATE, UPDATE, SETFINAL } from './utils'
 
 export const GET = async function (req: NextRequest) {
     const { searchParams } = new URL(req.url)
@@ -10,38 +11,8 @@ export const GET = async function (req: NextRequest) {
     try {
         const getId = searchParams.get('_id')
         if (typeof getId === 'string') {
-
-            const prFinal = await prisma.pr.findFirst({
-                select: {
-                    id: true,
-                    final: true
-                },
-                where: {
-                    id: getId
-                }
-            })
-            const result = await prisma.price_quotations.findFirst({
-                select: {
-                    final: true,
-                    id: true,
-                    suppliers: true,
-                    tracking: true,
-                    prId: true,
-                    date: true,
-                    pr: {
-                        select: {
-                            final: true,
-                            budget: true,
-                            reference: true,
-                            particulars: true
-                        }
-                    }
-                },
-                where: {
-                    prId: getId
-                }
-            })
-            return NextResponse.json({ result, final: [prFinal] } || {})
+            const result = await VIEW(getId).catch(err => { throw new Error('GET ERROR') })
+            return NextResponse.json(result || {})
         }
     } catch (err) {
         return new Response('', { status: 500 })
@@ -54,14 +25,7 @@ export const POST = async function (req: NextRequest) {
     try {
         const prId = searchParams.get('_id')
         if (typeof prId === 'string') {
-            await prisma.price_quotations.create({
-                data: {
-                    final: false,
-                    suppliers: [],
-                    tracking: [],
-                    prId: prId
-                }
-            })
+            await CREATE(prId).catch(err => { throw new Error("CREATE ERROR") });
             return NextResponse.json({ ok: true })
         }
     } catch (err) {
@@ -77,21 +41,17 @@ export const PUT = async function (req: NextRequest) {
     try {
         const id = searchParams.get('_id')
         const setFinal = searchParams.get('_reqtype')
+
+        //Check if RFQ Id is included in query
         if (typeof id === 'string') {
 
+            //Set Request For Quotation as FINAL
             if (setFinal === 'true') {
-                await prisma.price_quotations.update({
-                    data: { final: true },
-                    where: { id: id }
-                })
+                await SETFINAL(id).catch(err => { throw new Error("Something") })
                 return NextResponse.json({ ok: true })
             }
             const body = await req.json()
-
-            await prisma.price_quotations.update({
-                data: { ...body },
-                where: { id },
-            })
+            await UPDATE(body, id).catch(err => { throw new Error("Something Error") })
             return NextResponse.json({ ok: true })
         }
     } catch (err) {

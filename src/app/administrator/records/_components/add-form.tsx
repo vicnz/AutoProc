@@ -65,7 +65,7 @@ const AddForm = function (props: { close: () => any, users: any[] }) {
                     </Form.Item>
                 </div>
             </Space>
-            <Form.Item name="purpose" label="Purpose">
+            <Form.Item name="purpose" label="Purpose" rules={[{ required: true, message: 'Please add a purpose to this purchase request' }]}>
                 <Input.TextArea rows={8} allowClear />
             </Form.Item>
             <Divider>Particulars</Divider>
@@ -110,7 +110,7 @@ const Particulars = forwardRef((props, ref) => {
                             <Form.Item noStyle name={[field.name, 'description']} rules={[{ required: true }]}>
                                 <Input placeholder="Item Description" style={{ width: 175 }} />
                             </Form.Item>
-                            <Form.Item noStyle name={[field.name, 'stock_no']} rules={[{ required: true }]}>
+                            <Form.Item noStyle name={[field.name, 'stock_no']} initialValue={''}>
                                 <Input placeholder="Stock Number" />
                             </Form.Item>
                             <Form.Item noStyle name={[field.name, 'price']} rules={[{ required: true }]}>

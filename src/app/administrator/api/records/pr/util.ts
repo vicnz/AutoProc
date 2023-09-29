@@ -9,7 +9,7 @@ type IParticulars = {
     price: number
 }
 
-export const PRView = async (id: string) => {
+export const VIEW = async (id: string) => {
     const pr = await db.pr.findFirst({
         include: {
             enduser: {
@@ -74,7 +74,7 @@ type IClientPR = {
     enduserId: string,
 }
 //make sure that the clientside data is loaded -> NextRequest.json() 
-export const PRCREATE = async (data: IClientPR) => {
+export const CREATE = async (data: IClientPR) => {
     try {
         const parsed = {
             ...data,
@@ -92,7 +92,7 @@ export const PRCREATE = async (data: IClientPR) => {
     }
 }
 
-export const PRUPDATE = async (data: IClientPR, prId: string) => {
+export const UPDATE = async (data: IClientPR, prId: string) => {
     try {
         const parsed = {
             ...data,
@@ -109,7 +109,7 @@ export const PRUPDATE = async (data: IClientPR, prId: string) => {
     }
 }
 
-export const PRFINAL = async (prId: string) => {
+export const SETFINAL = async (prId: string) => {
     try {
         await db.pr.update({
             data: { final: true },

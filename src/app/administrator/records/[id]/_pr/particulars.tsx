@@ -31,7 +31,7 @@ const Particulars = forwardRef((props, ref) => {
                             <Form.Item noStyle name={[field.name, 'description']} rules={[{ required: true }]}>
                                 <Input placeholder="Item Description" style={{ width: 175 }} />
                             </Form.Item>
-                            <Form.Item noStyle name={[field.name, 'stock_no']} rules={[{ required: true }]}>
+                            <Form.Item noStyle name={[field.name, 'stock_no']} initialValue={''}>
                                 <Input placeholder="Stock Number" />
                             </Form.Item>
                             <Form.Item noStyle name={[field.name, 'price']} rules={[{ required: true }]}>

@@ -21,7 +21,7 @@ const AddNewDocument = function (props: { data: any, id: string }) {
                         setLoading(true)
                         let result = await fetch(`/administrator/api/records/recommendation?_id=${props.id}`, { method: 'POST' })
                         if (result.ok) {
-                            message.success(`Added New BAC Resolution for ${props.data?.pr?.pr_no || 'not defined'}`)
+                            message.success(`Added New BAC Resolution`)
                             setLoading(false)
                             mutate(`/administrator/api/records/recommendation?_id=${props.id}`)
                         } else {

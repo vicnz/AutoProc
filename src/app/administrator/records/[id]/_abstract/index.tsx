@@ -5,7 +5,6 @@ import { Button, Divider, Result, Skeleton, Space, Tag, theme } from "antd";
 import { useRef } from "react";
 import { useReactToPrint } from 'react-to-print';
 //components
-import type { PrismaModels } from '@lib/db'
 import EditForm from './edit';
 import PreviewPane from './preview';
 import useSWR from "swr";
@@ -34,7 +33,7 @@ const AbstractOfQuotation = function () {
     if (isLoading || !data) {
         return <Skeleton active />
     } else {
-        if (!(data.final as Array<{ id: string, final: boolean }>).every(item => item.final === true)) {
+        if ((data.final as Array<{ id: string, final: boolean }>).every(item => item.final === true)) {
             return <MakeFinalDocument title="Complete Purchase Request and Price Quotation" subTitle="Purchase Request and Price Quotation first needs to be completed" />
         } else {
             if (data.result === null) {

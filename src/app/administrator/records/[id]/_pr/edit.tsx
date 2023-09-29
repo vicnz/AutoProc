@@ -1,5 +1,5 @@
 import { DeleteOutlined, EditOutlined, LockOutlined, MinusCircleOutlined, SaveOutlined, SecurityScanFilled, WarningOutlined } from "@ant-design/icons";
-import { Alert, Button, Drawer, Popconfirm, Skeleton, Space, Switch } from "antd";
+import { Alert, Button, Card, Drawer, Popconfirm, Skeleton, Space, Switch } from "antd";
 import { useState } from "react";
 
 import useSWR, { mutate } from "swr";

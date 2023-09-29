@@ -1,7 +1,7 @@
 'use client';
 //libs
 import { LoadingOutlined, LockOutlined, PrinterOutlined } from "@ant-design/icons";
-import { Badge, Button, Divider, Result, Skeleton, Space, Tag, theme } from "antd";
+import { Badge, Button, Divider, Result, Skeleton, Space, Spin, Tag, theme } from "antd";
 import { useRef } from "react";
 import { useReactToPrint } from 'react-to-print';
 //components
@@ -22,7 +22,7 @@ const PurchaseRequest = function () {
         content: () => printableComponent.current
     })
 
-    const { data, isLoading, error } = useSWR<IAPIReturnType | null>(`/administrator/api/records/pr?_id=${prId}`)
+    const { data, isLoading, error, isValidating } = useSWR<IAPIReturnType | null>(`/administrator/api/records/pr?_id=${prId}`)
 
     if (error) {
         return (
@@ -33,7 +33,6 @@ const PurchaseRequest = function () {
         return <Skeleton active />
     }
     else {
-        console.log(prId)
         return (
             <>
                 <div style={{ display: 'grid', gridTemplateRows: '56px 1fr', width: '100%', height: 'calc(100vh - 112px)' }}>
