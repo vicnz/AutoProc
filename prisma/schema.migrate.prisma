@@ -1,0 +1,273 @@
+//! THIS IS THE NEW SCHEMA THAT WILL BE APPLIED
+
+generator client {
+    provider        = "prisma-client-js"
+    previewFeatures = ["fullTextIndex", "fullTextSearch"]
+}
+
+datasource db {
+    provider = "mysql"
+    url      = env("DATABASE_URL_MIGRATE")
+}
+
+//@START DEPARTMENTS & SECTION
+model departments {
+    id          String     @id @default(uuid())
+    name        String
+    description String?
+    createdAt   DateTime   @default(now())
+    updatedAt   DateTime   @updatedAt
+    isDeleted   Boolean    @default(false)
+    sections    sections[]
+    users       users[]
+
+    @@fulltext([name, description])
+}
+
+model sections {
+    id           String       @id @default(uuid())
+    name         String
+    description  String?
+    departmentId String?
+    department   departments? @relation(fields: [departmentId], references: [id], onDelete: SetNull, onUpdate: Cascade)
+    createdAt    DateTime     @default(now())
+    updatedAt    DateTime     @updatedAt
+    isDeleted    Boolean      @default(false)
+    users        users[]
+
+    @@fulltext([name, description])
+}
+
+//@END DEPARTMENTS & SECTION
+//
+//@START USER MANAGEMENT
+enum Role {
+    ADMIN //ADMINISTRATOR
+    USER //END USER
+    TRACKER //TRACKER QR CODE ACCOUNT SCANNER
+    CHECKER //ITEM/ORDERS CHECKER AND VALIDATOR
+}
+
+model users {
+    id           String              @id @default(uuid())
+    username     String              @unique
+    email        String?             @unique
+    userType     Role                @default(USER) // user can only be ADMIN, USER, TRACKER, CHECKER
+    password     String              @db.VarChar(255)
+    fname        String
+    mname        String?
+    lname        String
+    suffix       String?             @db.VarChar(10)
+    profile      Bytes?              @db.MediumBlob //profile image minimum 5MB size
+    departmentId String?
+    department   departments?        @relation(fields: [departmentId], references: [id], onDelete: SetNull, onUpdate: Cascade)
+    sectionId    String?
+    section      sections?           @relation(fields: [sectionId], references: [id], onDelete: SetNull, onUpdate: Cascade)
+    createdAt    DateTime            @default(now())
+    updatedAt    DateTime            @updatedAt
+    isDeleted    Boolean             @default(false)
+    pr           purchase_requests[]
+
+    @@fulltext([username, email, fname, lname])
+}
+
+//@OFFICERS POSITION
+enum Position {
+    HEAD
+    CHAIR
+    VICE
+    MEMBER
+    OTHER
+}
+
+//@OFFICERS
+model officers {
+    id        String   @id @default(uuid())
+    position  Position @default(OTHER)
+    fname     String
+    mname     String?
+    lname     String
+    suffix    String?
+    title     String   @default("No Title")
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    isDeleted Boolean  @default(false)
+}
+
+//@END USERS MANAGEMENT
+//
+//@START PROCUREMENT RECORDS
+//@PR TYPE
+enum DocType {
+    SVP
+    BIDDING
+    REORDER
+}
+
+//@PR
+model purchase_requests {
+    id          String                         @id @default(uuid())
+    number      String?                        @unique //Purchase Unique Identifier Number
+    sai         String?
+    obr         String?
+    date        DateTime                       @default(now()) //Purchase Creation/Issued Date
+    reference   String? //reference number/BAC Resolution
+    final       Boolean                        @default(false) //mark document as approved and final NOTE: this toggle can bypass the tracing
+    purpose     String                         @default("Please Provide a Purpose Here...")
+    budget      Float                          @default(0.00) //Approved Budget for the type of PPMP
+    type        DocType                        @default(SVP) //MILESTONE: Document Type
+    userId      String?
+    user        users?                         @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: SetNull)
+    particulars Json                           @default(dbgenerated("JSON_ARRAY()")) //FORMAT: [{qty: number, description: string, stock?: string, price: number, unit: string}, ...]
+    tracking    Json                           @default(dbgenerated("JSON_ARRAY(JSON_OBJECT())")) //FORMAT: [{officeId: string, name: string, type: {in?: datetime, out?: datetime}}]
+    createdAt   DateTime                       @default(now())
+    updatedAt   DateTime                       @updatedAt
+    isDeleted   Boolean                        @default(false)
+    recomend    purchase_recommendations[]
+    rfq         purchase_price_quotations[]
+    abstract    purchase_quotation_abstracts[]
+    award       purchase_awards[]
+    po          purchase_orders[]
+
+    @@fulltext([number, reference, purpose])
+}
+
+//@TYPE OF UNIT
+model units {
+    id        String   @id //Short name for the unit like[pieces -> pc]
+    name      String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    isDeleted Boolean  @default(false)
+}
+
+//@PR
+
+model purchase_recommendations {
+    id        String            @id @default(uuid())
+    title     String            @default("") @db.VarChar(255) //MILESTONE: Content Title
+    content   Json              @default(dbgenerated("JSON_ARRAY()")) //MILESTONE: Content of Recommendation
+    final     Boolean           @default(false)
+    tracking  Json              @default(dbgenerated("JSON_ARRAY(JSON_OBJECT())")) //FORMAT: [{officeId: string, name: string, type: {in?: datetime, out?: datetime}}]
+    prId      String            @unique
+    pr        purchase_requests @relation(fields: [prId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    createdAt DateTime          @default(now())
+    updatedAt DateTime          @updatedAt
+    isDeleted Boolean           @default(false)
+}
+
+model purchase_price_quotations {
+    id        String                         @id @default(uuid())
+    date      DateTime                       @default(now())
+    suppliers Json                           @default(dbgenerated("JSON_ARRAY()"))
+    tracking  Json                           @default(dbgenerated("JSON_ARRAY(JSON_OBJECT())")) //FORMAT: [{officeId: string, name: string, type: {in?: datetime, out?: datetime}}]
+    ris       String?
+    final     Boolean                        @default(false)
+    prId      String                         @unique
+    pr        purchase_requests              @relation(fields: [prId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    createdAt DateTime                       @default(now())
+    updatedAt DateTime                       @updatedAt
+    isDeleted Boolean                        @default(false)
+    abstract  purchase_quotation_abstracts[]
+}
+
+model purchase_quotation_abstracts {
+    id             String                     @id @default(uuid())
+    date           DateTime                   @default(now())
+    quotations     Json                       @default(dbgenerated("JSON_ARRAY()")) //FORMAT: [{description: string, supplier: {name: string, id: string, price: number, qty: number}}]
+    location       String?
+    furnishedAt    String?
+    tracking       Json                       @default(dbgenerated("JSON_ARRAY(JSON_OBJECT())")) //FORMAT: [{officeId: string, name: string, type: {in?: datetime, out?: datetime}}]
+    final          Boolean                    @default(false)
+    lowestBidder   String?
+    lowestAmount   Decimal                    @default(0.00)
+    prId           String                     @unique
+    pr             purchase_requests          @relation(fields: [prId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    rfqId          String?
+    rfq            purchase_price_quotations? @relation(fields: [rfqId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    createdAt      DateTime                   @default(now())
+    updatedAt      DateTime                   @updatedAt
+    award          purchase_awards[]
+    purchase_order purchase_orders[]
+}
+
+model purchase_awards {
+    id         String                       @id @default(uuid())
+    tracking   Json                         @default(dbgenerated("JSON_ARRAY()"))
+    final      Boolean                      @default(false)
+    title      String                       @default("") //MILESTONE: Awards Title
+    content    Json                         @default(dbgenerated("JSON_ARRAY()")) //MILESTONE: Awards Title
+    prId       String                       @unique
+    pr         purchase_requests            @relation(fields: [prId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    abstractId String
+    abstract   purchase_quotation_abstracts @relation(fields: [abstractId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    createdAt  DateTime                     @default(now())
+    updatedAt  DateTime                     @updatedAt
+    isDeleted  Boolean                      @default(false)
+}
+
+model purchase_orders {
+    id          String                       @id @default(uuid())
+    entity      String
+    supplier    Json                         @default(dbgenerated("JSON_ARRAY()"))
+    number      String                       @unique
+    date        DateTime?                    @default(now())
+    mode        String //Mode of Procurement
+    destination String? //Delivery Destination
+    duration    Int //No. of Days of Delivery
+    term        String // Needs a Seperate Model For the Mean time Values are FOB Destination / FOB Shipping
+    payment     String //Payment Term
+    tracking    Json                         @default(dbgenerated("JSON_ARRAY()"))
+    final       Boolean                      @default(false)
+    released    Boolean                      @default(false)
+    particulars Json                         @default(dbgenerated("JSON_ARRAY()")) //format {data: [name: string, unit: string, description: string, qty: number, unitCost: number, amount: number, isDelevered: boolean]}
+    prId        String
+    pr          purchase_requests            @relation(fields: [prId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    abstractId  String
+    abstract    purchase_quotation_abstracts @relation(fields: [abstractId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    createdAt   DateTime                     @default(now())
+    updatedAt   DateTime                     @updatedAt
+    isDeleted   Boolean                      @default(false)
+    delivery    delivery[]
+
+    @@fulltext([number, entity, mode, destination, term, payment])
+}
+
+//Monitor Deliver Upon Appoval of Release the it shall be added to delivery monitoring
+//where startDate and endDate of delivery is monitored
+model delivery {
+    id        String          @id @default(uuid())
+    poId      String
+    po        purchase_orders @relation(fields: [poId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    startDate DateTime        @default(now())
+    endDate   DateTime
+    urgent    Boolean         @default(false)
+    createdAt DateTime        @default(now())
+    updatedAt DateTime        @updatedAt
+    isDeleted Boolean         @default(false)
+}
+
+model suppliers {
+    id             String   @id @default(uuid())
+    name           String
+    representative String?
+    address        String?
+    tin            String
+    createdAt      DateTime @default(now())
+    updatedAt      DateTime @updatedAt
+    isDeleted      Boolean  @default(false)
+
+    @@index([tin])
+    @@fulltext([name, representative, tin])
+}
+
+//options
+model settings {
+    id          String   @id @default(uuid())
+    name        String
+    value       String
+    particulars String
+    updatedAt   DateTime @updatedAt()
+
+    @@ignore
+}

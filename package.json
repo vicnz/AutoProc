@@ -11,7 +11,8 @@
     "start:expose": "next start -H autoproc.app -p 443",
     "lint": "next lint",
     "test": "vitest",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "prisma:migrate": "prisma migrate dev --schema=./prisma/schema.migrate.prisma"
   },
   "dependencies": {
     "@ant-design/cssinjs": "^1.16.1",
@@ -51,6 +52,6 @@
     "vitest": "^0.34.3"
   },
   "prisma": {
-    "seed": "node ./prisma/seeders/main.js"
+    "seed": "node ./prisma/seeder.migrate/main.js"
   }
 }

@@ -1,15 +1,13 @@
-'use client'
-//libs
 import { Tabs } from 'antd';
 //components
-import DashboardLayout from './_dashboard/layout'
-import TabItems from './_dashboard/tabs'
+import Dashboard from '@components/admin/dashboard'
+import TabItems from '@components/admin/dashboard/tabs'
 //confg
 const Base = function () {
     return (
-        <DashboardLayout>
+        <Dashboard>
             <Tabs items={TabItems} tabPosition='left' />
-        </DashboardLayout>
+        </Dashboard>
     )
 }
 

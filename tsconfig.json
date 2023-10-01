@@ -33,20 +33,12 @@
       "@media/*": [
         "./src/media/*"
       ],
-      //Administrator Area
       "@components/admin/*": [
         "./src/components/admin/*",
-        "./src/app/administrator/_components/*"
+        "./src/app/administrator/_components/*" //candidate for removal
       ],
-      "@styles/admin/*": [
-        "./src/app/administrator/_styles/*"
-      ],
-      "@state/admin/*": [
-        "./src/app/administrator/_state/*"
-      ],
-      //End-User Area
-      "@components/client/*": [
-        "./src/components/client/*"
+      "@controllers/admin/*": [
+        "./src/controllers/admin/*"
       ],
       "@components/shared/*": [
         "./src/components/shared/*"
