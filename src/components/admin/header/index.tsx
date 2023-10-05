@@ -1,11 +1,9 @@
-'use client'
+"use client";
 
 //libs
-import { Space } from "antd"
-import { CSSProperties, ReactNode, memo } from "react"
-//components
-//config
-//
+import { Space } from "antd";
+import { CSSProperties, ReactNode, memo } from "react";
+//styles
 const HeaderStyles: CSSProperties = {
     height: "56px",
     width: "inherit",
@@ -15,19 +13,23 @@ const HeaderStyles: CSSProperties = {
     justifyContent: "space-between",
     alignItems: "center",
 };
-
-const Header = memo(function (props: { title: ReactNode, children?: ReactNode, back?: ReactNode }) {
+//types
+interface GlobalHeaderProps {
+    title: ReactNode,
+    children?: ReactNode,
+    back?: ReactNode
+}
+//(!Global Header is only used as Route Header not Subsection Header)
+const GlobalHeader = function (props: GlobalHeaderProps) {
     return (
         <div id="header-container" style={HeaderStyles}>
             <Space id="header-title">
                 {props.back}
                 {props.title}
             </Space>
-            <Space id="header-actions">
-                {props.children}
-            </Space>
+            <Space id="header-actions">{props.children}</Space>
         </div>
-    )
-})
+    );
+};
 
-export default Header;
+export default memo(GlobalHeader);
