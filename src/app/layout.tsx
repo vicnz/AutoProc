@@ -20,11 +20,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <SWRConfig>
-          <StyleComponentRegistry>
+        <StyleComponentRegistry>
+          <SWRConfig>
             {children}
-          </StyleComponentRegistry>
-        </SWRConfig>
+          </SWRConfig>
+        </StyleComponentRegistry>
       </body>
     </html>
   )
