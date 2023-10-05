@@ -52,6 +52,6 @@
     "vitest": "^0.34.3"
   },
   "prisma": {
-    "seed": "node ./prisma/seeder.migrate/main.js"
+    "seed": "node ./prisma/seeder/main.js"
   }
 }
