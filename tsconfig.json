@@ -34,11 +34,10 @@
         "./src/media/*"
       ],
       "@components/admin/*": [
-        "./src/components/admin/*",
-        "./src/app/administrator/_components/*" //candidate for removal
+        "./src/components/admin/*"
       ],
-      "@controllers/admin/*": [
-        "./src/controllers/admin/*"
+      "@api/admin/*": [
+        "./src/app/administrator/api/*"
       ],
       "@components/shared/*": [
         "./src/components/shared/*"
