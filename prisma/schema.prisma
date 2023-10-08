@@ -113,7 +113,7 @@ model purchase_requests {
     date        DateTime                       @default(now()) //Purchase Creation/Issued Date
     reference   String? //reference number/BAC Resolution
     final       Boolean                        @default(false) //mark document as approved and final NOTE: this toggle can bypass the tracing
-    purpose     String                         @default("Please Provide a Purpose Here...")
+    purpose     String                         @db.VarChar(255) //! RUN THIS ON NEXT COMMIT
     budget      Float                          @default(0.00) //Approved Budget for the type of PPMP
     type        DocType                        @default(SVP) //MILESTONE: Document Type
     userId      String?
@@ -239,8 +239,8 @@ model delivery {
     id        String          @id @default(uuid())
     poId      String
     po        purchase_orders @relation(fields: [poId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-    startDate DateTime        @default(now())
-    endDate   DateTime
+    startDate DateTime        @default(now()) //? GET THIS DATE FROM PURCHASE ORDER -> toggled the release trigger
+    endDate   DateTime        @default(now()) //? CALCULATE THIS FROM PURCHASE ORDER -> duration -> exact date
     urgent    Boolean         @default(false)
     createdAt DateTime        @default(now())
     updatedAt DateTime        @updatedAt
