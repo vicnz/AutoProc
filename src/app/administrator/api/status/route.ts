@@ -41,7 +41,7 @@ export const GET = async function (req: NextRequest) {
             documents: [
                 { tracking: pr?.tracking || [], name: 'Purchase Request', final: pr?.final || false },
                 { tracking: recommend?.tracking || [], name: 'Recommendation', final: recommend?.final || false },
-                { tracking: rfq?.tracking || [], name: 'Request For Quotation', final: rfq?.final || false },
+                { tracking: rfq?.tracking || [], name: 'RFQ', final: rfq?.final || false },
                 { tracking: abstract?.tracking || [], name: 'Abstract', final: abstract?.final || false },
                 { tracking: awarding?.tracking || [], name: 'Awarding', final: awarding?.final || false },
                 { tracking: po?.tracking || [], name: 'Purchase Order', final: po?.final || false },
