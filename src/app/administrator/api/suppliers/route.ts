@@ -1,48 +1,30 @@
-import prisma from '@lib/db'
-import { NextRequest, NextResponse } from 'next/server'
+import db from "@lib/db";
+import { NextRequest, NextResponse } from "next/server";
 
-
-const GET = async function (req: NextRequest) {
-    const { searchParams } = new URL(req.url)
+export const GET = async function (req: NextRequest) {
+    const { searchParams } = new URL(req.url);
     try {
-        const params = searchParams.get('_id')
-        if (params === null) {
-            const result = await prisma.suppliers.findMany({
-                select: {
-                    name: true,
-                    id: true
-                }
-            })
+        const id = searchParams.get("_id");
+        const isAll = searchParams.get("_all");
 
-            return NextResponse.json(result || [])
-        }
-
-        if (typeof params === 'string') {
-            const result = await prisma.suppliers.findFirst({
-                select: {
-                    name: true,
-                    address: true,
-                    representative: true,
-                    tin: true,
-                    id: true
+        if (isAll === "true") {
+            const result = await db.suppliers.findMany({
+                orderBy: {
+                    updatedAt: "desc",
                 },
-                where: {
-                    id: params
-                }
-            })
+            });
 
-            return NextResponse.json(result || {})
+            return NextResponse.json(result);
         }
-
+        //TODO
+        const result = await db.suppliers.findMany({
+            orderBy: {
+                updatedAt: "desc",
+            },
+        });
+        //TODO
+        return NextResponse.json(result);
     } catch (err) {
-        return new Response('', { status: 500 })
+        return new Response("", { status: 400 });
     }
-}
-
-const POST = async function (req: NextRequest) {
-
-}
-
-
-
-export { GET }
+};
