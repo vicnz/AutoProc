@@ -1,4 +1,5 @@
 //@ts-nocheck
+//Convert Number to WORDS
 export function numberToWords(n) {
     const arr = (x) => Array.from(x)
     const num = (x) => Number(x) || 0
@@ -84,7 +85,7 @@ export function numberToWords(n) {
     return numToWords(n)
 }
 
-
+//Convert Number With Decimal
 function main(n) {
     const integerPart = Math.floor(n)
     const decimalPart = Math.round((n - integerPart) * 100)

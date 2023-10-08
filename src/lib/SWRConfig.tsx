@@ -4,6 +4,7 @@ import { PropsWithChildren } from 'react'
 import { SWRConfig, SWRConfiguration } from 'swr'
 
 const Config: SWRConfiguration = {
+    refreshInterval: 5000,
     fetcher: (resource, init) => fetch(resource, init).then(res => res.json())
 }
 
