@@ -241,6 +241,7 @@ model delivery {
     po        purchase_orders @relation(fields: [poId], references: [id], onUpdate: Cascade, onDelete: Cascade)
     startDate DateTime        @default(now()) //? GET THIS DATE FROM PURCHASE ORDER -> toggled the release trigger
     endDate   DateTime        @default(now()) //? CALCULATE THIS FROM PURCHASE ORDER -> duration -> exact date
+    parcels   Json
     urgent    Boolean         @default(false)
     createdAt DateTime        @default(now())
     updatedAt DateTime        @updatedAt
