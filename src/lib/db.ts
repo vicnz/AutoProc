@@ -25,4 +25,6 @@ export type PrismaModels = {
     >;
 }
 
+export let PrismaClientError = Prisma.PrismaClientKnownRequestError
+
 //usage type userId = PrismaModels["Users"]?[fieldname]
