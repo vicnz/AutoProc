@@ -1,5 +1,6 @@
 import db from '@lib/db'
 import { NextRequest, NextResponse } from 'next/server'
+import fullname from '@/lib/fullname'
 
 export const GET = async function (req: NextRequest) {
     const { searchParams } = new URL(req.url)
@@ -36,7 +37,7 @@ export const GET = async function (req: NextRequest) {
                 ...result.map(item => {
                     return {
                         id: item.id,
-                        name: `${item?.fname}${item?.mname ? " " + item.mname.substring(0, 1) + "." : ''} ${item?.lname}${item?.suffix ? " " + item?.suffix : ''}`,
+                        name: fullname({ fname: item.fname, mname: item.mname, lname: item.lname, suffix: item.suffix }, true),
                         profile: item.profile,
                         department: item.department?.description,
                         //@ts-ignore
@@ -47,8 +48,11 @@ export const GET = async function (req: NextRequest) {
         }
 
         const result = await db.users.findMany({
+            where: {
+                isDeleted: false
+            },
             orderBy: {
-                updatedAt: 'desc'
+                updatedAt: 'desc',
             }
         })
 

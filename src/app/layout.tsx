@@ -1,31 +1,26 @@
-import StyleComponentRegistry from '@/lib/theme/antd'
-import SWRConfig from '@lib/SWRConfig'
-import './globals.css'
-import { Metadata } from 'next'
-
+import StyleComponentRegistry from "@/lib/theme/antd";
+import SWRConfig from "@lib/SWRConfig";
+import "./globals.css";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: 'Auto | Proc',
-  description: 'Auto Procurement System',
-  themeColor: '#C0252A',
-}
-
+  title: "Auto | Proc",
+  description: "Auto Procurement System",
+  themeColor: "#C0252A",
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
-
   return (
     <html lang="en">
       <body>
-        <StyleComponentRegistry>
-          <SWRConfig>
-            {children}
-          </SWRConfig>
-        </StyleComponentRegistry>
+        <SWRConfig>
+          <StyleComponentRegistry>{children}</StyleComponentRegistry>
+        </SWRConfig>
       </body>
     </html>
-  )
+  );
 }

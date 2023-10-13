@@ -1,5 +1,10 @@
 "use client";
 
+/**
+ * * - HEADER SECTION
+ * * - Layout Item - as the Header of each Page except
+ * * - for TopBar
+ */
 //libs
 import { Space } from "antd";
 import { CSSProperties, ReactNode, memo } from "react";
@@ -15,9 +20,9 @@ const HeaderStyles: CSSProperties = {
 };
 //types
 interface GlobalHeaderProps {
-    title: ReactNode,
-    children?: ReactNode,
-    back?: ReactNode
+    title: ReactNode;
+    children?: ReactNode;
+    back?: ReactNode;
 }
 //(!Global Header is only used as Route Header not Subsection Header)
 const GlobalHeader = function (props: GlobalHeaderProps) {

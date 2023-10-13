@@ -1,55 +1,68 @@
-import { StepProps, Steps, Card } from "antd";
+"use client";
 
+import { Card, Result, Spin } from "antd";
+import useSWR from "swr";
+import Stepper from "./steps";
+import { SyncOutlined } from "@ant-design/icons";
 
-const Items: StepProps[] = [
-    {
-        title: "Purchase Request",
-        description: "Approved",
-        status: 'finish',
-    },
-    {
-        status: 'finish',
-        title: "BAC Resolution",
-        description: "Approved"
-    },
-    {
-        status: 'finish',
-        title: "Request for Quotation",
-        description: "Approved"
-    },
-    {
-        status: 'process',
-        title: "Abstract of Quotation",
-        description: "Nothing"
-    },
-    {
-        title: "Notice of Award",
-        description: "Pending"
-    },
-    {
-        title: "BAC Resolution",
-        description: "Pending"
-    },
-    {
-        title: "Purchase Order",
-        description: "Pending"
-    },
-    {
-        title: "Delivery",
-        description: "Pending"
-    },
-]
+const DocumentStatus = function (props: { prID: string }) {
+    const { data, isLoading, error, isValidating } = useSWR(
+        `/administrator/api/status?_pr=${props.prID}`
+    );
 
-const DocumentStatus = function () {
-    return (
-        <Card title="Status" style={{ height: 'calc(100vh - 112px)', width: '250px', border: 'solid lightgray 1px', borderRadius: 0 }} bordered bodyStyle={{ padding: 0 }} headStyle={{ padding: '10px', height: '56px' }}>
-            <div style={{ height: 'calc(100vh - 168px)', width: '100%', position: 'relative', overflowY: 'auto' }}>
-                <div style={{ height: 'auto', width: '100%', position: 'absolute', top: 0, left: 0, padding: '10px' }}>
-                    <Steps direction='vertical' items={Items} />
+    if (error) {
+        return <Result status="error"></Result>;
+    } else {
+        return (
+            <Card
+                title={<span>Status</span>}
+                style={{
+                    height: "calc(100vh - 112px)",
+                    width: "250px",
+                    border: "solid lightgray 1px",
+                    borderRadius: 0,
+                }}
+                bordered
+                bodyStyle={{ padding: 0 }}
+                headStyle={{ padding: "10px", height: "56px" }}
+                extra={<SyncOutlined spin={isValidating} />}
+            >
+                <div
+                    style={{
+                        height: "calc(100vh - 168px)",
+                        width: "100%",
+                        position: "relative",
+                        overflowY: "auto",
+                    }}
+                >
+                    <div
+                        style={{
+                            height: "auto",
+                            width: "100%",
+                            position: "absolute",
+                            top: 0,
+                            left: 0,
+                            padding: "10px",
+                        }}
+                    >
+                        {!data || isLoading ? (
+                            <div
+                                style={{
+                                    display: "grid",
+                                    placeItems: "center",
+                                    height: "calc(100vh - 200px)",
+                                }}
+                            >
+                                <Spin spinning />
+                            </div>
+                        ) : (
+                            <Stepper data={data} />
+                        )}
+                    </div>
                 </div>
-            </div>
-        </Card>
-    )
-}
+            </Card>
+        );
+    }
+};
 
 export default DocumentStatus;

@@ -13,8 +13,9 @@ const SearchModal = function (props: { closeModal?: (value: boolean) => {} }) {
     const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
-        inputRef?.current?.focus();
-        return () => inputRef?.current?.blur();
+        const focusRef = inputRef?.current
+        focusRef?.focus();
+        return () => focusRef?.blur();
     }, []);
 
     return (

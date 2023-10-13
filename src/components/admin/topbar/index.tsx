@@ -1,47 +1,57 @@
-'use client';
+"use client";
+
+/**
+ * * - GLOBAL TOPBAR COMPONENT
+ * * - Navbar consist of the
+ * * - Page Logo, Search, and Notification Area
+ */
 
 //libs
-import Image from 'next/image'
-import { Badge, Button, Divider, Space, Tooltip, theme } from 'antd'
-import { NotificationOutlined, QuestionOutlined } from '@ant-design/icons';
+import Image from "next/image";
+import { Space, Tag, theme } from "antd";
+import { memo } from "react";
 //components
-import LogoSmall from '@media/small.png'
-import LogoMedium from '@media/medium.png'
-import SearchBar from '@components/admin/search'
-import { memo } from 'react';
+import LogoSmall from "@media/small.png";
+import LogoMedium from "@media/medium.png";
+import SearchBar from "@components/admin/search";
+import Notification from '@components/admin/notifications';
 //
-const { useToken } = theme
 const topBarStyle = {
-    height: '56px',
-    padding: '10px 15px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-}
+    height: "56px",
+    padding: "10px 15px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+};
 //
 const Topbar = function () {
-    const { token } = useToken()
+    const { token } = theme.useToken();
     return (
         <nav style={{ ...topBarStyle, backgroundColor: token.colorBgContainer }}>
             <Space>
-                <Image src={LogoSmall} alt="Auto Proc Logo Small" height={25} width={25} style={{ objectFit: 'contain' }} />
+                <Image
+                    src={LogoSmall}
+                    alt="Auto Proc Logo Small"
+                    height={25}
+                    width={25}
+                    style={{ objectFit: "contain" }}
+                />
                 <div />
-                <Image src={LogoMedium} alt="Auto Proc Logo Medium" height={15} width={100} style={{ objectFit: 'contain' }} />
+                <Image
+                    src={LogoMedium}
+                    alt="Auto Proc Logo Medium"
+                    height={15}
+                    width={100}
+                    style={{ objectFit: "contain" }}
+                />
+                <Tag color="red">ALPHA</Tag>
             </Space>
             <SearchBar />
             <div>
-                <Badge dot>
-                    <Button type="text" icon={<NotificationOutlined />} />
-                    {/* //TODO Notification Section*/}
-                </Badge>
-                <Divider type='vertical' />
-                <Tooltip placement='bottomLeft' title="Tour With Me">
-                    <Button icon={<QuestionOutlined />} type="text" />
-                    {/* //TODO App Tour */}
-                </Tooltip>
+                <Notification />
             </div>
         </nav>
-    )
-}
+    );
+};
 
 export default memo(Topbar);

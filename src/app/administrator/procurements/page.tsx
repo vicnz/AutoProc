@@ -1,5 +1,6 @@
-import Procurements from '@components/admin/procurements'
-import ProcurementLayout from '@components/admin/procurements/pagination'
+import Procurements from '@components/admin/layouts/procurements'
+import ProcurementLayout from '@components/admin/layouts/procurements/pagination'
+//
 const Page = function () {
     return (
         <ProcurementLayout>

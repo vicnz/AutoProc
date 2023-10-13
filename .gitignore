@@ -54,3 +54,5 @@ pocketbase.exe.old
 # Visual Studio Code Config
 .vscode/*
 .env
+
+certificates

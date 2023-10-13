@@ -1,11 +1,10 @@
-'use client';
+"use client";
 
 //libs
-import { CSSProperties, ReactNode, memo } from 'react';
-import { theme } from 'antd';
+import { CSSProperties, PropsWithChildren, ReactNode, memo } from "react";
+import { theme } from "antd";
 //components
 //configs
-const { useToken } = theme
 //
 
 const WrapperStyles: CSSProperties = {
@@ -31,20 +30,20 @@ const BodyScrollStyles: CSSProperties = {
     left: 0,
 };
 
-const ContentWrapper = function (props: { children: ReactNode, header?: ReactNode }) {
-    const { token } = useToken()
+const ContentWrapper = function (
+    props: PropsWithChildren<{ header?: ReactNode }>
+) {
+    const { token } = theme.useToken();
     return (
         <div style={{ ...WrapperStyles, backgroundColor: token.colorBgLayout }}>
-            <div data-name='header'>
-                {props.header}
-            </div>
+            <div data-name="header">{props.header}</div>
             <div data-name="body" style={BodyStyles}>
-                <div data-name='body-scroll' style={BodyScrollStyles}>
+                <div data-name="body-scroll" style={BodyScrollStyles}>
                     {props.children}
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default memo(ContentWrapper);

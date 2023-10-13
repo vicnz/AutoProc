@@ -1,98 +1,155 @@
-'use client';
-
+"use client";
 //libs
-import { FolderFilled, FolderOutlined } from '@ant-design/icons'
-import { Skeleton, TabsProps } from 'antd'
-import dynamic from 'next/dynamic';
-import { PropsWithChildren } from 'react'
+import {
+    AuditOutlined,
+    BlockOutlined,
+    ContactsOutlined,
+    FieldTimeOutlined,
+    ShopOutlined,
+    ShoppingCartOutlined,
+    ShoppingOutlined,
+} from "@ant-design/icons";
+import { Skeleton, TabsProps } from "antd";
+import dynamic from "next/dynamic";
 //components
-import TabPane from './Pane'
-// const PurchaseRequest = dynamic(async () => await import('../purchase-request'), { loading: () => <Skeleton active /> })
-// const Recommendation = dynamic(async () => await import('../_recomend/index'), { loading: () => <Skeleton active /> })
-// const RFQ = dynamic(async () => await import('../_rfq/index'), { loading: () => <Skeleton active /> })
-// const Abstract = dynamic(async () => await import('../_abstract/index'), { loading: () => <Skeleton active /> })
-// const Awarding = dynamic(async () => await import('../_awarding/index'), { loading: () => <Skeleton active /> })
-// const PurchaseOrder = dynamic(async () => await import('../_po/index'), { loading: () => <Skeleton active /> })
-//configs
+import TabPane from "./Pane";
+const PurchaseRequest = dynamic(
+    async () => await import("@components/admin/procurement/purchase-request"),
+    { loading: () => <Skeleton active /> }
+);
+const Recommendation = dynamic(
+    async () =>
+        await import("@components/admin/procurement/purchase-recommendation"),
+    { loading: () => <Skeleton active /> }
+);
+const RFQ = dynamic(
+    async () =>
+        await import("@components/admin/procurement/purchase-price-quotation"),
+    { loading: () => <Skeleton active /> }
+);
+const Abstract = dynamic(
+    async () =>
+        await import("@components/admin/procurement/purchase-abstract-quotation"),
+    { loading: () => <Skeleton active /> }
+);
+const Awarding = dynamic(
+    async () => await import("@components/admin/procurement/purchase-awarding"),
+    { loading: () => <Skeleton active /> }
+);
+const PurchaseOrder = dynamic(
+    async () => await import("@components/admin/procurement/purchase-order"),
+    { loading: () => <Skeleton active /> }
+);
 
-const TabPanes: TabsProps['items'] = [
+const Delivery = dynamic(
+    async () => await import("@components/admin/procurement/delivery"),
+    { loading: () => <Skeleton active /> }
+);
+
+const TabPanes: TabsProps["items"] = [
     {
-        key: 'pr',
-        label: <span><FolderOutlined /> Purchase Request</span>,
-        destroyInactiveTabPane: true,
-        tabKey: 'pr',
+        key: "pr",
+        label: (
+            <span>
+                <ShoppingOutlined /> Purchase Request
+            </span>
+        ),
+
+        tabKey: "pr",
         children: (
             <TabPane>
-                {/* <PurchaseRequest /> */}
+                <PurchaseRequest />
             </TabPane>
         ),
     },
     {
-        key: 'recommend',
-        label: <span><FolderOutlined /> Recommendation</span>,
-        destroyInactiveTabPane: true,
-        tabKey: 'recommend',
+        key: "recommend",
+        label: (
+            <span>
+                <ContactsOutlined /> Recommendation
+            </span>
+        ),
+
+        tabKey: "recommend",
         children: (
             <TabPane>
-                {/* <Recommendation /> */}
+                <Recommendation />
             </TabPane>
-        )
+        ),
     },
     {
-        key: 'rfq',
-        label: <span><FolderOutlined /> Request Quotation</span>,
-        destroyInactiveTabPane: true,
-        tabKey: 'rfq',
+        key: "rfq",
+        label: (
+            <span>
+                <ShopOutlined /> Request Quotation
+            </span>
+        ),
+
+        tabKey: "rfq",
         children: (
             <TabPane>
-                {/* <RFQ /> */}
+                <RFQ />
             </TabPane>
-        )
+        ),
     },
     {
-        key: 'abstract',
-        label: <span><FolderOutlined /> Abstract of Quotation</span>,
-        destroyInactiveTabPane: true,
-        tabKey: 'abstract',
+        key: "abstract",
+        label: (
+            <span>
+                <BlockOutlined /> Abstract of Quotation
+            </span>
+        ),
+
+        tabKey: "abstract",
         children: (
             <TabPane>
-                {/* <Abstract /> */}
+                <Abstract />
             </TabPane>
-        )
+        ),
     },
     {
-        key: 'award',
-        label: <span><FolderOutlined /> Awarding & Release</span>,
-        destroyInactiveTabPane: true,
-        tabKey: 'award',
+        key: "award",
+        label: (
+            <span>
+                <AuditOutlined /> Awarding & Release
+            </span>
+        ),
+
+        tabKey: "award",
         children: (
             <TabPane>
-                {/* <Awarding /> */}
+                <Awarding />
             </TabPane>
-        )
+        ),
     },
     {
-        key: 'po',
-        label: <span><FolderOutlined /> Purchase Order</span>,
-        destroyInactiveTabPane: true,
-        tabKey: 'po',
+        key: "po",
+        label: (
+            <span>
+                <ShoppingCartOutlined /> Purchase Order
+            </span>
+        ),
+
+        tabKey: "po",
         children: (
             <TabPane>
-                {/* <PurchaseOrder /> */}
+                <PurchaseOrder />
             </TabPane>
-        )
+        ),
     },
     {
-        key: 'delivery',
-        label: <span><FolderOutlined /> Delivery Status</span>,
-        destroyInactiveTabPane: true,
-        tabKey: 'delivery',
-        children: (
-            <TabPane>
-                {/* <p>Delivery</p> */}
-            </TabPane>
-        )
+        key: "delivery",
+        label: (
+            <span>
+                <FieldTimeOutlined /> Delivery Status
+            </span>
+        ),
+
+        tabKey: "delivery",
+        children: <TabPane>
+            <Delivery />
+        </TabPane>,
     },
-]
+];
 
 export default TabPanes;

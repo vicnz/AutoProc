@@ -1,90 +1,252 @@
+"use client";
+
+/**
+ * * - PURCHASE REQUEST FORM
+ * * - Purchase Request Form Where the Validation and Updating Commence
+ */
+
 import { PlusCircleOutlined } from "@ant-design/icons";
-import { Form, Space, Input, DatePicker, Divider, Button, FormInstance, App, InputNumber } from "antd";
+import {
+    Form,
+    Space,
+    Input,
+    DatePicker,
+    Divider,
+    Button,
+    FormInstance,
+    App,
+    InputNumber,
+    Skeleton,
+} from "antd";
 import { useMemo, useRef, useState } from "react";
 import dayjs from "dayjs";
-//coomponents
-import SelectParticulars from "./select-particulars";
-import SelectUser from "./select-user";
-import PRNumber from '@components/admin/features/purchase-number';
+import { mutate } from "swr";
+import dynamic from "next/dynamic";
+//COMPONENTS
+import { usePRId } from "@components/admin/PRId";
 
-const { useApp } = App
+//? EDIT PARTICULARS
+const EditParticulars = dynamic(
+    async () => await import("./particulars"),
+    { loading: () => <Skeleton.Input /> }
+);
+//? EDIT END USERS
+const EditEndUsers = dynamic(async () => await import("./enduser"), {
+    loading: () => <Skeleton.Input />,
+});
+
+//types
+interface PurchaseRequestFormProps {
+    close: () => any;
+    data?: any; //TODO : construct a valid type of data received
+    isEdit: boolean;
+    prId?: string;
+}
+
 //
-const AddForm = function (props: { close: () => any, data?: any }) {
+const PurchaseRequestForm = function (props: PurchaseRequestFormProps) {
+    const { close, data, isEdit, prId } = props;
 
+    //PRELOAD DATA
     const preload = useMemo(() => {
-        if (typeof props.data !== undefined) {
-            return { ...props.data }
+        //IF DATA IS PROVIDED -> USE IT TO POPULATE THE FORM
+        if (typeof data !== "undefined") {
+            return { ...data, date: dayjs(data.date) }; //? POPULATE FORM WITH PRELOADED DATA
         } else {
-            return { date: dayjs(), particulars: [] }
+            return { date: dayjs(), particulars: [] }; //? INIT DATA
         }
-    }, [props.data])
+    }, [data]);
 
-    const formRef = useRef<FormInstance>(null)
-    const [saving, setSaving] = useState(false)
-    const { message } = useApp()
+    //variables
+    const prID = usePRId(); //PR ID
+    const { message } = App.useApp();
+    const formRef = useRef<FormInstance>(null); //Form Reference
+    const [saving, setSaving] = useState(false); //Save Loading State
 
-    //submit data
+    //?SUBMIT DATA
     const onFinish = async () => {
-        setSaving(true)
-        let response = await fetch('/administrator/procurements/add?doctype=purchase_request', { method: 'POST', body: JSON.stringify({ ...formRef.current?.getFieldsValue(), date: dayjs(formRef.current?.getFieldValue('date')).toISOString() }), headers: [['Content-Type', 'application/json']] })
-        if (response.ok) {
-            setSaving(false)
-            message.success('Saved Procurement Record', 5)
-            props.close()
-        } else {
-            setSaving(false)
-            message.error('Error, Please Try Again')
-        }
-    }
+        setSaving(true); //SET SAVING LOADING TO TRUE
 
+        if (isEdit) {
+            //* - UPDATE PR INFORMATION
+            let response = await fetch(`/administrator/api/pr?_id=${props.prId}`, {
+                method: "PUT",
+                body: JSON.stringify({
+                    ...formRef.current?.getFieldsValue(),
+                    date: dayjs(formRef.current?.getFieldValue("date")).toISOString(),
+                }),
+                headers: [["Content-Type", "application/json"]],
+            });
+
+            //
+            if (response.ok) {
+                message.success("Updated Purchase Request!");
+                setSaving(false);
+                mutate(`/administrator/api/pr?_id=${props.prId}`); //? @REFETCH UPDATED DATA
+                close();
+            } else {
+                setSaving(false);
+                message.error("Error, Please Try Again");
+            }
+        } else {
+            //* - CREATE NEW PR DOCUMENT
+            let response = await fetch("/administrator/api/pr", {
+                method: "POST",
+                body: JSON.stringify({
+                    ...formRef.current?.getFieldsValue(),
+                    date: dayjs(formRef.current?.getFieldValue("date")).toISOString(), //PARSE DATE TO STRING
+                }),
+                headers: [["Content-Type", "application/json"]],
+            });
+
+            if (response.ok) {
+                setSaving(false);
+                message.success("Saved Procurement Record", 5);
+                close(); //close modal
+                mutate(`/administrator/api/procurements`); //? @REFETCH TABLE DATA
+            } else {
+                setSaving(false);
+                message.error("Error, Please Try Again");
+            }
+        }
+    };
+
+    //
     return (
-        <Form layout="vertical" ref={formRef} onFinish={onFinish} autoComplete="false" initialValues={preload} colon>
-            {/* purchase reqest number */}
-            <Form.Item name="pr_no" label="Purchase Request Number" tooltip="Auto Generated PR Numbers are traced based from the latest PR Record " rules={[{ pattern: /\d\d\d\d-\d\d-\d\d[A-Z,a-z,0-9]{2}/i, message: 'Invalid PR Number Format' }, { len: 12, message: 'PR Number Format : 0000-00-0000' }, { required: true, message: 'Required Field' }]} >
-                <PRNumber allowClear instance={formRef} />
+        <Form
+            ref={formRef}
+            layout="vertical"
+            onFinish={onFinish}
+            autoComplete="false"
+            initialValues={preload}
+        >
+            {/*
+             /* TODO REPLACE THIS WITH THE ACTUAL PR GENERATOR
+             /*    - Replace Form `number` when the PR Generator
+             /*    - Feature is completed
+            */}
+            <Form.Item
+                name="number"
+                label="Purchase Request Number"
+                tooltip="Auto Generated PR Numbers are traced based from the latest PR Record "
+                rules={[
+                    {
+                        pattern: /\d\d\d\d-\d\d-\d\d[A-Z,a-z,0-9]{2}/i,
+                        message: "Invalid PR Number Format",
+                    },
+                    { len: 12, message: "PR Number Format : 0000-00-0000" },
+                    { required: true, message: "Required Field" },
+                ]}
+            >
+                <Input />
             </Form.Item>
-            {/* Referenctial Number */}
-            <Space style={{ width: '100%' }}>
-                <Form.Item name="sai" label="SAI" rules={[{ pattern: /\w\w\w-\d\d\d\d-\d\d\d/i, message: 'Invalid Format' }, { required: true, message: 'Required Field' }]}>
+            <Space style={{ width: "100%" }}>
+                {/* @TODO: Inquire proper SAI Id Format, limit characters based from the format */}
+                <Form.Item
+                    name="sai"
+                    label="SAI"
+                    rules={[
+                        { pattern: /\w\w\w-\d\d\d\d-\d\d\d/i, message: "Invalid Format" },
+                        { required: true, message: "Required Field" },
+                    ]}
+                >
                     <Input allowClear placeholder="AAA-9999-999" />
                 </Form.Item>
-                <Form.Item name="obr" label="OBR" rules={[{ pattern: /\w\w\w-\d\d\d\d-\d\d\d/i, message: 'Invalid Format' }, { required: true, message: 'Required Field' }]}>
+                {/* @TODO: Inquire proper OBR Id Format, limit characters based from the format */}
+                <Form.Item
+                    name="obr"
+                    label="OBR"
+                    rules={[
+                        { pattern: /\w\w\w-\d\d\d\d-\d\d\d/i, message: "Invalid Format" },
+                        { required: true, message: "Required Field" },
+                    ]}
+                >
                     <Input allowClear placeholder="AAA-9999-999" />
                 </Form.Item>
-                <Form.Item name="reference" label="Reference Number" style={{ width: 200 }} rules={[{ required: true, message: 'Required Field' }]}>
+                {/* @TODO: Inquire proper REFERENCE Id Format, limit characters based from the format */}
+                <Form.Item
+                    name="reference"
+                    label="Reference Number"
+                    style={{ width: 200 }}
+                    rules={[{ required: true, message: "Required Field" }]}
+                >
                     <Input allowClear addonBefore={`BAC-RESO-`} />
                 </Form.Item>
-                <Form.Item name="date" label="Issued Date" rules={[{ required: true, message: 'Required Field' }]}>
+                {/* DATE creation of PR Document */}
+                <Form.Item
+                    name="date"
+                    label="Issued Date"
+                    rules={[{ required: true, message: "Required Field" }]}
+                >
                     <DatePicker />
                 </Form.Item>
             </Space>
-            <Space align="start" style={{ width: '100%', display: 'grid', gridTemplateColumns: '1fr 30%' }}>
+            <Space
+                align="start"
+                style={{
+                    width: "100%",
+                    display: "grid",
+                    gridTemplateColumns: "1fr 30%",
+                }}
+            >
                 <div>
-                    <Form.Item name="enduserId" label="End User" rules={[{ required: true }, { min: 1, len: 36 }]}>
+                    {/* SELECT END USER AWAITED */}
+                    <Form.Item
+                        name="userId"
+                        label="End User"
+                        rules={[{ required: true }, { min: 1, len: 36 }]}
+                    >
                         {/**@ts-ignore */}
-                        <SelectUser placeholder="Type the User's name" allowClear data={props.users} />
+                        <EditEndUsers data={props?.users} />
                     </Form.Item>
                 </div>
                 <div>
-                    <Form.Item name="budget" label="Approved Budget" rules={[{ required: true, message: 'Required Field' }]}>
-                        <InputNumber min={0} style={{ width: '100%' }} addonBefore={<>&#8369;</>} />
+                    {/* ABC Entry */}
+                    <Form.Item
+                        name="budget"
+                        label="ABC"
+                        rules={[{ required: true, message: "Required Field" }]}
+                    >
+                        <InputNumber
+                            min={0}
+                            style={{ width: "100%" }}
+                            addonBefore={<>&#8369;</>}
+                        />
                     </Form.Item>
                 </div>
             </Space>
-            <Form.Item name="purpose" label="Purpose" rules={[{ required: true, message: 'Please add a purpose to this purchase request' }]}>
+            {/* PURCHASE REQUEST PURPOSE */}
+            <Form.Item
+                name="purpose"
+                label="Purpose"
+                rules={[
+                    {
+                        required: true,
+                        message: "Please add a purpose to this purchase request",
+                    },
+                ]}
+            >
                 <Input.TextArea rows={8} allowClear />
             </Form.Item>
             <Divider>Particulars</Divider>
-            {/* Particulars */}
+            {/* SELECT PARTICULARS */}
             <Form.Item label="Particulars" rules={[{ required: true }]} required>
-                <SelectParticulars />
+                <EditParticulars />
             </Form.Item>
-            {/* Particulars */}
             <Divider />
-            {/* Submit Button */}
-            <Button block icon={<PlusCircleOutlined />} type='primary' htmlType="submit" size='large' loading={saving}>Add PR</Button>
+            {/* SUBMIT BUTTON */}
+            <Button
+                block
+                icon={<PlusCircleOutlined />}
+                type="primary"
+                htmlType="submit"
+                size="large"
+                loading={saving}
+            >
+                Save Purchase Request
+            </Button>
         </Form>
-    )
-}
+    );
+};
 
-export default AddForm;
+export default PurchaseRequestForm;

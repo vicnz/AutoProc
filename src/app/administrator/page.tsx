@@ -1,9 +1,9 @@
 import { Tabs } from 'antd';
 //components
-import Dashboard from '@components/admin/dashboard'
-import TabItems from '@components/admin/dashboard/tabs'
+import Dashboard from '@components/admin/layouts/dashboard'
+import TabItems from '@components/admin/layouts/dashboard/tabs'
 //confg
-const Base = function () {
+const Page = function () {
     return (
         <Dashboard>
             <Tabs items={TabItems} tabPosition='left' />
@@ -11,4 +11,4 @@ const Base = function () {
     )
 }
 
-export default Base;
+export default Page;

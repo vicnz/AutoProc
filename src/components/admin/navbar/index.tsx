@@ -1,21 +1,20 @@
 "use client";
 
+/**
+ * * - GLOBAL NAVBAR
+ * * - Navigation bar as shown in the
+ * * - Left side of the page
+ */
 //libs
-import {
-    AppstoreOutlined,
-    FolderOutlined,
-    HomeOutlined,
-    QuestionOutlined,
-    SettingOutlined,
-    ShopOutlined,
-    TeamOutlined,
-} from "@ant-design/icons";
 import { Button, Space, Tooltip, theme } from "antd";
 import { usePathname } from "next/navigation";
 import { CSSProperties, memo } from "react";
 import Link from "next/link";
+//
+import NavbarRenderedItems from "./nav-items";
 //styles
 import Styles from "./navbar.module.css";
+//
 const NavbarWrapperStyle: CSSProperties = {
     height: "inherit",
     display: "flex",
@@ -25,69 +24,6 @@ const NavbarWrapperStyle: CSSProperties = {
     paddingBottom: "15px",
 };
 
-//types
-type INavbarItemType = {
-    key: string;
-    href?: string;
-    icon?: any;
-    label?: string;
-    disabled?: boolean;
-    type?: "separator";
-};
-
-//Rendered Navigation Items
-const NavbarRenderedItems: {
-    top: INavbarItemType[];
-    bottom: INavbarItemType[];
-} = {
-    top: [
-        {
-            key: "dashboard",
-            href: "/administrator",
-            icon: HomeOutlined,
-            label: "Dashboard",
-        },
-        {
-            key: "records",
-            href: "/administrator/procurements",
-            icon: FolderOutlined,
-            label: "Records",
-        },
-        {
-            key: "user",
-            href: "/administrator/users",
-            icon: TeamOutlined,
-            label: "End Users",
-        },
-        { key: "separator1", type: "separator" },
-        {
-            key: "suppliers",
-            href: "/administrator/suppliers",
-            icon: ShopOutlined,
-            label: "Suppliers",
-        },
-        {
-            key: "entity",
-            href: "/administrator/others",
-            icon: AppstoreOutlined,
-            label: "Others",
-        },
-    ],
-    bottom: [
-        {
-            key: "help",
-            href: "/administrator/help",
-            icon: QuestionOutlined,
-            label: "Help & Feedback",
-        },
-        {
-            key: "settings",
-            href: "/administrator/settings",
-            icon: SettingOutlined,
-            label: "Settings",
-        },
-    ],
-};
 //
 const Navbar = function () {
     const pathname = usePathname();
