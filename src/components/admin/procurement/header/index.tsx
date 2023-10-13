@@ -9,7 +9,7 @@ import dynamic from "next/dynamic";
 import GlobalHeader from "@components/admin/header";
 import { usePRId } from "@components/admin/PRId";
 
-const QRCodeGen = dynamic(async () => await import('@components/admin/QRCode'), { loading: () => <Skeleton.Button /> })
+const QRCodeGen = dynamic(async () => await import('@/components/admin/qrcode'), { loading: () => <Skeleton.Button /> })
 
 const ProcurementItemHeader = function () {
     const prId = usePRId(); //get current active PR id
