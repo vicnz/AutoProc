@@ -1,6 +1,6 @@
 "use client";
 
-import { ScanOutlined } from "@ant-design/icons";
+import { ExpandOutlined, ScanOutlined } from "@ant-design/icons";
 import {
     Space, Button,
     Select,
@@ -29,6 +29,7 @@ function EditForm(props: Props) {
     const [drawer, openDrawer] = useState(false); //OPEN DRAWER
     const [decodedString, setDecodedString] = useState<string>(); //DECODED SCANNER STRING
     const [result, setResult] = useState<Array<any>>() //TRACKING RESULT TEST
+    const [expand, setExpand] = useState(false);
 
     //If QR is Detected Then Set ACTIVE VALUE
     const onScannerResult = (result: any) => {
@@ -138,7 +139,6 @@ function EditForm(props: Props) {
                 <Scanner
                     onError={(err: any) => message.error("Error Occured In QR Scanner")}
                     onScan={onScannerResult}
-                    onLoad={() => console.log('loading scanner....')}
                     style={{ width: '100%' }}
                 />
                 {/* <QRScanner
@@ -159,6 +159,11 @@ function EditForm(props: Props) {
                     setDecodedString(undefined);
                 }}
                 placement="bottom"
+                size={expand ? 'large' : 'default'}
+                maskClosable={false}
+                extra={
+                    <ExpandOutlined onClick={() => setExpand(!expand)} />
+                }
             >
                 {
                     result ?

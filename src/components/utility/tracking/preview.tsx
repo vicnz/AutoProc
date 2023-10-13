@@ -1,5 +1,4 @@
-'use client';
-
+"use client";
 
 import { CheckOutlined } from "@ant-design/icons";
 import { Space, Steps, Tag, Timeline, TimelineProps } from "antd";
@@ -11,13 +10,20 @@ import { memo, useMemo } from "react";
 const Routes = memo(function route(props: {
     data: Array<{ id: string; name: string; timestamp: string }>;
 }) {
-
     //generate markdown
     const items: TimelineProps["items"] = useMemo(() => {
         return props.data.map((item) => {
             return {
-                label: <>{item.name.toUpperCase()}</>,
-                children: <i>{dayjs(item.timestamp).format("MM/DD/YYYY hh:mm a")}</i>,
+                children: (
+                    <span>
+                        <Tag>{dayjs(item.timestamp).format("MM/DD/YY hh:mm a")}</Tag>
+                        <br />
+                        <span style={{ whiteSpace: "normal", fontSize: "0.8em" }}>
+                            {item.name.toUpperCase()}
+                        </span>
+                        <br />
+                    </span>
+                ),
             };
         });
     }, [props.data]);
@@ -25,7 +31,7 @@ const Routes = memo(function route(props: {
     //
     return (
         <Space direction="vertical" style={{ width: "100%", textAlign: "left" }}>
-            <Timeline items={items} mode="right" />
+            <Timeline items={items} mode="left" />
         </Space>
     );
 });
@@ -34,8 +40,11 @@ const TrackingDisplay = (props: {
     data: Array<{ name: string; final: boolean; tracking: any[] }>;
 }) => {
     const data = useMemo(() => {
-        let result = props.data.map((item) => {
+        return props.data.map((item, idx) => {
+            const status = (props.data[--idx]?.final || false) &&
+                !props.data[idx++]?.final;
             return {
+                status: status ? "process" : item.final ? "finish" : "wait",
                 title: (
                     <Space
                         style={{
@@ -66,11 +75,10 @@ const TrackingDisplay = (props: {
                 ),
             };
         });
-        return result;
     }, [props.data]);
     return (
         <>
-            <Steps items={data} />
+            <Steps items={data as any} />
         </>
     );
 };

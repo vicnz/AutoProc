@@ -13,7 +13,7 @@ import QRScanner from "react-qr-scanner";
 type PropTypes = {
     constraints?: any;
     onError: any;
-    onLoad: any;
+    onLoad?: any;
     onScan: any;
     resolution?: any;
     qrArea?: any;
@@ -27,7 +27,6 @@ function Scanner(props: PropTypes & { style?: CSSProperties }) {
             audio: false,
             video: { facingMode: "environment" },
         },
-        resolution: 100,
     };
     const PassedProps = { ...defaultValues, ...props }; //overload default
     return (
