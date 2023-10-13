@@ -1,5 +1,9 @@
 'use client';
 
+/**
+ * * GEN QRCODE FEATURE
+ * * this will generate a QR Code used for Tracking This Document
+ */
 
 import { theme, Descriptions, QRCode } from "antd";
 import { memo } from "react";
