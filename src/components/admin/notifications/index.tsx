@@ -6,24 +6,29 @@
  * * - Are Shown Here
  */
 
-import { BellOutlined, DeleteOutlined } from "@ant-design/icons";
+/**
+ * TODO - Make it listen to all sort of notifications
+ */
+
+import { BellOutlined, DeleteOutlined, WarningOutlined } from "@ant-design/icons";
 import { App, Badge, Button, Drawer, Skeleton } from "antd";
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 
+
+const source = new EventSource(`/administrator/api/notify?_client_date=${dayjs().toISOString()}`) //todo -> check if reinitializing
 
 const NotificationSection = function () {
     const { notification } = App.useApp()
     const [open, setOpen] = useState(false)
 
-    const source = new EventSource(`/administrator/api/notification?_client_date=${dayjs().toISOString()}`)
     useEffect(() => {
-        console.log('Ready State: ', source.readyState)
-        source.onmessage = (e) => {
+        source.onmessage = (e: any) => {
             const sse = JSON.parse(e.data)
             if (sse.type === 'notif') {
                 //TODO make this feasable
-                // notification.info({ message: 'Notification Server Sent Message' }) 
+                console.log(JSON.parse(sse.message))
+                notification.warning({ message: "A Procurement Item is Delayed", duration: 5 })
             }
         }
     }, [])
@@ -40,4 +45,4 @@ const NotificationSection = function () {
     )
 }
 
-export default NotificationSection;
+export default memo(NotificationSection);
