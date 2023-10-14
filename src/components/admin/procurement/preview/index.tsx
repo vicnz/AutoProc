@@ -9,7 +9,7 @@ import {
     memo,
 } from "react";
 //components
-import ConfigProvider from '@components/admin/procurement/LocalThemeConfig'
+import ConfigProvider from '@/components/admin/procurement/preview-custom-config'
 //Styles
 const WrapperStyles: CSSProperties = {
     position: "relative",
