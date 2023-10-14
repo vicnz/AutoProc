@@ -263,6 +263,27 @@ model suppliers {
     @@fulltext([name, representative, tin])
 }
 
+enum LevelType {
+    ERROR
+    WARNING
+    INFO
+}
+
+//Notifications
+model notifications {
+    id          String    @id @default(uuid())
+    resolved    Boolean   @default(false)
+    level       LevelType @default(INFO)
+    title       String?
+    description String?   @db.VarChar(255)
+    source      String?
+    content     Json? //Schema Type [{resourceId: string, referenceId: string, notifType: string}]
+    read        Boolean   @default(false)
+    isDeleted   Boolean   @default(false)
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime  @updatedAt()
+}
+
 //options
 model settings {
     id          String   @id @default(uuid())
