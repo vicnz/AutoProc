@@ -14,7 +14,9 @@ import { memo } from "react";
 import LogoSmall from "@media/small.png";
 import LogoMedium from "@media/medium.png";
 import SearchBar from "@components/admin/search";
-import Notification from '@components/admin/notifications';
+import dynamic from "next/dynamic";
+// import Notification from '@components/admin/notifications';
+const Notification = dynamic(async () => await import('@components/admin/notifications'), { ssr: false })
 //
 const topBarStyle = {
     height: "56px",

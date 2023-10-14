@@ -8,20 +8,25 @@
 
 import { BellOutlined, DeleteOutlined } from "@ant-design/icons";
 import { App, Badge, Button, Drawer, Skeleton } from "antd";
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-import useSWR from "swr";
 
 
 const NotificationSection = function () {
     const { notification } = App.useApp()
     const [open, setOpen] = useState(false)
-    const { data, isLoading, isValidating } = useSWR('/administrator/api/notification')
 
+    const source = new EventSource(`/administrator/api/notification?_client_date=${dayjs().toISOString()}`)
     useEffect(() => {
-        if (data?.changed) {
-            notification.info({ message: "This is A Sample Notification and Not Valid And Something Is Not A Valid Undefined To The Course of this world\nData: " + (data?.data || 0), })
+        console.log('Ready State: ', source.readyState)
+        source.onmessage = (e) => {
+            const sse = JSON.parse(e.data)
+            if (sse.type === 'notif') {
+                //TODO make this feasable
+                // notification.info({ message: 'Notification Server Sent Message' }) 
+            }
         }
-    }, [data])
+    }, [])
 
     return (
         <>
