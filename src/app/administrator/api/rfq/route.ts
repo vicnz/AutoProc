@@ -1,6 +1,13 @@
 import db, { PrismaModels } from "@lib/db";
 import { NextRequest, NextResponse } from "next/server";
 
+//Custom Error
+class RequestForQuotationError extends Error {
+    constructor(message: string) {
+        super(message);
+        this.name = "RequestForQuotationError";
+    }
+}
 //GET RFQ -> /administrator/api/rfq?_id=[valid-pr-id]
 export const GET = async function (req: NextRequest) {
     const { searchParams } = new URL(req.url);
@@ -59,7 +66,10 @@ export const GET = async function (req: NextRequest) {
     } catch (err) {
         console.log(`ERROR:RFQ:GET:${req.url}`);
         console.log(err);
-        return new Response("", { status: 500 });
+        if (err instanceof RequestForQuotationError) {
+            return new Response(`${err.message}`, { status: 500 })
+        }
+        return new Response("Server Error", { status: 500 });
     }
 };
 
@@ -69,6 +79,7 @@ export const PUT = async function (req: NextRequest) {
     try {
         const id = searchParams.get("_id") as string; //Record ID
         const data = await req.json(); //throw an error if body is not provided
+        if (typeof data === 'undefined' || data === null) throw "No Body Data Provided"
 
         await db.purchase_price_quotations.update({
             data: {
@@ -81,7 +92,10 @@ export const PUT = async function (req: NextRequest) {
     } catch (err) {
         console.log(`ERROR:RFQ:PUT:${req.url}`);
         console.log(err);
-        return new Response("", { status: 500 });
+        if (err instanceof RequestForQuotationError) {
+            return new Response(`${err.message}`, { status: 500 })
+        }
+        return new Response("Server Error", { status: 500 });
     }
 };
 
@@ -97,7 +111,7 @@ export const PATCH = async function (req: NextResponse) {
 
             //TODO make sure before marking document as final, there should be at least (1) supplier
             let rfq = await db.purchase_price_quotations.findFirst({ where: { id: rfqId } })
-            if (rfq && (rfq.suppliers as any[]).length < 1) throw new Error("Please Select At Least One Supplier")
+            if (rfq && (rfq.suppliers as any[]).length < 1) throw new RequestForQuotationError("Please Add At Least One Supplier")
 
             await db.purchase_price_quotations.update({
                 data: { final: true },
@@ -107,11 +121,13 @@ export const PATCH = async function (req: NextResponse) {
             });
             return NextResponse.json({ ok: true });
         }
-
         return NextResponse.json({ action: "none" });
     } catch (err) {
         console.log(`ERROR:RFQ:PATCH:${req.url}`);
         console.log(err);
-        return new Response(``, { status: 500 });
+        if (err instanceof RequestForQuotationError) {
+            return new Response(`${err.message}`, { status: 500 })
+        }
+        return new Response(`Server Error`, { status: 500 });
     }
 };
