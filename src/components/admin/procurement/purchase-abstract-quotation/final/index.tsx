@@ -26,7 +26,8 @@ const MakeDocumentFinal = function (props: { final: boolean; id: string, rfqFina
             setLoading(false);
             setShow(false);
         } else {
-            message.error("Server Error, Please Try Again...");
+            const serverMessage = await request.text()
+            message.error(`An Error Occured: [${serverMessage}]`);
             setLoading(false);
         }
     };

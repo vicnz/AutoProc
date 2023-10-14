@@ -3,12 +3,20 @@ import db, { PrismaModels } from "@lib/db";
 import { NextRequest, NextResponse } from "next/server";
 //types
 
+//Specific Custom Error For Request For Quotation
+class AbstractQuotationError extends Error {
+    constructor(message: string) {
+        super(message);
+        this.name = "RequestForQuotationError";
+    }
+}
+
 //GET ABSTRACT QUOTATIONS -> /administrator/api/abstract?_id=[valid-pr-id]
 export const GET = async function (req: NextRequest) {
     const { searchParams } = new URL(req.url);
     try {
         const prID = searchParams.get("_id") as string; //PR ID
-        if (prID === null) throw new Error("Please Provide an ID")
+        if (prID === null) throw new Error("Please Provide an ID");
 
         //check if PR Exists and Is Final
         const pr = await db.purchase_requests.findFirst({
@@ -136,7 +144,10 @@ export const GET = async function (req: NextRequest) {
     } catch (err) {
         console.log(`ERRR:ABSTRACT:GET:${req.url}`);
         console.log(err);
-        return new Response("", { status: 500 });
+        if (err instanceof AbstractQuotationError) {
+            return new Response(err.message, { status: 500 });
+        }
+        return new Response("Server Error", { status: 500 });
     }
 };
 
@@ -203,14 +214,15 @@ export const POST = async function (req: NextRequest) {
 
             return NextResponse.json({ ok: true });
         } else {
-            throw new Error(
-                "Purchase Request & Price Quotation requires to be marked as final"
-            );
+            throw new AbstractQuotationError("Required RFQ to be Completed");
         }
     } catch (err) {
         console.log(`ERRR:ABSTRACT:POST:${req.url}`);
         console.log(err);
-        return new Response("", { status: 500 });
+        if (err instanceof AbstractQuotationError) {
+            return new Response(err.message, { status: 500 });
+        }
+        return new Response("Server Error", { status: 500 });
     }
 };
 
@@ -221,7 +233,7 @@ export const PUT = async function (req: NextRequest) {
         const id = searchParams.get("_id") as string; //document id
         const data = await req.json();
         if (data === null || typeof data === "undefined")
-            throw new Error("Please Provide a Body");
+            throw "Please Provide A Request Body";
 
         //calculate Bidder Amount
         let bidderAmount = 0;
@@ -243,9 +255,13 @@ export const PUT = async function (req: NextRequest) {
 
         return NextResponse.json({ ok: true });
     } catch (err) {
-        console.log(`ERROR:ABSTRACT:PUT:${req.url}`)
-        console.log(err)
-        return new Response("", { status: 500 });
+        console.log(`ERROR:ABSTRACT:PUT:${req.url}`);
+        console.log(err);
+
+        if (err instanceof AbstractQuotationError) {
+            return new Response(err.message, { status: 500 });
+        }
+        return new Response("Server Error", { status: 500 });
     }
 };
 
@@ -257,6 +273,19 @@ export const PATCH = async function (req: NextResponse) {
         const setFinal = searchParams.get("_final") as "true" | "false";
 
         if (setFinal === "true") {
+            const result = await db.purchase_quotation_abstracts.findFirst({
+                select: {
+                    lowestBidder: true,
+                },
+                where: {
+                    id: abstractId,
+                },
+            });
+
+            if (!result?.lowestBidder) {
+                throw new AbstractQuotationError("Please Select The Lowest Bidder");
+            }
+
             await db.purchase_quotation_abstracts.update({
                 data: { final: true },
                 where: {
@@ -270,6 +299,10 @@ export const PATCH = async function (req: NextResponse) {
     } catch (err) {
         console.log(`ERROR:ABSTRACT:PATCH:${req.url}`);
         console.log(err);
-        return new Response("", { status: 500 });
+
+        if (err instanceof AbstractQuotationError) {
+            return new Response(err.message, { status: 500 });
+        }
+        return new Response(`Server Error`, { status: 500 });
     }
 };
