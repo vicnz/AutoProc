@@ -1,12 +1,12 @@
 //TODO refactor this code
-
+import notif from '@lib/broadcast'
 import { getSSEWriter, SampleNotificationType } from '@lib/stream'
 import db from '@lib/db'
 import { NextRequest } from 'next/server'
 // import Notification from '@lib/broadcast'
-export const dynamic = 'force-dynamic' //required for the streamable response to work
+import { NotifyOutdateDelivery } from './utilty'
 
-// const notif = Notification
+export const dynamic = 'force-dynamic' //required for the streamable response to work
 
 const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 ///
@@ -21,60 +21,19 @@ export async function GET(req: NextRequest) {
         const sseWriter = getSSEWriter(writer, encoder)
 
         const sampleEvent = async (notifier: SampleNotificationType) => {
-            //@DEBUG compute deliveries delays
-            const delays = await db.delivery.findFirst({
-                where: {
-                    //do not detect if its completed //TODO -> add a completed field
-                    endDate: {
-                        lte: new Date(getCurrentDate).toISOString() //compute delay by (notify before) computation
-                    }
-                },
-                orderBy: {
-                    createdAt: 'desc'
-                }
-            })
 
-            if (delays) {
-
-                const exists = await db.notifications.findFirst({
-                    where: {
-                        source: {
-                            equals: delays.id
-                        }
-                    }
+            const result = await NotifyOutdateDelivery(getCurrentDate);
+            if (typeof result !== 'undefined') {
+                notifier.update({
+                    data: {
+                        type: 'delivery',
+                        message: JSON.stringify(result || {})
+                    },
+                    event: 'notif'
                 })
-
-                if (!exists) {
-                    const result = await db.notifications.create({
-                        data: {
-                            source: delays.id,
-                            title: "New Incoming Deadline",
-                            description: "Deadline of Delivery Procurement",
-                            content: [
-                                {
-                                    type: 'delivery',
-                                    referenceId: delays.poId
-                                }
-                            ]
-                        },
-                        select: {
-                            source: true,
-                            content: true,
-                            title: true,
-                            description: true,
-                        }
-                    })
-                    //Notify for Recent Updates
-                    notifier.update({
-                        data: {
-                            type: 'notif',
-                            message: JSON.stringify(result)
-                        },
-                        event: 'notif'
-                    })
-
-                }
             }
+
+            //TEST - ASYNC FUNCTION
             ///
             notifier.complete({
                 data: {

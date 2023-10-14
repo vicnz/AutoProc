@@ -100,9 +100,10 @@ export const POST = async function (req: NextRequest) {
                 qty: item.qty,
                 checked: {
                     count: 0,
-                    quality: false,
-                    authentic: false,
-                }
+                    condition: false,
+                    compliant: false,
+                },
+                remarks: null
             }
         })
         const parsed = {

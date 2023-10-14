@@ -23,12 +23,19 @@ const NotificationSection = function () {
     const [open, setOpen] = useState(false)
 
     useEffect(() => {
+
+        if (!('Notification' in window)) {
+            //browser does not support 
+        } else if (Notification.permission === 'denied') {
+            Notification.requestPermission() //request permission
+        }
+
         source.onmessage = (e: any) => {
             const sse = JSON.parse(e.data)
-            if (sse.type === 'notif') {
+            if (sse.type === 'delivery') {
                 //TODO make this feasable
-                console.log(JSON.parse(sse.message))
-                notification.warning({ message: "A Procurement Item is Delayed", duration: 5 })
+                const { title, description } = JSON.parse(sse.message);
+                notification.warning({ description, message: title, duration: 5 })
             }
         }
     }, [])
