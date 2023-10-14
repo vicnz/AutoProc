@@ -83,8 +83,16 @@ function EditForm(props: Props) {
                     openDialog(false)
                     openDrawer(true)
                 }, 1000)
+
             } else {
-                message.error("Error, Please Try Again");
+                const serverText = JSON.parse(await response.text())
+
+                if (serverText?.type && serverText.type === 'completed') {
+                    message.info("Document is Already Completed")
+                } else {
+                    message.error("Error, Please Try Again");
+                }
+
             }
         }
     };

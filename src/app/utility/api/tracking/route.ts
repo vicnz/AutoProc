@@ -76,6 +76,10 @@ export async function PUT(req: NextRequest) {
             //? ? -> ASSUMED THAT THIS IS THE CURRENTLY TRACKED DOCUMENT
             const getActiveDocument = tracking.find((item) => item.final == false); //GET ACTIVE DOCUMENT
 
+            if (typeof getActiveDocument === 'undefined') {
+                //return when all documents are completed
+                return new Response(JSON.stringify({ type: 'completed', message: 'This Document Is Already Completed' }), { status: 500 })
+            }
             //IF NONE ASSUMED THAT PR IS THE ONLY EXISTSING DOCUMENT
             if (getActiveDocument) {
                 //TODO - [IN/OUT] DOCUMENT
@@ -160,6 +164,6 @@ export async function PUT(req: NextRequest) {
         if (err instanceof PrismaClientError) {
             console.log(err);
         }
-        return new Response("", { status: 500 });
+        return new Response("{}", { status: 500 });
     }
 }
