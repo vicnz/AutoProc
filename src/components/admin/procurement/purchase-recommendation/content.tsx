@@ -100,9 +100,9 @@ const ContentPane = function (props: ContentPaneProps) {
                     <Text style={{ textTransform: "uppercase", fontWeight: "bold" }}>
                         WHEREAS
                     </Text>
-                    , Purchase Request No. {props.data.number} {props.data.total} involves
+                    , Purchase Request No. {props.data.number} involves
                     the procurement of ({props.data.particulars}) with the approved budget
-                    of {props.data.budget}
+                    of {props.data.total}
                 </Paragraph>
                 <Paragraph
                     style={{
