@@ -21,8 +21,7 @@ import AlternativeRender from './alt-monitoring';
 const PrintQRCode = function (props: { id: string }) {
     const qrPrintRef = useRef(null);
     const { data, isLoading, error } = useSWR<{ token: string, payload: any }>(
-        `/administrator/api/qr?_id=${props.id}`
-    );
+        `/administrator/api/qr?_id=${props.id}`, { refreshInterval: 30000 });
     const [open, setOpen] = useState(false);
 
     const handlePrint = useReactToPrint({
