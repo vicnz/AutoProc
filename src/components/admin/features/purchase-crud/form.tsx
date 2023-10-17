@@ -5,7 +5,7 @@
  * * - Purchase Request Form Where the Validation and Updating Commence
  */
 
-import { PlusCircleOutlined } from "@ant-design/icons";
+import { BuildOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import {
     Form,
     Space,
@@ -17,6 +17,7 @@ import {
     App,
     InputNumber,
     Skeleton,
+    Tooltip,
 } from "antd";
 import { useMemo, useRef, useState } from "react";
 import dayjs from "dayjs";
@@ -128,40 +129,39 @@ const PurchaseRequestForm = function (props: PurchaseRequestFormProps) {
             <Form.Item
                 name="number"
                 label="Purchase Request Number"
-                tooltip="Auto Generated PR Numbers are traced based from the latest PR Record "
                 rules={[
                     {
-                        pattern: /\d\d\d\d-\d\d-\d\d[A-Z,a-z,0-9]{2}/i,
+                        pattern: /(\d\d\d\d)-(\d\d)-[0-9]{4}/,
                         message: "Invalid PR Number Format",
                     },
-                    { len: 12, message: "PR Number Format : 0000-00-0000" },
+                    { max: 12, message: "PR Number Format : 0000-00-0000" },
                     { required: true, message: "Required Field" },
                 ]}
             >
-                <Input />
+                <Input placeholder="0000-00-0000" addonBefore={<Tooltip title="TODO"><BuildOutlined /></Tooltip>} />
             </Form.Item>
-            <Space style={{ width: "100%" }}>
+            <Space style={{ width: "100%", display: 'grid', gridTemplateColumns: '2fr 1fr 1fr' }}>
                 {/* @TODO: Inquire proper SAI Id Format, limit characters based from the format */}
-                <Form.Item
+                {/* <Form.Item
                     name="sai"
                     label="SAI"
                     rules={[
-                        { pattern: /\w\w\w-\d\d\d\d-\d\d\d/i, message: "Invalid Format" },
                         { required: true, message: "Required Field" },
                     ]}
                 >
                     <Input allowClear placeholder="AAA-9999-999" />
-                </Form.Item>
+                </Form.Item> */}
                 {/* @TODO: Inquire proper OBR Id Format, limit characters based from the format */}
                 <Form.Item
                     name="obr"
                     label="OBR"
                     rules={[
-                        { pattern: /\w\w\w-\d\d\d\d-\d\d\d/i, message: "Invalid Format" },
+                        { max: 18, message: "Four Digit Only" },
+                        { pattern: /(01|05|07|06)-(01|02|03)-\d\d\d\d-\d\d-(\d{4})/i, message: "Invalid Format" },
                         { required: true, message: "Required Field" },
                     ]}
                 >
-                    <Input allowClear placeholder="AAA-9999-999" />
+                    <Input allowClear placeholder="00-00-0000-00-0000" />
                 </Form.Item>
                 {/* @TODO: Inquire proper REFERENCE Id Format, limit characters based from the format */}
                 <Form.Item
@@ -170,7 +170,7 @@ const PurchaseRequestForm = function (props: PurchaseRequestFormProps) {
                     style={{ width: 200 }}
                     rules={[{ required: true, message: "Required Field" }]}
                 >
-                    <Input allowClear addonBefore={`BAC-RESO-`} />
+                    <Input allowClear prefix={`REF`} />
                 </Form.Item>
                 {/* DATE creation of PR Document */}
                 <Form.Item

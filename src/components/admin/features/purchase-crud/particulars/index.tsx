@@ -71,9 +71,9 @@ const SelectParticulars = forwardRef(function Particulars(props, ref) {
                                     />
                                 </Form.Item>
                                 {/* STOCK NUMBER */}
-                                <Form.Item noStyle name={[field.name, "stock"]}>
+                                {/* <Form.Item noStyle name={[field.name, "stock"]}>
                                     <Input placeholder="Stock Number" />
-                                </Form.Item>
+                                </Form.Item> */}
                                 {/* UNIT PRICE */}
                                 <Form.Item
                                     noStyle
