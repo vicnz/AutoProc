@@ -83,7 +83,7 @@ const ContentPane = function (props: ContentPaneProps) {
                     <Text style={{ textTransform: "uppercase", fontWeight: "bold" }}>
                         WHEREAS
                     </Text>
-                    , Annex &quote;H&quote; of the Consolidated Guidelines for the Alternative Methods
+                    , Annex {"\""}H{'\"'} of the Consolidated Guidelines for the Alternative Methods
                     of Procurement prescribed under Section V, Paragraph D.8.b.ii that the
                     BAC shall prepare and send the RFQs/RFPs to at least three (3)
                     suppliers, contractors or consultants of known qualifications where
