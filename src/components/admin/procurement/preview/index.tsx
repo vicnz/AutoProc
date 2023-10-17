@@ -42,7 +42,7 @@ const PrintablePaneStyle: CSSProperties = {
     color: "darkslategray",
     display: "grid",
     gridTemplateRows: "auto auto 1fr auto",
-    padding: "15px 0",
+    padding: "0px 0 15px 0", //15px 0
 };
 //compoents
 const Preview = forwardRef(
