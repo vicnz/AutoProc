@@ -36,6 +36,11 @@ const EditEndUsers = dynamic(async () => await import("./enduser"), {
     loading: () => <Skeleton.Input />,
 });
 
+
+const PRGenerator = dynamic(async () => await import('@components/admin/features/reference-num-generator'), {
+    loading: () => <Skeleton.Input active />
+})
+
 //types
 interface PurchaseRequestFormProps {
     close: () => any;
@@ -121,11 +126,6 @@ const PurchaseRequestForm = function (props: PurchaseRequestFormProps) {
             autoComplete="false"
             initialValues={preload}
         >
-            {/*
-             /* TODO REPLACE THIS WITH THE ACTUAL PR GENERATOR
-             /*    - Replace Form `number` when the PR Generator
-             /*    - Feature is completed
-            */}
             <Form.Item
                 name="number"
                 label="Purchase Request Number"
@@ -138,20 +138,14 @@ const PurchaseRequestForm = function (props: PurchaseRequestFormProps) {
                     { required: true, message: "Required Field" },
                 ]}
             >
-                <Input placeholder="0000-00-0000" addonBefore={<Tooltip title="TODO"><BuildOutlined /></Tooltip>} />
+                {
+                    isEdit ?
+                        <Input placeholder="0000-00-0000" prefix={<b>PR No.</b>} readOnly />
+                        :
+                        <PRGenerator instance={formRef} />
+                }
             </Form.Item>
             <Space style={{ width: "100%", display: 'grid', gridTemplateColumns: '2fr 1fr 1fr' }}>
-                {/* @TODO: Inquire proper SAI Id Format, limit characters based from the format */}
-                {/* <Form.Item
-                    name="sai"
-                    label="SAI"
-                    rules={[
-                        { required: true, message: "Required Field" },
-                    ]}
-                >
-                    <Input allowClear placeholder="AAA-9999-999" />
-                </Form.Item> */}
-                {/* @TODO: Inquire proper OBR Id Format, limit characters based from the format */}
                 <Form.Item
                     name="obr"
                     label="OBR"
