@@ -86,6 +86,7 @@ export const POST = async function (req: NextRequest) {
 
         const pr = await db.purchase_requests.findFirstOrThrow({
             select: {
+                number: true,
                 particulars: true,
             },
             where: { id: prID },
@@ -133,7 +134,7 @@ export const POST = async function (req: NextRequest) {
         });
 
         const parsed = {
-            number: body.number,
+            number: pr.number as string, //? needs fixing
             entity: body.entity,
             date: body.date,
             duration: body.duration,

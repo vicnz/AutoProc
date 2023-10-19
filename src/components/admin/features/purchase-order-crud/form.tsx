@@ -109,7 +109,7 @@ const PurchaseOrderForm = function (props: PurchaseOrderFormProps) {
             <PreviewPR />
             <br />
             <Divider>CREATE NEW</Divider>
-            <Form.Item
+            {/* <Form.Item
                 style={{ width: "100%" }}
                 label="PO Number"
                 name="number"
@@ -122,7 +122,7 @@ const PurchaseOrderForm = function (props: PurchaseOrderFormProps) {
                 ]}
             >
                 <Input allowClear />
-            </Form.Item>
+            </Form.Item> */}
             <Space style={{ width: "100%" }}>
                 <Form.Item
                     label="Entity/Agency"
