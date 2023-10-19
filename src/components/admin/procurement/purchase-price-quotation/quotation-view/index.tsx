@@ -14,7 +14,6 @@ const { Text } = Typography;
 const PriceQuotationPreview = function (props: { data: any; supplier: any }) {
     const [approval, setApproval] = useState("Dr. Djovi Regala Durante");
     const [office, setOffice] = useState("College President");
-
     return (
         <>
             {/* PREVIEW HEADER */}
@@ -82,8 +81,8 @@ const PriceQuotationPreview = function (props: { data: any; supplier: any }) {
                             {Intl.NumberFormat("en-US", {
                                 style: "currency",
                                 currency: "PHP",
-                            }).format(props?.data?.pr?.budget)}{" "}
-                            ({NumToWords(props?.data?.pr?.budget).toUpperCase()} PESOS) (GPPB
+                            }).format(props?.data?.total)}{" "}
+                            ({NumToWords(props?.data?.total).toUpperCase()} PESOS) (GPPB
                             Resolution No. 09-2009)
                         </List.Item>
                         <List.Item key={5} style={{ fontSize: ".8em" }}>

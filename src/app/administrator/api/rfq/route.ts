@@ -36,6 +36,7 @@ export const GET = async function (req: NextRequest) {
         });
 
         if (result) {
+            let countTotal = 0;
             const parsed = {
                 id: result.id,
                 ris: "", //TODO ask what is this?
@@ -44,10 +45,7 @@ export const GET = async function (req: NextRequest) {
                 tracking: result.tracking,
                 final: result.final,
                 suppliers: result.suppliers,
-                budget: Intl.NumberFormat("en-US", {
-                    style: "currency",
-                    currency: "PHP",
-                }).format(result?.pr?.budget),
+                budget: result.pr.budget,
                 reference: result.pr.reference,
                 particulars: (
                     result.pr.particulars as Array<{
@@ -56,8 +54,12 @@ export const GET = async function (req: NextRequest) {
                         price: number;
                         unit: string;
                     }>
-                ).map((item, idx) => ({ ...item, key: idx + 1 })),
+                ).map((item, idx) => {
+                    countTotal += item.price * item.qty
+                    return ({ ...item, key: idx + 1 })
+                }),
                 recommendFinal: result.pr.recomend[0].final,
+                total: countTotal
             };
             return NextResponse.json(parsed);
         } else {
