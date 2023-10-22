@@ -2,7 +2,7 @@
 
 generator client {
     provider        = "prisma-client-js"
-    previewFeatures = ["fullTextIndex", "fullTextSearch"]
+    previewFeatures = ["fullTextIndex", "fullTextSearch", "views"]
 }
 
 datasource db {
