@@ -3,7 +3,7 @@
 import { ConfigProvider, ThemeConfig } from "antd";
 import { PropsWithChildren } from "react";
 
-const theme: ThemeConfig = {
+const ThemeConfig: ThemeConfig = {
     token: {
         colorPrimary: "#C0252A",
     },
@@ -12,7 +12,7 @@ const theme: ThemeConfig = {
 const ThemeConfigProvider = function (props: PropsWithChildren<any>) {
     return (
         <>
-            <ConfigProvider theme={theme}>{props.children}</ConfigProvider>
+            <ConfigProvider theme={ThemeConfig}>{props.children}</ConfigProvider>
         </>
     );
 };
