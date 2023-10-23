@@ -21,8 +21,8 @@ export async function GET(req: NextRequest) {
         const sseWriter = getSSEWriter(writer, encoder); //CUSTOM STREAM HANDLER
 
         /**CREATE WRITTER */
+        const result = await DetectNewNotifications(); //CHECK IF NEW NOTIFICATIONS ARRIVED
         const WriterEvent = async (notifier: NotificationType) => {
-            const result = await DetectNewNotifications(); //CHECK IF NEW NOTIFICATIONS ARRIVED
             if (result) {
                 //SEND TO CLIENT
                 notifier.update({
@@ -32,9 +32,9 @@ export async function GET(req: NextRequest) {
                     },
                     event: "notif",
                 });
+
             }
 
-            //SEND COMPLETE
             notifier.complete({
                 data: {
                     type: "completed",
@@ -42,6 +42,7 @@ export async function GET(req: NextRequest) {
                 },
                 event: "notif-complete",
             });
+
         };
 
         await WriterEvent(sseWriter); //RUN AWAIT RUNNER

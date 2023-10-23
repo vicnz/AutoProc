@@ -11,7 +11,7 @@ export const DetectNewNotifications = async () => {
         where: {
             createdAt: {
                 lte: dayjs().toISOString(),
-                gte: dayjs().subtract(1, 'minute').toISOString()
+                gte: dayjs().subtract(5, 'seconds').toISOString() //fetch notification every 5 seconds
             },
             read: false,
             resolved: false
@@ -20,8 +20,8 @@ export const DetectNewNotifications = async () => {
 
     if (new_notif && new_notif.length > 0) {
         return new_notif.map(item => {
-            const props: Pick<PrismaModels['notifications'], 'title' | 'description'> = item
-            return props;
+            const { title, description, source } = item
+            return { title, description, source };
         })
     }
 }

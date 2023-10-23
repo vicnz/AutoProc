@@ -2,6 +2,7 @@ import db, { PrismaModels } from '@lib/db'
 import { NextRequest, NextResponse } from 'next/server'
 import APIError from '@/lib/api_error'
 import dayjs from 'dayjs'
+import { randomRange } from '@/lib/random'
 
 export const GET = async (req: NextRequest) => {
     const { searchParams } = new URL(req.url)
@@ -37,8 +38,23 @@ export const GET = async (req: NextRequest) => {
         console.log(`ERROR:GET:${req.url}`)
         console.log(err)
         if (err instanceof APIError) {
-            //todo
+            console.log(err)
+            return new Response("Client Error", { status: 500 })
         }
         return new Response("Server Error", { status: 500 })
     }
+}
+
+//TEST
+export const POST = async function () {
+    const result = await db.notifications.create({
+        data: {
+            content: [],
+            title: `Random String ${randomRange(10, 100)}`,
+            description: "Nothing In Particular",
+            source: "notset",
+        }
+    })
+
+    return NextResponse.json({ ok: true })
 }

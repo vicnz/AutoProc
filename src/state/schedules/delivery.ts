@@ -14,12 +14,11 @@ export function MonitorDeliveries() {
     const notifyBeforeAtDate = 3; //3 days //TODO this value comes from the database settings
 
     const monitorSchedule = schedule(interval, async (now) => {
-
-        const nowDate = dayjs(now).add(notifyBeforeAtDate, 'days').toISOString() //compute the days before deadline
+        const nowDate = dayjs(now).add(notifyBeforeAtDate, 'days').toISOString() //TODO compute the days before deadline
         const result = await db.delivery.findMany({
             where: {
                 endDate: {
-                    lte: dayjs(now).toISOString(), //TODO fetch this time range from database
+                    lte: dayjs(now).toISOString(),
                     gte: dayjs(now).subtract(60, 'seconds').toISOString()
                 }
             },
@@ -34,11 +33,11 @@ export function MonitorDeliveries() {
             return {
                 title: "Delayed Delivery Item",
                 read: false,
-                description: `Delivery of Purchase Order No. ${item.poId} is delayed on time`,
+                description: `Delivery of Purchase Request ID ${item.poId} is delayed on time`,
                 resolved: false,
                 source: item.poId,
                 id: item.poId,
-                content: []
+                content: { type: 'delivery', ref: item.poId }
             }
         })
 

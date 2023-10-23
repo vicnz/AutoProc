@@ -1,6 +1,6 @@
 'use client';
 
-import { Fragment, PropsWithChildren, memo, useEffect } from "react";
+import { Fragment, PropsWithChildren, memo, useCallback, useEffect } from "react";
 import { App } from 'antd'
 
 /**
@@ -14,17 +14,27 @@ const source = new EventSource(`/administrator/api/notify`)
 const Notify = function (props: PropsWithChildren<any>) {
     const { notification } = App.useApp()
 
+    const showNotification = useCallback((notifications: any[]) => {
+        notifications.forEach(({ title, description }) => {
+            notification.info({ message: title, description: description, duration: 5000 })
+        })
+    }, [])
+
     useEffect(() => {
         console.log("LISTENING.... to INCOMING Push Notifications")
 
         source.onmessage = (e: any) => {
             const sse = JSON.parse(e.data)
             if (sse.type === 'notif') {
-                //todo create notification
-                console.log("New Notification")
+                const items = JSON.parse(sse.message)
+                showNotification(items)
             }
         }
-    }, []); //run once
+
+        return () => {
+            notification.destroy()
+        }
+    }, [props.children]); //run once
 
     return (
         <Fragment>

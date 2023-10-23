@@ -52,6 +52,7 @@ const NotificationSection = function () {
                                 return (
                                     <Fragment key={item.id}>
                                         <Card
+                                            style={{ marginBottom: 10 }}
                                             title={`Delivery`}
                                             actions={[
                                                 <span>
