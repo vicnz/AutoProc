@@ -47,6 +47,9 @@
       ],
       "@components/utility/*": [
         "./src/components/utility/*"
+      ],
+      "@logger": [
+        "./logger.ts"
       ]
     }
   },

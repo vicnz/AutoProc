@@ -56,3 +56,4 @@ pocketbase.exe.old
 .env
 
 certificates
+app.log
