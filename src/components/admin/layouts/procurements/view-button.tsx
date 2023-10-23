@@ -17,7 +17,7 @@ const ViewButton = function ({ id }: { id: string }) {
     //
     return (
         <span>
-            <Link href={`/administrator/procurements/${id}`} passHref>
+            <Link href={`/administrator/procurements/${encodeURI(id)}`} passHref>
                 <Button
                     loading={loading}
                     onClick={() => {
@@ -26,7 +26,7 @@ const ViewButton = function ({ id }: { id: string }) {
                     type="text"
                     icon={<EyeOutlined />}
                 >
-                    View
+                    Details
                 </Button>
             </Link>
         </span>
