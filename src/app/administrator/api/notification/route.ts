@@ -30,9 +30,9 @@ export const GET = async (req: NextRequest) => {
                 })
                 return NextResponse.json(resultingmap)
             }
-            return NextResponse.json({})
+            return NextResponse.json([])
         }
-        return NextResponse.json({})
+        return NextResponse.json([])
     } catch (err) {
         console.log(`ERROR:GET:${req.url}`)
         console.log(err)

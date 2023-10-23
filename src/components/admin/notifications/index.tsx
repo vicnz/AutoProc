@@ -7,7 +7,7 @@
  */
 
 import { BellOutlined, CheckCircleOutlined, ClearOutlined, DeleteOutlined, WarningOutlined } from "@ant-design/icons";
-import { Badge, Button, Card, Drawer, Skeleton } from "antd";
+import { Badge, Button, Card, Drawer, Empty, Skeleton } from "antd";
 import { Fragment, memo, useState } from "react";
 import useSWR from "swr";
 
@@ -42,25 +42,33 @@ const NotificationSection = function () {
                     </>
                 }
             >
-                {data.map((item: any) => {
-                    return (
-                        <Fragment key={item.id}>
-                            <Card
-                                title={`Delivery`}
-                                actions={[
-                                    <span>
-                                        <CheckCircleOutlined /> Resolved
-                                    </span>,
-                                    <span>
-                                        <ClearOutlined /> Clear
-                                    </span>,
-                                ]}
-                            >
-                                <Card.Meta title={item.title} description={item.description} />
-                            </Card>
-                        </Fragment>
-                    );
-                })}
+                {
+                    data.length === 0 ?
+                        <>
+                            <Empty />
+                        </> :
+                        <>
+                            {data?.map((item: any) => {
+                                return (
+                                    <Fragment key={item.id}>
+                                        <Card
+                                            title={`Delivery`}
+                                            actions={[
+                                                <span>
+                                                    <CheckCircleOutlined /> Resolved
+                                                </span>,
+                                                <span>
+                                                    <ClearOutlined /> Clear
+                                                </span>,
+                                            ]}
+                                        >
+                                            <Card.Meta title={item.title} description={item.description} />
+                                        </Card>
+                                    </Fragment>
+                                );
+                            })}
+                        </>
+                }
             </Drawer>
         </>
     );
