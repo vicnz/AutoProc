@@ -96,7 +96,7 @@ const TableColumns: TableColumnsType = [
             return (
                 <span>
                     <Tooltip title={Math.floor(average) + "%"}>
-                        <Progress size="small" percent={average} showInfo={false} status={status as any} />
+                        <Progress size="small" percent={average} showInfo={false} status={status as any} strokeColor={Math.floor(average) === 100 ? '#C0252A' : '#38424F'} />
                     </Tooltip>
                 </span>
             )
