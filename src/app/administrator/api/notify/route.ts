@@ -1,64 +1,72 @@
-//TODO refactor this code
-import notif from '@lib/broadcast'
-import { getSSEWriter, SampleNotificationType } from '@lib/stream'
-import db from '@lib/db'
-import { NextRequest } from 'next/server'
-// import Notification from '@lib/broadcast'
-import { NotifyOutdateDelivery } from './utilty'
+import { getSSEWriter, NotificationType } from "@lib/stream";
+import { NextRequest } from "next/server";
+import { DetectNewNotifications } from "./utilty";
 
-export const dynamic = 'force-dynamic' //required for the streamable response to work
+/**
+ * * Push Notification to Client
+ * * This uses Server Sent Events (One Directional Messaging)
+ * * This Route will continously run until an event is trigger
+ * * which will be pushed to the client browser subscribe to this
+ */
 
-const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
-///
+export const dynamic = "force-dynamic"; //REQUIRED for the streamable response to work
 export async function GET(req: NextRequest) {
-    const { searchParams } = new URL(req.url)
     try {
-        const getCurrentDate = searchParams.get('_client_date') as string
-        //
+        /**
+         * INITIALIZE STREAMS
+         */
         let responseStream = new TransformStream();
-        const writer = responseStream.writable.getWriter()
+        const writer = responseStream.writable.getWriter();
         const encoder = new TextEncoder();
-        const sseWriter = getSSEWriter(writer, encoder)
+        const sseWriter = getSSEWriter(writer, encoder); //CUSTOM STREAM HANDLER
 
-        const sampleEvent = async (notifier: SampleNotificationType) => {
-
-            const result = await NotifyOutdateDelivery(getCurrentDate);
-            if (typeof result !== 'undefined') {
+        /**CREATE WRITTER */
+        const WriterEvent = async (notifier: NotificationType) => {
+            const result = await DetectNewNotifications(); //CHECK IF NEW NOTIFICATIONS ARRIVED
+            if (result) {
+                //SEND TO CLIENT
                 notifier.update({
                     data: {
-                        type: 'delivery',
-                        message: JSON.stringify(result || {})
+                        type: "notif",
+                        message: JSON.stringify(result || []),
                     },
-                    event: 'notif'
-                })
+                    event: "notif",
+                });
             }
 
-            //TEST - ASYNC FUNCTION
-            ///
+            //SEND COMPLETE
             notifier.complete({
                 data: {
-                    type: 'completed',
-                    message: 'Completed Message'
+                    type: "completed",
+                    message: "Completed Message",
                 },
-                event: 'notif-complete'
-            })
-        }
+                event: "notif-complete",
+            });
+        };
 
-        await sampleEvent(sseWriter)
+        await WriterEvent(sseWriter); //RUN AWAIT RUNNER
 
+        /**
+         * ! NOTE
+         * ! set headers for streaming to work
+         * - Content-Type: text/event-stream
+         * - Connection: keep-alive
+         * - Cache-Control: no-cache, no-transform
+         * - Access-Control-Allow-Origin: "*"
+         * - X-Accel-Buffering: no
+         */
         return new Response(responseStream.readable, {
             headers: {
-                'Content-Type': 'text/event-stream',
-                Connection: 'keep-alive',
-                'Cache-Control': 'no-cache, no-transform',
-                'Access-Control-Allow-Origin': '*',
-                'X-Accel-Buffering': 'no'
-            }
-        })
-
+                "Content-Type": "text/event-stream",
+                Connection: "keep-alive",
+                "Cache-Control": "no-cache, no-transform",
+                "Access-Control-Allow-Origin": "*",
+                "X-Accel-Buffering": "no",
+            },
+        });
     } catch (err) {
-        console.log("Printed Out", err)
-        return new Response("", { status: 500 })
+        console.log(`ERROR:STREAM:${req.url}`)
+        console.log(err);
+        return new Response("", { status: 500 });
     }
 }
-

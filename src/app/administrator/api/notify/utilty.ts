@@ -1,72 +1,27 @@
-import db from '@lib/db'
+import db, { PrismaModels } from '@lib/db'
 import dayjs from 'dayjs'
 
-//TODO -> find delays even when the eventsource is not running
-//TODO -> Migrate this mutation in Database Triggers
-export const NotifyOutdateDelivery = async (trace_date: string) => {
-    //LookUP Deliveries
-    const lookupNewDelays = await db.delivery.findFirst({
+/**
+ * * TIMELY FETCH ANY NEW NOTIFICATIONS EVERY MINUTE
+ * * RETURN TITLE, DESCRIPTION
+ */
+export const DetectNewNotifications = async () => {
+    //FETCH
+    const new_notif = await db.notifications.findMany({
         where: {
-            endDate: {
-                lte: dayjs(trace_date).toISOString()
-            }
-        },
-        orderBy: {
-            createdAt: 'desc'
+            createdAt: {
+                lte: dayjs().toISOString(),
+                gte: dayjs().subtract(1, 'minute').toISOString()
+            },
+            read: false,
+            resolved: false
         }
     })
 
-    //if there is new untraced delays
-    if (lookupNewDelays) {
-        //check if the detected delivery exists already
-        const existsInNotification = await db.notifications.findFirst({
-            where: {
-                resolved: false,
-                source: {
-                    equals: lookupNewDelays.id
-                }
-            }
+    if (new_notif && new_notif.length > 0) {
+        return new_notif.map(item => {
+            const props: Pick<PrismaModels['notifications'], 'title' | 'description'> = item
+            return props;
         })
-        //add new notification item
-        if (existsInNotification === null) {
-            const getPR = await db.purchase_orders.findFirst({
-                select: {
-                    id: true,
-                    number: true,
-                    pr: {
-                        select: {
-                            number: true,
-                            id: true
-                        }
-                    }
-                },
-                where: {
-                    id: lookupNewDelays.poId
-                }
-            })
-
-            const result = await db.notifications.create({
-                data: {
-                    source: lookupNewDelays.id,
-                    title: "Delayed Item Detected",
-                    description: `Delayed Delivery For Purchase Order #${getPR?.number}`,
-                    content: {
-                        type: 'pr',
-                        refId: getPR?.pr?.id
-                    }
-                },
-                select: {
-                    title: true,
-                    description: true,
-                    id: true,
-                    level: true,
-                    content: true
-                }
-            })
-            return result;
-        }
-        return;
     }
-
-    return;
 }

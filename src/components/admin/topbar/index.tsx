@@ -15,7 +15,7 @@ import LogoSmall from "@media/small.png";
 import LogoMedium from "@media/medium.png";
 import SearchBar from "@components/admin/search";
 import dynamic from "next/dynamic";
-// import Notification from '@components/admin/notifications';
+import Notify from '@components/admin/notifications/notify'
 const Notification = dynamic(async () => await import('@components/admin/notifications'), { ssr: false })
 //
 const topBarStyle = {
@@ -50,7 +50,9 @@ const Topbar = function () {
             </Space>
             <SearchBar />
             <div>
-                <Notification />
+                <Notify>
+                    <Notification />
+                </Notify>
             </div>
         </nav>
     );
