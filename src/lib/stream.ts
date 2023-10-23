@@ -91,7 +91,7 @@ export const getSSEWriter = (
 
 
 //sample event
-export type SampleNotificationType = EventNotifier<{
+export type NotificationType = EventNotifier<{
     update: {
         data: {
             type: string,
