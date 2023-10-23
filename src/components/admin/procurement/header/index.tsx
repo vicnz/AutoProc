@@ -1,7 +1,7 @@
 "use client";
 //libs
-import { ArrowLeftOutlined } from "@ant-design/icons";
-import { Button, Skeleton, Space, Tag } from "antd";
+import { ArrowLeftOutlined, QuestionCircleOutlined } from "@ant-design/icons";
+import { Button, Divider, Skeleton, Space, Tag } from "antd";
 import { useRouter } from "next/navigation";
 import { memo } from "react";
 import dynamic from "next/dynamic";
@@ -34,6 +34,8 @@ const ProcurementItemHeader = function () {
                 }
             >
                 <QRCodeGen id={prId} />
+                <Divider type='vertical' />
+                <Button icon={<QuestionCircleOutlined />} type='text' />
             </GlobalHeader>
         </>
     );

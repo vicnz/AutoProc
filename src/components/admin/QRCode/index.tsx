@@ -43,7 +43,6 @@ const PrintQRCode = function (props: { id: string }) {
                 onOk={() => setOpen(false)}
                 centered
                 title="PRINT TRACKING OPTION"
-                bodyStyle={{ display: "grid", placeItems: "center" }}
                 footer={
                     <>
                         <Button
