@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 /**
  * * - NOTIFICATION SECTION
@@ -6,50 +6,64 @@
  * * - Are Shown Here
  */
 
-/**
- * TODO - Make it listen to all sort of notifications
- */
+import { BellOutlined, CheckCircleOutlined, ClearOutlined, DeleteOutlined, WarningOutlined } from "@ant-design/icons";
+import { Badge, Button, Card, Drawer, Skeleton } from "antd";
+import { Fragment, memo, useState } from "react";
+import useSWR from "swr";
 
-import { BellOutlined, DeleteOutlined, WarningOutlined } from "@ant-design/icons";
-import { App, Badge, Button, Drawer, Skeleton } from "antd";
-import dayjs from "dayjs";
-import { memo, useCallback, useEffect, useState } from "react";
-
-
-const source = new EventSource(`/administrator/api/notify?_client_date=${dayjs().toISOString()}`) //todo -> check if reinitializing
-
+const numberOfhours = 1000; //this should be dynamic
 const NotificationSection = function () {
-    const { notification } = App.useApp()
-    const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(false);
+    const { data, error, isLoading } = useSWR(`/administrator/api/notification?all=true&hour=${numberOfhours}`);
 
-    useEffect(() => {
-
-        if (!('Notification' in window)) {
-            //browser does not support 
-        } else if (Notification.permission === 'denied') {
-            Notification.requestPermission() //request permission
-        }
-
-        source.onmessage = (e: any) => {
-            const sse = JSON.parse(e.data)
-            if (sse.type === 'delivery') {
-                //TODO make this feasable
-                const { title, description } = JSON.parse(sse.message);
-                notification.warning({ description, message: title, duration: 5 })
-            }
-        }
-    }, [])
-
+    if (error) {
+        return (
+            <>
+                <WarningOutlined />
+            </>
+        );
+    }
+    if (!data || isLoading) {
+        return <Skeleton.Avatar />;
+    }
+    const notif = data.length > 0;
     return (
         <>
-            <Badge dot>
-                <Button icon={<BellOutlined />} type='text' onClick={() => setOpen(true)} />
+            <Badge dot={notif}>
+                <Button icon={<BellOutlined />} type="text" onClick={() => setOpen(true)} />
             </Badge>
-            <Drawer open={open} onClose={() => setOpen(false)} title={'Notifications'} extra={<><DeleteOutlined /></>}>
-                <Skeleton active avatar />
+            <Drawer
+                open={open}
+                onClose={() => setOpen(false)}
+                title={"Notifications"}
+                extra={
+                    <>
+                        <DeleteOutlined />
+                    </>
+                }
+            >
+                {data.map((item: any) => {
+                    return (
+                        <Fragment key={item.id}>
+                            <Card
+                                title={`Delivery`}
+                                actions={[
+                                    <span>
+                                        <CheckCircleOutlined /> Resolved
+                                    </span>,
+                                    <span>
+                                        <ClearOutlined /> Clear
+                                    </span>,
+                                ]}
+                            >
+                                <Card.Meta title={item.title} description={item.description} />
+                            </Card>
+                        </Fragment>
+                    );
+                })}
             </Drawer>
         </>
-    )
-}
+    );
+};
 
 export default memo(NotificationSection);
