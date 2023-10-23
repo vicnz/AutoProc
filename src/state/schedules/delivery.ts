@@ -1,13 +1,13 @@
 import { schedule } from 'node-cron'
 import dayjs from "dayjs";
-import db from '@lib/db'
+import db, { PrismaModels } from '@lib/db'
 
 /**
  * * DELIVERY MONITORING THIS WILL START WHEN APP IS STARTED ON FIRST RUN
  * * NOTE THIS SCHEDULED TASK WILL BE KEPT ON RUNNING UNTIL THE SERVER
  * * IS [RESTARTED] OR [TERMINATED]
  */
-
+type NotificationType = PrismaModels['notifications']
 const interval = `*/60 * * * * *` // every 60 seconds / 1 Minute //TODO determine this on database settings
 export function MonitorDeliveries() {
     console.log("Delivery Monitoring Started...")
@@ -27,12 +27,26 @@ export function MonitorDeliveries() {
                 createdAt: 'desc'
             },
             distinct: 'poId',
-            take: 5 //? APPROXIMATION OF DELAYED DELIVERIES EVERY MINUTE
+            take: 5 //! APPROXIMATION OF DELAYED DELIVERIES EVERY MINUTE
         })
 
-        console.count(`Found Delayed Item ${result.length}`)
+        const appendToNotifications = result?.map((item: PrismaModels['delivery']) => {
+            return {
+                title: "Delayed Delivery Item",
+                read: false,
+                description: `Delivery of Purchase Order No. ${item.poId} is delayed on time`,
+                resolved: false,
+                source: item.poId,
+                id: item.poId,
+                content: []
+            }
+        })
 
-        //TODO add to notification's model
+        await db.notifications.createMany({
+            data: appendToNotifications,
+            skipDuplicates: true,
+        })
+
     })
     return monitorSchedule;
 }
