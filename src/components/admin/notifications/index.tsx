@@ -53,7 +53,7 @@ const NotificationSection = function () {
                                     <Fragment key={item.id}>
                                         <Card
                                             style={{ marginBottom: 10 }}
-                                            title={`Delivery`}
+                                            title={(item.type as string).toUpperCase()}
                                             actions={[
                                                 <span>
                                                     <CheckCircleOutlined /> Resolved

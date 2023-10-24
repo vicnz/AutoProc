@@ -1,21 +1,30 @@
-'use client';
+"use client";
 
 //libs
-import { AuditOutlined, BarChartOutlined } from '@ant-design/icons';
-import { Skeleton, TabsProps, Tag } from 'antd';
-import dynamic from 'next/dynamic';
-import TabPaneWrapper from './tab-pane'
+import { AuditOutlined, BarChartOutlined } from "@ant-design/icons";
+import { Skeleton, TabsProps, Tag } from "antd";
+import dynamic from "next/dynamic";
+import TabPaneWrapper from "./tab-pane";
 //components
-const Overview = dynamic(async () => await import('@components/admin/layouts/overview'), { loading: () => <Skeleton paragraph={{ rows: 25 }} /> })
+const Overview = dynamic(async () => await import("@/components/admin/layouts/statistics"), {
+    loading: () => <Skeleton paragraph={{ rows: 25 }} />,
+});
+const Supplier = dynamic(async () => await import("@/components/admin/layouts/supplier"), {
+    loading: () => <Skeleton paragraph={{ rows: 25 }} />,
+});
 //config
 
-
-const TabPanes: TabsProps['items'] = [
+const TabPanes: TabsProps["items"] = [
     {
-        key: 'dashboard',
-        label: <span><BarChartOutlined />&nbsp;Overview</span>,
+        key: "dashboard",
+        label: (
+            <span>
+                <BarChartOutlined />
+                &nbsp;Overview&nbsp;<Tag color="orange">beta</Tag>
+            </span>
+        ),
         destroyInactiveTabPane: true,
-        tabKey: 'dashboard',
+        tabKey: "dashboard",
         children: (
             <TabPaneWrapper>
                 <Overview />
@@ -23,18 +32,21 @@ const TabPanes: TabsProps['items'] = [
         ),
     },
     {
-        key: 'supplier',
-        label: <span><AuditOutlined />&nbsp;Suppliers&nbsp;<Tag color='orange'>beta</Tag></span>,
+        key: "supplier",
+        label: (
+            <span>
+                <AuditOutlined />
+                &nbsp;Suppliers&nbsp;<Tag color="red">alpha</Tag>
+            </span>
+        ),
         destroyInactiveTabPane: true,
-        tabKey: 'suppliers',
+        tabKey: "suppliers",
         children: (
             <TabPaneWrapper>
-                <div style={{ padding: 25 }}>
-                    <Skeleton avatar title paragraph={{ rows: 10, }} />
-                </div>
+                <Supplier />
             </TabPaneWrapper>
-        )
+        ),
     },
-]
+];
 
 export default TabPanes;

@@ -279,6 +279,7 @@ model notifications {
     source      String?
     content     Json? //Schema Type [{resourceId: string, referenceId: string, notifType: string}]
     read        Boolean   @default(false)
+    type        String?   @default("system")
     isDeleted   Boolean   @default(false)
     createdAt   DateTime  @default(now())
     updatedAt   DateTime  @updatedAt()

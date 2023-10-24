@@ -37,7 +37,8 @@ export function MonitorDeliveries() {
                 resolved: false,
                 source: item.poId,
                 id: item.poId,
-                content: { type: 'delivery', ref: item.poId }
+                content: { type: 'delivery', ref: item.poId },
+                type: 'delivery'
             }
         })
 

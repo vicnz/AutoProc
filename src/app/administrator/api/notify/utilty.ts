@@ -20,8 +20,8 @@ export const DetectNewNotifications = async () => {
 
     if (new_notif && new_notif.length > 0) {
         return new_notif.map(item => {
-            const { title, description, source } = item
-            return { title, description, source };
+            const { title, description, source, type } = item
+            return { title, description, source, type };
         })
     }
 }

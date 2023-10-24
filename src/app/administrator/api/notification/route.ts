@@ -26,7 +26,7 @@ export const GET = async (req: NextRequest) => {
 
             if (result.length > 0) {
                 const resultingmap = result.map(item => {
-                    const parse: Pick<PrismaModels['notifications'], 'id' | 'title' | 'description' | 'level' | 'content' | 'source'> = item
+                    const parse: Pick<PrismaModels['notifications'], 'id' & 'title' & 'description' & 'level' & 'content' & 'source' & 'type'> = item
                     return parse;
                 })
                 return NextResponse.json(resultingmap)
