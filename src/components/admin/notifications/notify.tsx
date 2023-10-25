@@ -14,11 +14,11 @@ const source = new EventSource(`/administrator/api/notify`)
 const Notify = function (props: PropsWithChildren<any>) {
     const { notification } = App.useApp()
 
-    const showNotification = useCallback((notifications: any[]) => {
+    const showNotification = (notifications: any[]) => {
         notifications.forEach(({ title, description }) => {
             notification.info({ message: title, description: description, duration: 5000 })
         })
-    }, [])
+    }
 
     useEffect(() => {
         console.log("LISTENING.... to INCOMING Push Notifications")

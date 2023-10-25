@@ -158,7 +158,7 @@ export const GET = async function (req: NextRequest) {
 };
 
 //BIT SIZE UPDATE -> /administrator/api/awards?_id=[document-id]&_final=[true|false]
-export const PATCH = async function (req: NextResponse) {
+export const PATCH = async function (req: NextRequest) {
     const { searchParams } = new URL(req.url);
     try {
         const awardId = searchParams.get("_id") as string; //document id

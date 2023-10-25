@@ -14,7 +14,7 @@ const NotificationItem = (props: any) => {
     const { type, title, description, createdAt, content } = data
 
     const actions = useMemo(() => {
-        const action = [<span><ClearOutlined /> Resolved</span>]
+        const action = [<span key={'clear'}><ClearOutlined /> Resolved</span>]
         const url = content?.ref
         if (type === 'delivery') {
             action.unshift(
@@ -25,7 +25,7 @@ const NotificationItem = (props: any) => {
         }
 
         return action;
-    }, [type])
+    }, [type, content])
     return (
         <Card
             style={{ marginBottom: 10 }}

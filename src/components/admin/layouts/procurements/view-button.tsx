@@ -17,7 +17,7 @@ const ViewButton = function ({ id }: { id: string }) {
     //
     return (
         <span>
-            <Link href={`/administrator/procurements/${encodeURI(id)}`} passHref>
+            <Link href={`/administrator/procurements/${encodeURIComponent(id)}`} passHref>
                 <Button
                     loading={loading}
                     onClick={() => {

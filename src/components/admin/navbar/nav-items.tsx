@@ -2,7 +2,7 @@ import { HomeOutlined, FolderOutlined, TeamOutlined, ShopOutlined, AppstoreOutli
 
 export type INavbarItemType = {
     key: string;
-    href?: string;
+    href: string;
     icon?: any;
     label?: string;
     disabled?: boolean;
@@ -33,7 +33,7 @@ const NavbarRenderedItems: {
             icon: TeamOutlined,
             label: "End Users",
         },
-        { key: "separator1", type: "separator" },
+        { key: "separator1", type: "separator", href: "/" },
         {
             key: "suppliers",
             href: "/administrator/suppliers",

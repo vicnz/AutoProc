@@ -8,7 +8,7 @@
     "dev:custom": "node server.js",
     "build": "next build",
     "start": "next start",
-    "start:custom": "NODE_ENV=production node server.js",
+    "start:custom": "SET NODE_OPTIONS='--inspect' && npm start",
     "lint": "next lint",
     "test": "vitest",
     "test:ui": "vitest --ui",

@@ -118,7 +118,7 @@ export const GET = async function (req: NextRequest) {
 
 
 //PATCH BIT SIZE UPDATES -> /administrator/api/recommendation?_id=[valid-document-id]&_final=[true|false]&[,..]
-export const PATCH = async function (req: NextResponse) {
+export const PATCH = async function (req: NextRequest) {
     const { searchParams } = new URL(req.url);
     try {
         const recommendId = searchParams.get("_id") as string; //document id

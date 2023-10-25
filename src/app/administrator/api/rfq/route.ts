@@ -102,7 +102,7 @@ export const PUT = async function (req: NextRequest) {
 };
 
 //BIT SIZE UPDATE FOR RFQ -> /administrator/api/rfq?_id=[record-id]
-export const PATCH = async function (req: NextResponse) {
+export const PATCH = async function (req: NextRequest) {
     const { searchParams } = new URL(req.url);
 
     try {

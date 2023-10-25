@@ -8,6 +8,7 @@ import dynamic from "next/dynamic";
 //components
 import GlobalHeader from "@components/admin/header";
 import { usePRId } from "@components/admin/PRId";
+import Link from "next/link";
 
 const QRCodeGen = dynamic(async () => await import('@/components/admin/qrcode'), { loading: () => <Skeleton.Button /> })
 
@@ -24,13 +25,14 @@ const ProcurementItemHeader = function () {
                     </Space>
                 }
                 back={
-                    <Button
-                        icon={<ArrowLeftOutlined />}
-                        onClick={() => replace('/administrator/procurements')}
-                        type="text"
-                    >
-                        Records
-                    </Button>
+                    <Link href={`/administrator/procurements`} passHref>
+                        <Button
+                            icon={<ArrowLeftOutlined />}
+                            type="text"
+                        >
+                            Records
+                        </Button>
+                    </Link>
                 }
             >
                 <QRCodeGen id={prId} />

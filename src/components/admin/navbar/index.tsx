@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 
 /**
  * * - GLOBAL NAVBAR
@@ -7,7 +7,7 @@
  */
 //libs
 import { Button, Space, Tooltip, theme } from "antd";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { CSSProperties, memo } from "react";
 import Link from "next/link";
 //
@@ -28,6 +28,7 @@ const NavbarWrapperStyle: CSSProperties = {
 const Navbar = function () {
     const pathname = usePathname();
     const { token } = theme.useToken();
+    const { push } = useRouter()
 
     return (
         <div
@@ -35,6 +36,7 @@ const Navbar = function () {
         >
             {/* TOP SECTION */}
             <Space direction="vertical">
+
                 {NavbarRenderedItems.top.map((item) => {
                     if (item?.type === "separator") {
                         return <hr key={item?.key} />;
@@ -42,15 +44,16 @@ const Navbar = function () {
                         const NavIcon = typeof item.icon !== "undefined" ? item.icon : null;
                         return (
                             <Tooltip title={item.label} placement="right" key={item.key}>
-                                <Link href={item?.href as string}>
+                                <Link href={item.href} passHref prefetch={true}>
                                     <Button
-                                        type="text"
+                                        type="link"
                                         icon={<NavIcon />}
                                         className={isLinkActive(
                                             pathname,
                                             item.href as string,
                                             Styles.itemActive
                                         )}
+                                        onClick={() => { }}
                                     />
                                 </Link>
                             </Tooltip>
@@ -67,15 +70,16 @@ const Navbar = function () {
                         const NavIcon = typeof item.icon !== "undefined" ? item.icon : null;
                         return (
                             <Tooltip title={item.label} placement="right" key={item.key}>
-                                <Link href={item?.href as string}>
+                                <Link href={item.href} passHref prefetch={true}>
                                     <Button
-                                        type="text"
+                                        type="link"
                                         icon={<NavIcon />}
                                         className={isLinkActive(
                                             pathname,
-                                            item.href as string,
+                                            item.href,
                                             Styles.itemActive
                                         )}
+                                        onClick={() => { }}
                                     />
                                 </Link>
                             </Tooltip>

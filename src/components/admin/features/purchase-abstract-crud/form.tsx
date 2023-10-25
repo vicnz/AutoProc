@@ -104,7 +104,7 @@ const AbstractQuotationForm = function (props: AbstractQuotationFormProps) {
                 form={form}
                 onFinish={onFinish}
             >
-                <PurchaseRequestPreview prID={prID} showAmount />
+                <PurchaseRequestPreview showAmount />
                 <Divider>Abstracts</Divider>
                 <Space>
                     <Form.Item label="Place of Bidding" name="location">

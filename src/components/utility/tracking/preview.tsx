@@ -7,7 +7,7 @@ import { memo, useMemo } from "react";
 
 ///
 
-const Routes = memo(function route(props: {
+const Routes = memo(function RouteItem(props: {
     data: Array<{ id: string; name: string; timestamp: string }>;
 }) {
     //generate markdown
