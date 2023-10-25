@@ -1,4 +1,4 @@
-// "use client";
+"use client";
 
 /**
  * * - GLOBAL NAVBAR
@@ -28,7 +28,6 @@ const NavbarWrapperStyle: CSSProperties = {
 const Navbar = function () {
     const pathname = usePathname();
     const { token } = theme.useToken();
-    const { push } = useRouter()
 
     return (
         <div
@@ -46,7 +45,7 @@ const Navbar = function () {
                             <Tooltip title={item.label} placement="right" key={item.key}>
                                 <Link href={item.href} passHref prefetch={true}>
                                     <Button
-                                        type="link"
+                                        type="text"
                                         icon={<NavIcon />}
                                         className={isLinkActive(
                                             pathname,
@@ -72,7 +71,7 @@ const Navbar = function () {
                             <Tooltip title={item.label} placement="right" key={item.key}>
                                 <Link href={item.href} passHref prefetch={true}>
                                     <Button
-                                        type="link"
+                                        type="text"
                                         icon={<NavIcon />}
                                         className={isLinkActive(
                                             pathname,
