@@ -13,7 +13,7 @@ const QRCodeGen = dynamic(async () => await import('@/components/admin/qrcode'),
 
 const ProcurementItemHeader = function () {
     const prId = usePRId(); //get current active PR id
-    const { back } = useRouter();
+    const { replace } = useRouter();
     return (
         <>
             <GlobalHeader
@@ -26,7 +26,7 @@ const ProcurementItemHeader = function () {
                 back={
                     <Button
                         icon={<ArrowLeftOutlined />}
-                        onClick={() => back()}
+                        onClick={() => replace('/administrator/procurements')}
                         type="text"
                     >
                         Records

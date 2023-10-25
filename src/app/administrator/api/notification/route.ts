@@ -22,6 +22,9 @@ export const GET = async (req: NextRequest) => {
                     },
                     resolved: false
                 },
+                orderBy: {
+                    createdAt: 'desc'
+                }
             })
 
             if (result.length > 0) {

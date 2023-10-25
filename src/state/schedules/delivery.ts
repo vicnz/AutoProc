@@ -16,6 +16,13 @@ export function MonitorDeliveries() {
     const monitorSchedule = schedule(interval, async (now) => {
         const nowDate = dayjs(now).add(notifyBeforeAtDate, 'days').toISOString() //TODO compute the days before deadline
         const result = await db.delivery.findMany({
+            include: {
+                po: {
+                    select: {
+                        prId: true
+                    }
+                }
+            },
             where: {
                 endDate: {
                     lte: dayjs(now).toISOString(),
@@ -29,7 +36,7 @@ export function MonitorDeliveries() {
             take: 5 //! APPROXIMATION OF DELAYED DELIVERIES EVERY MINUTE
         })
 
-        const appendToNotifications = result?.map((item: PrismaModels['delivery']) => {
+        const appendToNotifications = result?.map((item: PrismaModels['delivery'] & { po: { prId: string } }) => {
             return {
                 title: "Delayed Delivery Item",
                 read: false,
@@ -37,7 +44,7 @@ export function MonitorDeliveries() {
                 resolved: false,
                 source: item.poId,
                 id: item.poId,
-                content: { type: 'delivery', ref: item.poId },
+                content: { type: 'delivery', ref: item.po.prId },
                 type: 'delivery'
             }
         })

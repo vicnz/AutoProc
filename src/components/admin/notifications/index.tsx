@@ -6,10 +6,13 @@
  * * - Are Shown Here
  */
 
-import { BellOutlined, CheckCircleOutlined, ClearOutlined, DeleteOutlined, WarningOutlined } from "@ant-design/icons";
-import { Badge, Button, Card, Drawer, Empty, Skeleton } from "antd";
-import { Fragment, memo, useState } from "react";
+import { BellOutlined, CheckCircleOutlined, ClearOutlined, DesktopOutlined, EyeOutlined, ShoppingCartOutlined, WarningOutlined } from "@ant-design/icons";
+import { Badge, Button, Card, Drawer, Empty, Segmented, Skeleton, Tag } from "antd";
+import dayjs from "dayjs";
+import { Fragment, memo, useMemo, useState } from "react";
 import useSWR from "swr";
+
+import NotificationItem from './content'
 
 const numberOfhours = 1000; //this should be dynamic
 const NotificationSection = function () {
@@ -38,7 +41,7 @@ const NotificationSection = function () {
                 title={"Notifications"}
                 extra={
                     <>
-                        <DeleteOutlined />
+                        <Segmented options={[{ label: 'Today', value: 'today' }, { label: '14 Days', value: 'twoweek' }]} />
                     </>
                 }
             >
@@ -51,20 +54,7 @@ const NotificationSection = function () {
                             {data?.map((item: any) => {
                                 return (
                                     <Fragment key={item.id}>
-                                        <Card
-                                            style={{ marginBottom: 10 }}
-                                            title={(item.type as string).toUpperCase()}
-                                            actions={[
-                                                <span>
-                                                    <CheckCircleOutlined /> Resolved
-                                                </span>,
-                                                <span>
-                                                    <ClearOutlined /> Clear
-                                                </span>,
-                                            ]}
-                                        >
-                                            <Card.Meta title={item.title} description={item.description} />
-                                        </Card>
+                                        <NotificationItem data={item} close={() => setOpen(false)} />
                                     </Fragment>
                                 );
                             })}
