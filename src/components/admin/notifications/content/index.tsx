@@ -1,6 +1,6 @@
 "use client";
 
-import { ShoppingCartOutlined, DesktopOutlined, EyeOutlined, ClearOutlined } from "@ant-design/icons";
+import { ShoppingCartOutlined, DesktopOutlined, EyeOutlined, ClearOutlined, WarningOutlined } from "@ant-design/icons";
 import { App, Card, Popconfirm, Tag } from "antd";
 import dayjs from "dayjs";
 import Link from "next/link";
@@ -35,67 +35,68 @@ const NotificationItem = (props: any) => {
     };
 
     //Render Actions Buttons
-    const actions = useMemo(() => {
+    const actions = () => {
         const action = [
-            <Popconfirm
-                title="Clear this Notification?"
-                description="Remove this Notification Completely?"
-                onConfirm={onResolve}
-                key={"clear"}
-                placement="left"
-            >
-                <ClearOutlined /> Clear
-            </Popconfirm>,
+            <>
+                <Popconfirm
+                    title="Clear this Notification?"
+                    description="Remove this Notification Completely?"
+                    onConfirm={onResolve}
+                    key={"clear"}
+                    placement="left"
+                >
+                    <ClearOutlined /> Clear
+                </Popconfirm>,
+            </>
         ];
         const url = content?.ref; //ADD THE REFERENCE ID []
 
         /**ADD VIEW BUTTON WHEN DELIVERY */
         if (type === "delivery") {
             action.unshift(
-                <Link href={`/administrator/procurements/${encodeURIComponent(url)}`} onClick={() => close()} passHref>
-                    <EyeOutlined /> Details
-                </Link>
+                <>
+                    <Link href={`/administrator/procurements/${encodeURIComponent(url)}`} onClick={() => close()} passHref>
+                        <EyeOutlined /> Details
+                    </Link>
+                </>
             );
         }
 
         return action;
-    }, [type, content]);
+    };
 
     //
     return (
         <Card
             style={{ marginBottom: 10 }}
-            title={(type as string).toUpperCase()}
-            extra={
+            title={
                 <>
-                    {
-                        {
-                            delivery: (
-                                <span>
-                                    <ShoppingCartOutlined />
-                                </span>
-                            ),
-                            system: (
-                                <span>
-                                    <DesktopOutlined />
-                                </span>
-                            ),
-                        }[type as string]
+                    {{
+                        'delivery': <ShoppingCartOutlined title={title.toUpperCase()} />,
+                        'system': <DesktopOutlined title={title.toUpperCase()} />,
+                        'critical': <WarningOutlined title={title.toUpperCase()} />
+                    }[type as string]
                     }
                 </>
             }
-            actions={actions}
+            extra={
+                <>
+                    <span>
+                        {dayjs(createdAt as string).format("MM/DD/YYYY (hh:mm A)")}
+                    </span>
+                </>
+            }
+            actions={actions()}
         >
             <Card.Meta
                 title={title}
                 description={
                     <>
-                        {description} <br />
-                        <Tag>{dayjs(createdAt as string).format("MMMM DD, YYYY @ hh:mm a")}</Tag>
+                        {description}
                     </>
                 }
             />
-        </Card>
+        </Card >
     );
 };
 

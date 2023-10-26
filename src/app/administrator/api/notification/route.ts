@@ -46,7 +46,7 @@ export const GET = async (req: NextRequest) => {
 
         if (typeof type === "string" && type === "month") {
             days = dayjs().subtract(Number.parseInt(day), "day").toISOString();
-            let monthEnd = dayjs().subtract(1, "day").toISOString();
+            let monthEnd = dayjs().subtract(0, 'hour').toISOString();
             const result = await db.notifications.findMany({
                 where: {
                     createdAt: {

@@ -23,8 +23,6 @@ const Notify = function (props: PropsWithChildren<any>) {
 
     useEffect(() => {
         console.log("LISTENING.... to INCOMING Push Notifications")
-
-        /**LISTEN TO SERVER SENT EVENTS */
         source.onmessage = (e: any) => {
             const sse = JSON.parse(e.data)
             if (sse.type === 'notif') {
@@ -32,11 +30,10 @@ const Notify = function (props: PropsWithChildren<any>) {
                 showNotification(items)
             }
         }
-
         return () => {
             notification.destroy()
         }
-    }, [props.children]); //run once
+    }, []); //run once
 
     return (
         <Fragment>

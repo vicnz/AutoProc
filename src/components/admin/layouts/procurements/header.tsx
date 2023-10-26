@@ -35,7 +35,7 @@ const ProcurementsHeader = function (props: ProcurementsHeaderProps) {
 
     return (
         <>
-            <GlobalHeader title="Procurements">
+            <GlobalHeader title="PURCHASE ORDERS">
                 <AddNewPR type="add" /> {/*ADD NEW PURCHASE REQUEST*/}
                 <Divider type="vertical" />
                 <Button

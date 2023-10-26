@@ -67,7 +67,7 @@ const SelectParticulars = forwardRef(function Particulars(props, ref) {
                                 >
                                     <Input
                                         placeholder="Item Description"
-                                        style={{ width: 175 }}
+                                        style={{ width: 250 }}
                                     />
                                 </Form.Item>
                                 {/* STOCK NUMBER */}
