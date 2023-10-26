@@ -6,18 +6,19 @@
  * * - Are Shown Here
  */
 
-import { BellOutlined, CheckCircleOutlined, ClearOutlined, DesktopOutlined, EyeOutlined, ShoppingCartOutlined, WarningOutlined } from "@ant-design/icons";
-import { Badge, Button, Card, Drawer, Empty, Segmented, Skeleton, Tag } from "antd";
-import dayjs from "dayjs";
-import { Fragment, memo, useMemo, useState } from "react";
+import { BellOutlined, WarningOutlined } from "@ant-design/icons";
+import { Badge, Button, Drawer, Segmented, Skeleton } from "antd";
+import { memo, useState } from "react";
 import useSWR from "swr";
 
-import NotificationItem from './content'
+import NotifToday from './content/today';
+import Notif30Days from './content/month';
 
-const numberOfhours = 1000; //this should be dynamic
+const numOfDays = 1000; //this should be dynamic
 const NotificationSection = function () {
     const [open, setOpen] = useState(false);
-    const { data, error, isLoading } = useSWR(`/administrator/api/notification?all=true&hour=${numberOfhours}`);
+    const [notifyCategory, setNotifyCategory] = useState<'today' | 'month'>('today')
+    const { data, error, isLoading } = useSWR(`/administrator/api/notification?count=true&days=${numOfDays}`);
 
     if (error) {
         return (
@@ -29,7 +30,7 @@ const NotificationSection = function () {
     if (!data || isLoading) {
         return <Skeleton.Avatar />;
     }
-    const notif = data.length > 0;
+    const notif = data.count > 0;
     return (
         <>
             <Badge dot={notif}>
@@ -41,24 +42,16 @@ const NotificationSection = function () {
                 title={"Notifications"}
                 extra={
                     <>
-                        <Segmented options={[{ label: 'Today', value: 'today' }, { label: '14 Days', value: 'twoweek' }]} />
+                        <Segmented options={[{ label: 'Today', value: 'today' }, { label: '30 Days', value: 'month' }]} onChange={(e: any) => setNotifyCategory(e)} defaultValue={'today'} />
                     </>
                 }
             >
+
                 {
-                    data.length === 0 ?
-                        <>
-                            <Empty />
-                        </> :
-                        <>
-                            {data?.map((item: any) => {
-                                return (
-                                    <Fragment key={item.id}>
-                                        <NotificationItem data={item} close={() => setOpen(false)} />
-                                    </Fragment>
-                                );
-                            })}
-                        </>
+                    {
+                        'today': <NotifToday close={() => setOpen(false)} />,
+                        'month': <Notif30Days close={() => setOpen(false)} />
+                    }[notifyCategory]
                 }
             </Drawer>
         </>

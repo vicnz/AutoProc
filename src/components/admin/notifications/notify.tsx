@@ -14,6 +14,7 @@ const source = new EventSource(`/administrator/api/notify`)
 const Notify = function (props: PropsWithChildren<any>) {
     const { notification } = App.useApp()
 
+    /**SHOW NOTIFICATION UPHEAVAL */
     const showNotification = (notifications: any[]) => {
         notifications.forEach(({ title, description }) => {
             notification.info({ message: title, description: description, duration: 5000 })
@@ -23,6 +24,7 @@ const Notify = function (props: PropsWithChildren<any>) {
     useEffect(() => {
         console.log("LISTENING.... to INCOMING Push Notifications")
 
+        /**LISTEN TO SERVER SENT EVENTS */
         source.onmessage = (e: any) => {
             const sse = JSON.parse(e.data)
             if (sse.type === 'notif') {
