@@ -55,17 +55,43 @@ export const GET = async function (req: NextRequest) {
                 }),
             ]);
         }
+        if (searchParams.get('all') === "true") {
+            /**
+             * GET ONLY THE UTILITY USERS AND STANDARD USERS
+             */
+            const page: number = Number.parseInt(searchParams.get('page') as string)
+            const size: number = Number.parseInt(searchParams.get('size') as string)
 
-        const result = await db.users.findMany({
-            where: {
-                isDeleted: false,
-            },
-            orderBy: {
-                updatedAt: "desc",
-            },
-        });
+            const result = await db.users.findMany({
+                select: {
+                    fname: true,
+                    mname: true,
+                    lname: true,
+                    email: true,
+                    username: true,
+                    userType: true,
+                    suffix: true,
+                    department: {
+                        select: {
+                            description: true,
+                            name: true
+                        }
+                    },
+                    profile: true,
+                },
+                skip: page || 0,
+                take: size || 8,
+                orderBy: {
+                    updatedAt: 'desc'
+                },
+                where: {
+                    isDeleted: false,
+                    userType: { in: ['CHECKER', 'TRACKER', 'USER'] }
+                }
+            })
+            return NextResponse.json(result);
+        }
 
-        return NextResponse.json(result);
     } catch (err) {
         return new Response("", { status: 400 });
     }
