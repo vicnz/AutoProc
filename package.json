@@ -36,6 +36,7 @@
     "react-avatar-image-cropper": "^1.5.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
+    "react-profile": "^1.2.7",
     "react-qr-scanner": "^1.0.0-alpha.11",
     "react-to-print": "^2.14.13",
     "sharp": "^0.32.6",
