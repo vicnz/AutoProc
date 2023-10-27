@@ -42,7 +42,7 @@ const PurchaseOrder = dynamic(
 );
 
 const Delivery = dynamic(
-    async () => await import("@components/admin/procurement/delivery"),
+    async () => await import("@components/admin/procurement/purchase-delivery"),
     { loading: () => <Skeleton active /> }
 );
 
