@@ -246,6 +246,7 @@ model delivery {
     createdAt DateTime        @default(now())
     updatedAt DateTime        @updatedAt
     isDeleted Boolean         @default(false)
+    final     Boolean         @default(false)
 }
 
 model suppliers {
