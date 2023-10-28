@@ -9,6 +9,7 @@ import { Button, Divider } from "antd";
 import { Dispatch, memo } from "react";
 //components
 import GlobalHeader from "@components/admin/header";
+import UserCrud from '@components/admin/features/user-management-crud'
 //types
 interface UserManagementHeaderProps {
     count: number;
@@ -35,6 +36,8 @@ const UserManagementHeader = function (props: UserManagementHeaderProps) {
     return (
         <>
             <GlobalHeader title="USER MANAGEMENT">
+                <UserCrud isEdit={false} />
+                <Divider type='vertical' />
                 <Button
                     icon={<ArrowLeftOutlined />}
                     type="text"

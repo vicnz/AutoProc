@@ -1,4 +1,4 @@
-import { BlockOutlined, CheckSquareOutlined, CodeOutlined, EyeOutlined, MailOutlined, SettingOutlined, SmileOutlined, UserOutlined } from "@ant-design/icons";
+import { BlockOutlined, CheckSquareOutlined, CodeOutlined, EyeOutlined, LinkOutlined, MailOutlined, ManOutlined, SettingOutlined, ShareAltOutlined, SmileOutlined, UserOutlined } from "@ant-design/icons";
 import { Avatar, TableColumnsType, Tag, Anchor, Button } from "antd";
 import toBase64 from '@lib/client/blob2base64'
 
@@ -56,7 +56,7 @@ const UserManagementColumns: TableColumnsType = [
         render: (e: string) => {
             if (e) {
                 return (
-                    <a href={`mailto:${e}`}>{e}</a>
+                    <a href={`mailto:${e}`}>{e} <LinkOutlined size={18} /></a>
                 )
             } else {
                 return e

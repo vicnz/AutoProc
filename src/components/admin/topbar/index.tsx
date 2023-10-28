@@ -8,13 +8,14 @@
 
 //libs
 import Image from "next/image";
-import { Space, Tag, theme } from "antd";
+import { Avatar, Divider, Space, Tag, theme } from "antd";
 import { memo } from "react";
 //components
 import LogoSmall from "@media/small.png";
 import LogoMedium from "@media/medium.png";
 import SearchBar from "@components/admin/search";
 import dynamic from "next/dynamic";
+import { UserOutlined } from "@ant-design/icons";
 const Notify = dynamic(async () => await import('@components/admin/notifications/notify'), { ssr: false })
 const Notification = dynamic(async () => await import('@components/admin/notifications'), { ssr: false })
 //
@@ -49,10 +50,12 @@ const Topbar = function () {
                 <Tag color="red">ALPHA</Tag>
             </Space>
             <SearchBar />
-            <div>
+            <Space>
                 <Notify />
                 <Notification />
-            </div>
+                <Divider type='vertical' />
+                <Avatar icon={<UserOutlined />} onClick={() => alert('TODO')} style={{ cursor: 'pointer' }} />
+            </Space>
         </nav>
     );
 };
