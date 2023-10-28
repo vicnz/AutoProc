@@ -1,6 +1,7 @@
 import db from "@lib/db";
 import { NextRequest, NextResponse } from "next/server";
-import fullname from "@/lib/fullname";
+import fullname from "@lib/fullname";
+import sharp from "sharp";
 
 
 //GET USERS /administrator/api/user?_id=[]&_pick_only
@@ -64,6 +65,7 @@ export const GET = async function (req: NextRequest) {
 
             const result = await db.users.findMany({
                 select: {
+                    id: true,
                     fname: true,
                     mname: true,
                     lname: true,
@@ -89,7 +91,23 @@ export const GET = async function (req: NextRequest) {
                     userType: { in: ['CHECKER', 'TRACKER', 'USER'] }
                 }
             })
-            return NextResponse.json(result);
+
+            const results = await Promise.all(result.map(async item => {
+                const { profile } = item
+                const thumbnail = profile ? await sharp(item.profile as Buffer,).resize({ height: 24, width: 24 }).toBuffer() : null
+                return {
+                    key: item.id,
+                    fullname: fullname({ fname: item.fname, mname: item.mname, lname: item.lname, suffix: item.suffix }),
+                    email: item.email,
+                    username: item.username,
+                    type: item.userType,
+                    department: item.department?.description,
+                    profile: thumbnail,
+                    //TODO add Phone
+                }
+            }))
+
+            return NextResponse.json(results);
         }
 
     } catch (err) {
