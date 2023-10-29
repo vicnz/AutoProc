@@ -12,7 +12,6 @@ import UserInforCard from "./user-card";
 interface user {
     id: string;
     name: string;
-    profile?: any;
     department?: { name: string; description: string };
     section?: { name: string; description: string };
 }
