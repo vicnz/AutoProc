@@ -27,7 +27,8 @@ export function MonitorDeliveries() {
                 endDate: {
                     lte: dayjs(now).toISOString(),
                     gte: dayjs(now).subtract(60, 'seconds').toISOString()
-                }
+                },
+                final: false
             },
             orderBy: {
                 createdAt: 'desc'

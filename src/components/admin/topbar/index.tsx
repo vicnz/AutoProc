@@ -8,12 +8,13 @@
 
 //libs
 import Image from "next/image";
-import { Space, Tag, theme } from "antd";
+import { Divider, Space, Tag, theme } from "antd";
 import { memo } from "react";
 //components
 import LogoSmall from "@media/small.png";
 import LogoMedium from "@media/medium.png";
 import SearchBar from "@components/admin/search";
+import AvatarBoring from 'boring-avatars'
 import dynamic from "next/dynamic";
 const Notify = dynamic(async () => await import('@components/admin/notifications/notify'), { ssr: false })
 const Notification = dynamic(async () => await import('@components/admin/notifications'), { ssr: false })
@@ -49,10 +50,15 @@ const Topbar = function () {
                 <Tag color="red">ALPHA</Tag>
             </Space>
             <SearchBar />
-            <div>
-                <Notify />
+            <Space>
                 <Notification />
-            </div>
+                <Divider type='vertical' />
+                <div onClick={() => { alert('Authentication Requires To Be Implemented First') }} style={{ cursor: 'pointer', display: 'grid', placeItems: 'center' }}>
+                    <AvatarBoring size={28} variant="beam" name="Jennie" />
+                </div>
+                {/* Start Listening to Notification */}
+                <Notify />
+            </Space>
         </nav>
     );
 };
