@@ -1,6 +1,6 @@
 import db from "@lib/db";
 import { NextRequest, NextResponse } from "next/server";
-import fullname from "@/lib/fullname";
+import fullname from "@lib/fullname";
 import sharp from "sharp";
 
 
@@ -41,24 +41,77 @@ export const GET = async function (req: NextRequest) {
                 },
             });
 
-            const parsed = await Promise.all(result.map(async (item) => {
-                return {
-                    id: item.id,
-                    name: fullname(
-                        {
-                            fname: item.fname,
-                            mname: item.mname,
-                            lname: item.lname,
-                            suffix: item.suffix,
-                        },
-                        true
-                    ),
-                    department: item.department?.description,
-                    section: item.section?.description,
-                };
-            }),)
+            return NextResponse.json([
+                ...result.map((item) => {
+                    return {
+                        id: item.id,
+                        name: fullname(
+                            {
+                                fname: item.fname,
+                                mname: item.mname,
+                                lname: item.lname,
+                                suffix: item.suffix,
+                            },
+                            true
+                        ),
+                        department: item.department?.description,
+                        section: item.section?.description,
+                    };
+                }),
+            ]);
+        }
+        if (searchParams.get('all') === "true") {
+            /**
+             * GET ONLY THE UTILITY USERS AND STANDARD USERS
+             */
+            const page: number = Number.parseInt(searchParams.get('page') as string)
+            const size: number = Number.parseInt(searchParams.get('size') as string)
 
-            return NextResponse.json(parsed);
+            const result = await db.users.findMany({
+                select: {
+                    id: true,
+                    fname: true,
+                    mname: true,
+                    lname: true,
+                    email: true,
+                    username: true,
+                    userType: true,
+                    suffix: true,
+                    department: {
+                        select: {
+                            description: true,
+                            name: true
+                        }
+                    },
+                    profile: true,
+                },
+                skip: page || 0,
+                take: size || 8,
+                orderBy: {
+                    updatedAt: 'desc'
+                },
+                where: {
+                    isDeleted: false,
+                    userType: { in: ['CHECKER', 'TRACKER', 'USER'] }
+                }
+            })
+
+            const results = await Promise.all(result.map(async item => {
+                const { profile } = item
+                const thumbnail = profile ? await sharp(item.profile as Buffer,).resize({ height: 24, width: 24 }).toBuffer() : null
+                return {
+                    key: item.id,
+                    fullname: fullname({ fname: item.fname, mname: item.mname, lname: item.lname, suffix: item.suffix }),
+                    email: item.email,
+                    username: item.username,
+                    type: item.userType,
+                    department: item.department?.description,
+                    profile: thumbnail,
+                    //TODO add Phone
+                }
+            }))
+
+            return NextResponse.json(results);
         }
     } catch (err) {
         return new Response("", { status: 500 });
