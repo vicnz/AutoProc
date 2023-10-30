@@ -21,7 +21,15 @@ const UserCrud = (props: PropsWithChildren<UserCrudProps>) => {
                 {content}
             </Button>
             <Drawer open={open} onClose={() => setOpen(false)} title={content}>
-                <Skeleton active />
+                {
+                    isEdit ?
+                        <>
+                            <PreloadWithData id={id as string} />
+                        </> :
+                        <>
+                            <UserCrudForm isEdit />
+                        </>
+                }
             </Drawer>
         </>
     )
@@ -37,6 +45,7 @@ const PreloadWithData = (props: { id: string }) => {
     }
     return (
         <>
+            {/* <UserCrudForm /> */}
         </>
     )
 }
