@@ -1,6 +1,6 @@
 "use client";
 
-import NumberToWords from "@lib/numToWords";
+import NumberToWords from "@lib/client/num-to-words";
 import { List, Space, Typography, theme } from "antd";
 import dayjs from "dayjs";
 import { memo } from "react";

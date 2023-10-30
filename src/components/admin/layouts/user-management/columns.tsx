@@ -1,6 +1,6 @@
 import { BlockOutlined, CheckSquareOutlined, CodeOutlined, EyeOutlined, LinkOutlined, MailOutlined, ManOutlined, SettingOutlined, ShareAltOutlined, SmileOutlined, UserOutlined } from "@ant-design/icons";
 import { Avatar, TableColumnsType, Tag, Anchor, Button } from "antd";
-import toBase64 from '@lib/client/blob2base64'
+import toBase64 from '@lib/client/blob-to-base64'
 import BoringAvatar from 'boring-avatars'
 
 const UserManagementColumns: TableColumnsType = [

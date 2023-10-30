@@ -1,5 +1,5 @@
 import StyleComponentRegistry from "@/lib/theme/antd";
-import SWRConfig from "@lib/SWRConfig";
+import SWRConfig from "@state/swr/Config";
 import "./globals.css";
 import { Metadata } from "next";
 

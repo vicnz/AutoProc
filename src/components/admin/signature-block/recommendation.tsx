@@ -1,6 +1,6 @@
 "use client";
 //
-import fullname from "@/lib/fullname";
+import fullname from "@lib/client/fullname";
 import { CSSProperties, memo, useMemo } from "react";
 
 //types

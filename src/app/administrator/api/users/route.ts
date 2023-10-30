@@ -1,6 +1,6 @@
 import db from "@lib/db";
 import { NextRequest, NextResponse } from "next/server";
-import fullname from "@lib/fullname";
+import fullname from "@lib/client/fullname";
 import sharp from "sharp";
 
 

@@ -8,7 +8,6 @@ import { BuildOutlined } from "@ant-design/icons";
 import { Button, Input, InputProps, InputRef, Space, Tooltip, FormInstance, App } from "antd";
 import dayjs from "dayjs";
 import { ForwardedRef, RefObject, forwardRef, memo, useState } from "react";
-import { randomRange } from "@lib/random";
 
 const PRNumberWithGenerator = forwardRef(function PRNumberCreator(
     props: InputProps & { instance: RefObject<FormInstance> },

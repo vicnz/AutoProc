@@ -1,5 +1,5 @@
 import db from "@lib/db";
-import fullname from "@lib/fullname";
+import fullname from "@lib/client/fullname";
 import dayjs from "dayjs";
 import { NextRequest, NextResponse } from "next/server";
 

@@ -1,3 +1,8 @@
+/**
+ * * API ERROR
+ * * CUSTOM ERRORS THAT ARE SAFE TO SEND TO CLIENT
+ */
+
 export enum METHOD {
     GET,
     POST,
@@ -19,7 +24,7 @@ class APIError extends Error {
         this.path = path
         this.type = type
     }
-    //TODO create a logger
 }
+
 
 export default APIError;

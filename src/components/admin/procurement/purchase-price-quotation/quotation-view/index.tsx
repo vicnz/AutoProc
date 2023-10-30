@@ -4,7 +4,7 @@ import { Descriptions, List, Table, Typography } from "antd";
 import dayjs from "dayjs";
 import { memo, useState } from "react";
 //components
-import NumToWords from "@lib/numToWords";
+import NumToWords from "@lib/client/num-to-words";
 import PreviewHeader from "@components/admin/procurement/previewheader";
 //local
 import Columns from "./columns";

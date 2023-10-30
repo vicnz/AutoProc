@@ -1,5 +1,5 @@
 import db from '@lib/db'
-import { sign } from '@/lib/jwt'
+import { sign } from '@lib/server/jwt'
 
 import { NextRequest, NextResponse } from 'next/server'
 

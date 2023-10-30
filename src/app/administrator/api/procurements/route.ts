@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import db, { PrismaModels } from "@lib/db";
-import fullname from "@/lib/fullname";
+import fullname from "@lib/client/fullname";
 
 //Response Type
 export type ResponseType = {

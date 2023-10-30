@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { decode } from "@lib/jwt";
+import { decode } from "@lib/server/jwt";
 import db, { PrismaClientError } from "@lib/db";
 
 export type BodyType = {

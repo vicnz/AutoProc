@@ -1,9 +1,8 @@
-import { EyeOutlined, FrownOutlined, MehOutlined, ShopOutlined, SmileOutlined, UserAddOutlined, UserDeleteOutlined } from "@ant-design/icons";
+import { ShopOutlined, UserAddOutlined, UserDeleteOutlined } from "@ant-design/icons";
 import { Card, Progress, Rate, Skeleton, Space, Statistic } from "antd";
-import dayjs from "dayjs";
 import { Fragment } from "react";
 import useSWR from "swr";
-import { randomRange } from "@lib/random";
+import { randomRange } from "@lib/client/random-range";
 
 const Supplier = function () {
     const { data: suppliers, isLoading, error } = useSWR("/administrator/api/suppliers?_all");

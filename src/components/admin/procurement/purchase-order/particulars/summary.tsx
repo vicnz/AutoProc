@@ -1,5 +1,5 @@
 import { Table } from "antd";
-import NumToWords from '@lib/numToWords'
+import NumToWords from '@lib/client/num-to-words'
 const RenderSummary = (pageData: any[]) => {
     let totalCost = 0;
     let count = pageData.length

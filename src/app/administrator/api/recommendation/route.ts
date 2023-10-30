@@ -1,4 +1,4 @@
-import fullname from "@/lib/fullname";
+import fullname from "@lib/client/fullname";
 import db from "@lib/db";
 import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";

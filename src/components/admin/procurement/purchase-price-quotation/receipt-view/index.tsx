@@ -2,7 +2,7 @@
 
 import { Table, Descriptions, List } from "antd";
 import PreviewHeader from '@components/admin/procurement/previewheader'
-import NumToWords from '@lib/numToWords'
+import NumToWords from '@lib/client/num-to-words'
 const AcknowledgementReceipt = function (props: { data: any }) {
     return (
         <>

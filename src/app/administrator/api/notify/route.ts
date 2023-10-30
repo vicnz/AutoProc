@@ -1,4 +1,4 @@
-import { getSSEWriter, NotificationType } from "@lib/stream";
+import { getSSEWriter, NotificationType } from "@lib/server/sse";
 import { NextRequest } from "next/server";
 import { DetectNewNotifications } from "./utilty";
 

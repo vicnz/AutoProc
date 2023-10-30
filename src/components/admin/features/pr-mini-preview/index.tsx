@@ -24,7 +24,7 @@ import { Card, Descriptions, List, Result, Skeleton } from "antd";
 import dayjs from "dayjs";
 import useSWR from "swr";
 //
-import { ToPeso } from "@lib/formatting/currency";
+import { ToPeso } from "@lib/intl/currency";
 import { usePRId } from "@components/admin/PRId";
 
 const PRPreview = function (props: { showAmount?: boolean }) {

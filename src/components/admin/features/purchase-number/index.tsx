@@ -19,7 +19,7 @@ import {
 } from "antd";
 import dayjs from "dayjs";
 import { ForwardedRef, RefObject, forwardRef, memo, useState } from "react";
-import { randomRange } from "@lib/random";
+import { randomRange } from "@lib/client/random-range";
 
 const PRNumberWithGenerator = forwardRef(function PRNumberCreator(
     props: InputProps & { instance: RefObject<FormInstance> },

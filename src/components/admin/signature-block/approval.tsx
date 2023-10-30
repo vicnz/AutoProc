@@ -2,7 +2,7 @@
 //libs
 import { memo, useMemo, CSSProperties } from "react";
 //components
-import fullname from "@/lib/fullname";
+import fullname from "@lib/client/fullname";
 //types
 type officer = {
     fname: string;

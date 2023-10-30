@@ -1,3 +1,9 @@
+/**
+ * * SERVER SENT EVENTS INIT
+ * * DEFINITION OF SSE UTILITY
+ */
+
+//MESSAGE TYPE
 export interface Message<T = string | Record<string, unknown>> {
     data: T,
     comment?: string,
@@ -6,6 +12,7 @@ export interface Message<T = string | Record<string, unknown>> {
     retry?: string
 }
 
+//EVENT NOTIFIER TYPE
 export interface EventNotifier<
     T extends {
         update: T['update'] extends Message ? Message<T['update']>['data'] : never
@@ -23,6 +30,7 @@ export interface EventNotifier<
 }
 
 
+//CONVERT DATA TO STRING
 export function toDataString(data: string | Record<string, unknown>): string {
     if (typeof data === 'object') { //isObject()
         return toDataString(JSON.stringify(data))
@@ -49,6 +57,7 @@ export function writeMessage(writer: WritableStreamDefaultWriter, encoder: TextE
     }
 }
 
+//WRITER CLASS
 export class Writer implements EventNotifier {
     constructor(
         readonly writer: WritableStreamDefaultWriter,
@@ -84,6 +93,7 @@ export class Writer implements EventNotifier {
 }
 
 
+//SSE WRITER
 export const getSSEWriter = (
     writer: WritableStreamDefaultWriter,
     encoder: TextEncoder

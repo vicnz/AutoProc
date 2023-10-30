@@ -1,8 +1,8 @@
 import db, { PrismaModels } from "@lib/db";
 import { NextRequest, NextResponse } from "next/server";
 import dayjs from "dayjs";
-import APIError from "@/lib/api_error";
-import { randomRange } from "@/lib/random";
+import APIError from "@/lib/server/api-error";
+import { randomRange } from "@lib/client/random-range";
 import { logger } from "@logger";
 
 export const GET = async (req: NextRequest) => {

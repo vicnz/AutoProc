@@ -1,8 +1,7 @@
 import db, { PrismaModels } from "@lib/db";
 import dayjs from "dayjs";
 import { NextRequest, NextResponse } from "next/server";
-import APIError, { METHOD } from "@lib/api_error";
-import { ApiError } from "next/dist/server/api-utils";
+import APIError, { METHOD } from "@lib/server/api-error";
 
 //
 const notifyWhen = 2; //how many days before notifiying manager of the purchase request
