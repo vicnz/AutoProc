@@ -128,6 +128,7 @@ model purchase_requests {
     abstract    purchase_quotation_abstracts[]
     award       purchase_awards[]
     po          purchase_orders[]
+    delivery    delivery[]
 
     @@fulltext([number, reference, purpose])
 }
@@ -236,17 +237,19 @@ model purchase_orders {
 //Monitor Deliver Upon Appoval of Release the it shall be added to delivery monitoring
 //where startDate and endDate of delivery is monitored
 model delivery {
-    id        String          @id @default(uuid())
+    id        String            @id @default(uuid())
     poId      String
-    po        purchase_orders @relation(fields: [poId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-    startDate DateTime        @default(now()) //? GET THIS DATE FROM PURCHASE ORDER -> toggled the release trigger
-    endDate   DateTime        @default(now()) //? CALCULATE THIS FROM PURCHASE ORDER -> duration -> exact date
+    po        purchase_orders   @relation(fields: [poId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    startDate DateTime          @default(now()) //? GET THIS DATE FROM PURCHASE ORDER -> toggled the release trigger
+    endDate   DateTime          @default(now()) //? CALCULATE THIS FROM PURCHASE ORDER -> duration -> exact date
     parcels   Json
-    urgent    Boolean         @default(false)
-    createdAt DateTime        @default(now())
-    updatedAt DateTime        @updatedAt
-    isDeleted Boolean         @default(false)
-    final     Boolean         @default(false)
+    urgent    Boolean           @default(false)
+    createdAt DateTime          @default(now())
+    updatedAt DateTime          @updatedAt
+    isDeleted Boolean           @default(false)
+    final     Boolean           @default(false)
+    prId      String            @unique
+    pr        purchase_requests @relation(fields: [prId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 model suppliers {
