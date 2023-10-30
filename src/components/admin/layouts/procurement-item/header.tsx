@@ -5,7 +5,7 @@ import { Button, Space, Tag } from "antd";
 import { useRouter } from "next/navigation";
 //components
 import GlobalHeader from "@components/admin/header";
-import { usePRId } from '@components/admin/PRId'
+import { usePRId } from '@/components/admin/pr-number'
 import { memo } from "react";
 
 const ProcurementItemHeader = function () {

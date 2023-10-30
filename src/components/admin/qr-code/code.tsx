@@ -15,11 +15,11 @@ const RenderQR = memo(function ShowQR(props: {
     const { token } = theme.useToken();
 
     return (
-        <Descriptions layout="vertical" bordered column={4}>
+        <Descriptions layout="vertical" bordered column={4} size="small" title="Purchase Request Document Tracker">
             <Descriptions.Item label={props.number} span={2}>
                 <QRCode
                     value={props.code}
-                    size={200}
+                    size={300}
                     bordered={false}
                     color={token.colorPrimary}
                 />

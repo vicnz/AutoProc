@@ -1,11 +1,16 @@
 "use client";
-//libs
-import { PropsWithChildren } from "react";
+
+/**
+ * * ROOT LAYOUT PAGE
+ * * ADMINISTRATOR ROOT LAYOUT
+ */
+import { PropsWithChildren, memo } from "react";
 import { App, theme } from "antd";
+
 //components
+import AntDConfigProvider from "@/lib/theme/theme-config";
 import Styles from "./root-layout.module.css";
-// import AntDesignThemeContext from "@lib/theme/theme.context";
-import AntDConfigProvider from '@lib/theme/theme.provider'
+//# COMPONENTS
 import Topbar from "@components/admin/topbar";
 import Navbar from "@components/admin/navbar";
 //
@@ -15,20 +20,11 @@ const AdministratorLayout = function (props: PropsWithChildren<any>) {
         <>
             <AntDConfigProvider>
                 <App>
-                    <div
-                        className={Styles.layout_wrapper}
-                        style={{ backgroundColor: token.colorBgContainer }}
-                    >
+                    <div className={Styles.layout_wrapper} style={{ backgroundColor: token.colorBgContainer }}>
                         <Topbar />
-                        <div
-                            className={Styles.content_provider}
-                            style={{ backgroundColor: token.colorBgContainer }}
-                        >
+                        <div className={Styles.content_provider} style={{ backgroundColor: token.colorBgContainer }}>
                             <Navbar />
-                            <div
-                                className={Styles.content}
-                                style={{ backgroundColor: "transparent" }}
-                            >
+                            <div className={Styles.content} style={{ backgroundColor: "transparent" }}>
                                 {props.children}
                             </div>
                         </div>
@@ -39,4 +35,4 @@ const AdministratorLayout = function (props: PropsWithChildren<any>) {
     );
 };
 
-export default AdministratorLayout;
+export default memo(AdministratorLayout);

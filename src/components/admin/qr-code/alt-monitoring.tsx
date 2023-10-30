@@ -65,7 +65,7 @@ const Columns: TableColumnsType = [
 ];
 
 const RenderTable = memo(function AltTracking() {
-    const dataSets = new Array(20).fill(0);
+    const dataSets = new Array(15).fill(0);
     return (
         <Table
             caption={

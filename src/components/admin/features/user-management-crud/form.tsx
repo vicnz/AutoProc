@@ -1,10 +1,8 @@
 'use client';
 
-import { Avatar, Button, Form, Space } from 'antd'
-import BoringAvatar from 'boring-avatars'
-import FlexContainer from '@components/shared/Flex'
-import { EditOutlined, ProfileOutlined, UserAddOutlined } from '@ant-design/icons';
-import { openEditor, } from 'react-profile'
+import { Form } from 'antd';
+import FlexContainer from '@/components/shared/flex-container';
+import { openEditor, } from 'react-profile';
 type UserManagementFormProps = {
     id?: string,
     isEdit: boolean,

@@ -46,7 +46,7 @@ const NotificationItem = (props: any) => {
                     placement="left"
                 >
                     <ClearOutlined /> Clear
-                </Popconfirm>,
+                </Popconfirm>
             </>
         ];
         const url = content?.ref; //ADD THE REFERENCE ID []

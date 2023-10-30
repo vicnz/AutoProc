@@ -1,7 +1,12 @@
 "use client";
 
+/**
+ * * THEME CONFIG
+ * * GLOBAL THEME CONFIG
+ */
+
 import { ConfigProvider, ThemeConfig } from "antd";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, memo } from "react";
 
 const ThemeConfig: ThemeConfig = {
     token: {
@@ -17,4 +22,4 @@ const ThemeConfigProvider = function (props: PropsWithChildren<any>) {
     );
 };
 
-export default ThemeConfigProvider;
+export default memo(ThemeConfigProvider);

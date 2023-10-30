@@ -7,11 +7,12 @@
  */
 //libs
 import { Button, Space, Tooltip, theme } from "antd";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { CSSProperties, memo } from "react";
 import Link from "next/link";
 //
 import NavbarRenderedItems from "./nav-items";
+import isLinkActive from './link-active'
 //styles
 import Styles from "./navbar.module.css";
 //
@@ -30,12 +31,9 @@ const Navbar = function () {
     const { token } = theme.useToken();
 
     return (
-        <div
-            style={{ ...NavbarWrapperStyle, backgroundColor: token.colorBgContainer }}
-        >
+        <div style={{ ...NavbarWrapperStyle, backgroundColor: token.colorBgContainer }}>
             {/* TOP SECTION */}
             <Space direction="vertical">
-
                 {NavbarRenderedItems.top.map((item) => {
                     if (item?.type === "separator") {
                         return <hr key={item?.key} />;
@@ -47,11 +45,7 @@ const Navbar = function () {
                                     <Button
                                         type="text"
                                         icon={<NavIcon />}
-                                        className={isLinkActive(
-                                            pathname,
-                                            item.href as string,
-                                            Styles.itemActive
-                                        )}
+                                        className={isLinkActive(pathname, item.href as string, Styles.itemActive)}
                                         onClick={() => { }}
                                     />
                                 </Link>
@@ -73,11 +67,7 @@ const Navbar = function () {
                                     <Button
                                         type="text"
                                         icon={<NavIcon />}
-                                        className={isLinkActive(
-                                            pathname,
-                                            item.href,
-                                            Styles.itemActive
-                                        )}
+                                        className={isLinkActive(pathname, item.href, Styles.itemActive)}
                                         onClick={() => { }}
                                     />
                                 </Link>
@@ -90,9 +80,5 @@ const Navbar = function () {
     );
 };
 
-// CHECK IF LINK IS ACTIVE
-const isLinkActive = (path: string, url: string, className: any): string => {
-    return `${path === url ? className : ""}`;
-};
 
 export default memo(Navbar);

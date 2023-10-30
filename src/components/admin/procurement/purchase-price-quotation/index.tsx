@@ -12,7 +12,7 @@ import NetworkError from "@components/admin/network-error";
 import SubHeader from "@components/admin/procurement/subheader";
 import EditPriceQuotation from "@components/admin/features/price-quotation-crud";
 import Preview from "@components/admin/procurement/preview";
-import { usePRId } from "@components/admin/PRId";
+import { usePRId } from "@/components/admin/pr-number";
 //Preview
 import DocumentType from "./picker";
 import SelectedSupplier from "./select-supplier";

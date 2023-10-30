@@ -1,10 +1,13 @@
 "use client";
 
+/**
+ * * CONTENT WRAPPER
+ * * FOR SUBSECTIONS
+ */
+
 //libs
 import { CSSProperties, PropsWithChildren, ReactNode, memo } from "react";
 import { theme } from "antd";
-//components
-//configs
 //
 
 const WrapperStyles: CSSProperties = {

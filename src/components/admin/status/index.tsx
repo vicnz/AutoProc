@@ -1,12 +1,23 @@
 'use client';
 
+/**
+ * * DOCUMENT STATUS VIEWER
+ * * COERCED WITH TRACKING
+ * * THIS COMPONENT DISPLAYS THE
+ * * DOCUMENT ROUTE
+ */
+
 import { SyncOutlined } from "@ant-design/icons";
 import { Card, Result, Spin } from "antd";
 import useSWR from "swr";
+import { memo } from "react";
+//components
 import StatusItems from './steps'
+import { usePRId } from '@components/admin/pr-number'
 
-const DocumentState = function (props: { prId: string }) {
-    const { data, isLoading, error, isValidating } = useSWR(`/administrator/api/status?_pr=${props.prId}`)
+const DocumentState = function () {
+    const id = usePRId()
+    const { data, isLoading, error, isValidating } = useSWR(`/administrator/api/status?_pr=${encodeURIComponent(id)}`)
     return (
         <Card
             title={<span>Document Status</span>}
@@ -67,4 +78,4 @@ const DocumentState = function (props: { prId: string }) {
 }
 
 
-export default DocumentState;
+export default memo(DocumentState);

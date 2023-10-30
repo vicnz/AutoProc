@@ -35,9 +35,7 @@ interface ApprovalBlockProps {
 //Approval Block Consumed by the Documents
 const ApprovalBlock = function (props: ApprovalBlockProps) {
     //FETCH OFFICERS
-    const { data, isLoading, error, isValidating } = useSWR(
-        `/administrator/api/officer`
-    );
+    const { data, isLoading, error, isValidating } = useSWR(`/administrator/api/officer`);
     //
     if (error) {
         //FAILED TO FETCH OFFICERS
@@ -64,11 +62,7 @@ const ApprovalBlock = function (props: ApprovalBlockProps) {
         <>
             <Divider>* * *</Divider>
             {props.approval ? (
-                <Approval
-                    officers={data}
-                    enduser={props.enduser}
-                    single={props.single}
-                />
+                <Approval officers={data} enduser={props.enduser} single={props.single} />
             ) : (
                 <Recommendation officers={data} enduser={props.enduser} />
             )}

@@ -1,4 +1,12 @@
-import { HomeOutlined, FolderOutlined, TeamOutlined, ShopOutlined, AppstoreOutlined, QuestionOutlined, SettingOutlined } from "@ant-design/icons";
+import {
+    HomeOutlined,
+    FolderOutlined,
+    TeamOutlined,
+    ShopOutlined,
+    AppstoreOutlined,
+    QuestionOutlined,
+    SettingOutlined,
+} from "@ant-design/icons";
 
 export type INavbarItemType = {
     key: string;

@@ -1,6 +1,6 @@
 "use client";
 
-import { usePRId } from "@/components/admin/PRId";
+import { usePRId } from "@/components/admin/pr-number";
 import NetworkError from "@/components/admin/network-error";
 import { Skeleton, Spin } from "antd";
 import dynamic from "next/dynamic";

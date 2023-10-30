@@ -32,7 +32,7 @@ const PurchaseRequestPreview = dynamic(
 );
 
 import QuotationEdit from "./quotations";
-import { usePRId } from "@components/admin/PRId";
+import { usePRId } from "@/components/admin/pr-number";
 //
 //type
 interface AbstractQuotationFormProps {

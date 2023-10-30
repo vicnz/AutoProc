@@ -24,7 +24,7 @@ import dayjs from "dayjs";
 import { mutate } from "swr";
 import dynamic from "next/dynamic";
 //COMPONENTS
-import { usePRId } from "@components/admin/PRId";
+import { usePRId } from "@/components/admin/pr-number";
 
 //? EDIT PARTICULARS
 const EditParticulars = dynamic(

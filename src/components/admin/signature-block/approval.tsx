@@ -4,7 +4,7 @@ import { memo, useMemo, CSSProperties } from "react";
 //components
 import fullname from "@lib/client/fullname";
 //types
-type officer = {
+type OfficerType = {
     fname: string;
     mname?: string | null;
     lname: string;
@@ -13,7 +13,7 @@ type officer = {
     title: string;
 };
 interface ApprovalProps {
-    officers: officer[];
+    officers: OfficerType[];
     enduser?: {
         name: string;
         department: string;
@@ -35,6 +35,7 @@ const SignatureBlockItem: CSSProperties = {
     width: "100%",
 };
 
+///
 const Approval = function (props: ApprovalProps) {
     //
     const signatureBlockItems = useMemo(() => {

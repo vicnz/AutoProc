@@ -4,12 +4,12 @@
 import { AuditOutlined, BarChartOutlined } from "@ant-design/icons";
 import { Skeleton, TabsProps, Tag } from "antd";
 import dynamic from "next/dynamic";
-import TabPaneWrapper from "./tab-pane";
 //components
-const Overview = dynamic(async () => await import("@/components/admin/layouts/statistics"), {
+import TabPaneWrapper from "./tab-pane";
+const Overview = dynamic(async () => await import("@components/admin/layouts/dashboard/statistics"), {
     loading: () => <Skeleton paragraph={{ rows: 25 }} />,
 });
-const Supplier = dynamic(async () => await import("@/components/admin/layouts/supplier"), {
+const Supplier = dynamic(async () => await import("@components/admin/layouts/dashboard/supplier"), {
     loading: () => <Skeleton paragraph={{ rows: 25 }} />,
 });
 //config

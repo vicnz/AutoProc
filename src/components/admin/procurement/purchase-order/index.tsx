@@ -7,7 +7,7 @@ import useSWR from "swr";
 import { useReactToPrint } from "react-to-print";
 //components
 //
-import { usePRId } from "@components/admin/PRId";
+import { usePRId } from "@/components/admin/pr-number";
 import NetworkError from "@components/admin/network-error";
 import CreateNewPO from "./createnew";
 import Preview from "@components/admin/procurement/preview";

@@ -10,7 +10,7 @@ import NetworkError from "@components/admin/network-error";
 import SubHeader from "@components/admin/procurement/subheader";
 import Preview from "@components/admin/procurement/preview";
 import PreviewHeader from "@components/admin/procurement/previewheader";
-import { usePRId } from "@components/admin/PRId";
+import { usePRId } from "@/components/admin/pr-number";
 //Preview
 import Resolution from "./resolution";
 import NoticeOfAward from "./notice-of-award";

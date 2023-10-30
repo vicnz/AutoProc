@@ -2,18 +2,16 @@
 
 //libs
 import { useState, useEffect, memo } from "react";
-import { Input, Modal, Tooltip, theme } from "antd";
-import { MacCommandOutlined } from "@ant-design/icons";
+import { Input, Modal, Tooltip } from "antd";
+import { ThunderboltOutlined } from "@ant-design/icons";
 //components
 import SearchModal from "@components/admin/search/modal";
 
 //SHORTCUT Tooltip
 const ShortCutTooltip = (
-    <Tooltip title="Command Or Control + /" placement="bottom">
+    <Tooltip title="Command or Ctrl + /" placement="bottom">
         <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
-            <MacCommandOutlined />
-            <span style={{ scale: 0.8 }}>+</span>
-            <span>/</span>
+            <ThunderboltOutlined />
         </div>
     </Tooltip>
 );
@@ -35,7 +33,7 @@ const SearchBar = function () {
     }, []);
 
     return (
-        <div style={{ width: "25%" }}>
+        <div style={{ width: "30%" }}>
             <Input
                 placeholder="Search Purchase Requests, Purchase Order, Users and etc."
                 onClick={() => setOpen(true)}

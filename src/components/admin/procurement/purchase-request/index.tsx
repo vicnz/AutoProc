@@ -6,7 +6,7 @@ import { CSSProperties, useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import useSWR from "swr";
 //components
-import { usePRId } from "@components/admin/PRId"; //Shared PRIDProvider
+import { usePRId } from "@/components/admin/pr-number"; //Shared PRIDProvider
 import NetworkError from "@components/admin/network-error"; //Network Error Message
 import SubHeader from "@components/admin/procurement/subheader"; //Subheader
 import Preview from "@components/admin/procurement/preview"; //Preview Wrapper

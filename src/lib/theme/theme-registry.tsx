@@ -1,6 +1,9 @@
 'use client';
 
-// Component Wrapper For Ant Design Library
+/**
+ * * INITIALIZE ANTD FOR SERVER SIDE RENDERING
+ */
+
 import React from 'react';
 import { StyleProvider, createCache, extractStyle } from '@ant-design/cssinjs';
 import { useServerInsertedHTML } from 'next/navigation';

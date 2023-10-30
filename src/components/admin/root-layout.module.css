@@ -25,7 +25,7 @@
         top: 0;
         left: 0;
         position: fixed;
-        background: #C0252A;
+        background: #c0252a;
         z-index: 10000;
         display: grid;
         place-items: center;
