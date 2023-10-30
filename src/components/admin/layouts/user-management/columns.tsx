@@ -1,22 +1,23 @@
 import { BlockOutlined, CheckSquareOutlined, CodeOutlined, EyeOutlined, LinkOutlined, MailOutlined, ManOutlined, SettingOutlined, ShareAltOutlined, SmileOutlined, UserOutlined } from "@ant-design/icons";
 import { Avatar, TableColumnsType, Tag, Anchor, Button } from "antd";
 import toBase64 from '@lib/client/blob2base64'
+import BoringAvatar from 'boring-avatars'
 
 const UserManagementColumns: TableColumnsType = [
     {
         title: <><SmileOutlined /></>,
-        dataIndex: "profile",
+        dataIndex: "",
         key: "profile",
         width: 50,
-        render: (e: Blob) => {
-            if (e) {
-                const imageUrl = toBase64(e)
+        render: (e: { profile: Blob, fullname: string }) => {
+            if (e.profile) {
+                const imageUrl = toBase64(e.profile)
                 return (
                     <Avatar src={`data:image/png;base64,${imageUrl}`} />
                 )
             } else {
                 return (
-                    <Avatar icon={<UserOutlined />} />
+                    <BoringAvatar name={e.fullname} size={30} variant="beam" />
                 )
             }
         }
@@ -70,7 +71,12 @@ const UserManagementColumns: TableColumnsType = [
             </span>
         ),
         dataIndex: 'department',
-        key: 'department'
+        key: 'department',
+        render: (e: string) => {
+            return (
+                <>{e || "_"}</>
+            )
+        }
     },
     {
         title: (

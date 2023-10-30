@@ -44,7 +44,7 @@ const PurchaseOrderForm = function (props: PurchaseOrderFormProps) {
         if (props.isEdit == true) {
             return { ...props.data, date: dayjs(props.data.date) };
         } else {
-            return { date: dayjs(), particulars: [], duration: 7, mode: 'Small-Value' };
+            return { date: dayjs(), particulars: [], duration: 30, mode: 'Small-Value' };
         }
     }, [props.isEdit, props.data]);
 

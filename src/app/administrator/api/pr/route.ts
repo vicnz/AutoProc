@@ -19,18 +19,22 @@ export const GET = async function (req: NextRequest) {
         const result = await db.purchase_requests.findFirstOrThrow({
             include: {
                 user: {
-                    include: {
+                    select: {
+                        fname: true,
+                        mname: true,
+                        lname: true,
+                        suffix: true,
                         department: {
                             select: {
                                 description: true,
-                                sections: {
-                                    select: {
-                                        description: true,
-                                    },
-                                },
                             },
                         },
-                    },
+                        section: {
+                            select: {
+                                description: true
+                            }
+                        }
+                    }
                 },
             },
             where: {
@@ -56,7 +60,7 @@ export const GET = async function (req: NextRequest) {
                 true
             ),
             department: result?.user?.department?.description,
-            sections: result?.user?.department?.sections[0]?.description,
+            sections: result?.user?.section?.description,
             date: dayjs(result?.date).toISOString(),
             particulars,
         });

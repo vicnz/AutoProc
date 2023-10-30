@@ -9,7 +9,7 @@ const DocumentState = function (props: { prId: string }) {
     const { data, isLoading, error, isValidating } = useSWR(`/administrator/api/status?_pr=${props.prId}`)
     return (
         <Card
-            title={<span>Status</span>}
+            title={<span>Document Status</span>}
             style={{
                 height: "calc(100vh - 112px)",
                 width: "250px",
