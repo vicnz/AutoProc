@@ -15,11 +15,11 @@ const Notify = function (props: PropsWithChildren<any>) {
     const { notification } = App.useApp()
 
     /**SHOW NOTIFICATION UPHEAVAL */
-    const showNotification = (notifications: any[]) => {
+    const showNotification = useCallback((notifications: any[]) => {
         notifications.forEach(({ title, description }) => {
             notification.info({ message: title, description: description, duration: 5000 })
         })
-    }
+    }, [notification])
 
     useEffect(() => {
         console.log("LISTENING.... to INCOMING Push Notifications")
@@ -33,7 +33,7 @@ const Notify = function (props: PropsWithChildren<any>) {
         return () => {
             notification.destroy()
         }
-    }, []); //run once
+    }, [notification, showNotification]); //run once
 
     return (
         <Fragment>

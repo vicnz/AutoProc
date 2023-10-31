@@ -7,7 +7,8 @@ type BlobFromServer = {
     type: string,
     data: Array<number>
 }
-export default (blob: Blob | BlobFromServer) => {
+
+const blobToBase64 = (blob: Blob | BlobFromServer) => {
     if (blob instanceof Blob) {
         const reader = new FileReader()
         reader.readAsDataURL(blob)
@@ -20,3 +21,5 @@ export default (blob: Blob | BlobFromServer) => {
         return Buffer.from(blob.data).toString('base64')
     }
 }
+
+export default blobToBase64;

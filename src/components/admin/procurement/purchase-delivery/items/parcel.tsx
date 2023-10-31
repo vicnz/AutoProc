@@ -11,7 +11,7 @@ type DeliveryManagerProp = {
     fields: FormListFieldData[];
 };
 
-const ParcelItem = forwardRef((props: DeliveryManagerProp, ref) => {
+const ParcelItem = forwardRef(function ParcelItemWrapper(props: DeliveryManagerProp, ref) {
     const { items, fields, ...rest } = props;
 
     const renderItems = useMemo(() => {

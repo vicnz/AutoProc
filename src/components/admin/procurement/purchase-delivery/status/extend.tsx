@@ -82,8 +82,8 @@ const ExtendDelivery = function (props: PropsWithChildren<ExtendDeliveryProps>) 
                     onCancel={() => onClose()}
                     title="Request For Extension"
                     footer={[
-                        <Button onClick={onClose}>Cancel</Button>,
-                        <Button type="primary" onClick={onFinish} loading={loading}>
+                        <Button onClick={onClose} key="close-btn">Cancel</Button>,
+                        <Button type="primary" onClick={onFinish} loading={loading} key={'extend-btn'}>
                             Extend
                         </Button>,
                     ]}
