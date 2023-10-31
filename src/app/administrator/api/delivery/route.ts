@@ -1,10 +1,10 @@
-import db, { PrismaModels } from "@lib/db";
+import db from "@lib/db";
 import dayjs from "dayjs";
 import { NextRequest, NextResponse } from "next/server";
 import APIError, { METHOD } from "@lib/server/api-error";
 
 //
-const notifyWhen = 2; //how many days before notifiying manager of the purchase request
+const notifyWhen = 2; //TODO how many days before notifiying manager of the purchase request
 export const GET = async function (req: NextRequest) {
     const { searchParams } = new URL(req.url);
 
@@ -60,7 +60,7 @@ export const GET = async function (req: NextRequest) {
                     completed: false,
                     progress: deliveryProgress,
                     status: deliveryStatus,
-                    final: result.final
+                    final: result.final,
                 };
                 return NextResponse.json(data);
             } else {
@@ -90,7 +90,8 @@ export const POST = async function (req: NextRequest) {
         if (body === null || typeof body === "undefined") throw new Error("No Request Body Sent");
 
         const pr = await db.purchase_requests.findFirst({
-            include: {
+            select: {
+                id: true,
                 po: true,
             },
             where: {
@@ -144,7 +145,7 @@ export const POST = async function (req: NextRequest) {
         });
         //Create Delivery Tracking
         await db.delivery.create({
-            data: parsed,
+            data: { ...parsed, prId: pr.id },
         });
 
         return NextResponse.json({ ok: true });
@@ -244,7 +245,6 @@ export const PATCH = async (req: NextRequest) => {
 
             return NextResponse.json({ ok: true });
         }
-
     } catch (err) {
         console.log(err);
         if (err instanceof APIError) {

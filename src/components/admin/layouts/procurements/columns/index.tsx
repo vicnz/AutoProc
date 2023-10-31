@@ -11,7 +11,7 @@ import {
 //
 import { Progress, TableColumnsType, Tooltip } from "antd";
 //components
-import ViewButton from "./view-button";
+import ViewButton from "@components/admin/layouts/procurements/view-button";
 //
 const TableColumns: TableColumnsType = [
     {
@@ -78,25 +78,18 @@ const TableColumns: TableColumnsType = [
         dataIndex: "status",
         key: "status",
         width: 100,
-        render: (e: any[]) => {
-            const count = e.length;
-            const countAccumelate = e.reduce((prev, curr) => {
-                let isTrue = curr === true ? 1 : 0
-                return prev + isTrue;
-            }, 0)
-
-            const average = (countAccumelate / count) * 100
+        render: (e: number) => {
             let status = 'normal'
-            if (average < 30) {
+            if (e < 30) {
                 status = 'exception'
             }
-            if (average > 90 && average <= 100) {
+            if (e > 90 && e <= 100) {
                 status = 'success'
             }
             return (
                 <span>
-                    <Tooltip title={Math.floor(average) + "%"}>
-                        <Progress size="small" percent={average} showInfo={false} status={status as any} strokeColor={Math.floor(average) === 100 ? '#C0252A' : '#38424F'} />
+                    <Tooltip title={Math.floor(e) + "%"}>
+                        <Progress size="small" percent={Math.floor(e)} showInfo={true} status={status as any} strokeColor={Math.floor(e) === 100 ? '#C0252A' : '#38424F'} />
                     </Tooltip>
                 </span>
             )

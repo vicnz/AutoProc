@@ -37,18 +37,27 @@ export const GET = async function (req: NextRequest) {
             where: { prId: pr_id }
         })
 
-        const resolved = await Promise.all([pr, recommend, rfq, abstract, awarding, po])
+        const delivery = await db.delivery.findUnique({
+            select: { final: true, parcels: true },
+            where: {
+                prId: pr_id
+            }
+        })
+
+        const [PR, RECOMMEND, RFQ, ABSTRACT, AWARDING, PO, DELIVERY] = await Promise.all([pr, recommend, rfq, abstract, awarding, po, delivery])
 
         const status = {
             documents: [
-                { name: 'Purchase Request', ...resolved[0] },
-                { name: 'Recommendation', ...resolved[1] },
-                { name: 'RFQ', ...resolved[2] },
-                { name: 'Abstract', ...resolved[3] },
-                { name: 'Awarding', ...resolved[4] },
-                { name: 'Purchase Order', ...resolved[5] },
+                { name: 'Purchase Request', ...PR },
+                { name: 'Recommendation', ...RECOMMEND },
+                { name: 'RFQ', ...RFQ },
+                { name: 'Abstract', ...ABSTRACT },
+                { name: 'Awarding', ...AWARDING },
+                { name: 'Purchase Order', ...PO },
+                { name: "Delivery", final: DELIVERY?.final || false, tracking: [] }
             ],
-            delivery: {}
+            delivery: {
+            }
         }
 
         return NextResponse.json(status)

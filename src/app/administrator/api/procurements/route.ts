@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import db, { PrismaModels } from "@lib/db";
+import db from "@lib/db";
 import fullname from "@lib/client/fullname";
+import APIError, { METHOD } from "@lib/server/api-error";
+import { logger } from '@logger'
+import { computePRStatus } from './utlity'
 
-//Response Type
 export type ResponseType = {
     key: string;
     number: string | null;
@@ -14,6 +16,7 @@ export type ResponseType = {
     enduserId: string | null;
     department: string | null;
     section: string | null;
+    status: number
 };
 
 //GET RECORD LIST PAGINATED -> /administrator/api/procurements?page=[number]&size=[number]&completed=[boolean]
@@ -57,7 +60,9 @@ export const GET = async function (req: NextRequest) {
                 po: {
                     select: { final: true },
                 },
-                //TODO add delivery status
+                delivery: {
+                    select: { final: true }
+                }
             },
             skip: page,
             take: size || 8,
@@ -71,7 +76,18 @@ export const GET = async function (req: NextRequest) {
 
         const ListFormatter = new Intl.ListFormat("en");
 
-        const parsed = result.map((item, idx) => {
+        const parsed = result.map(async (item, idx) => {
+
+            const status = [
+                item.final || false, //PR is Final?
+                item.recomend[0]?.final || false, //Recommendation is Final?
+                item.rfq[0]?.final || false, //RFQ is Final?
+                item.abstract[0]?.final || false, //Abstract is Final?
+                item.award[0]?.final || false, //Awarding is Final?
+                item.po[0]?.final || false, //PO is Final,
+                item.delivery[0]?.final || false //delivery is final
+            ]
+            const progress = computePRStatus(status) //compute progresss
             return {
                 id: item.id,
                 key: item.id,
@@ -79,15 +95,7 @@ export const GET = async function (req: NextRequest) {
                 reference: `${item.reference}`,
                 purpose: item.purpose,
                 particulars: ListFormatter.format(
-                    (
-                        item.particulars as Array<{
-                            qty: number;
-                            description: string;
-                            stock_no: string;
-                            price: number;
-                            unit: string;
-                        }>
-                    ).map((item) => item.description)
+                    (item.particulars as Array<{ description: string }>).map((item) => item.description)
                 ),
                 enduser: fullname(
                     {
@@ -101,21 +109,19 @@ export const GET = async function (req: NextRequest) {
                 enduserId: item.user?.id,
                 department: item.user?.department?.description,
                 section: item.user?.section?.description,
-                status: [
-                    item.final || false, //PR is Final?
-                    item.recomend[0]?.final || false, //Recommendation is Final?
-                    item.rfq[0]?.final || false, //RFQ is Final?
-                    item.abstract[0]?.final || false, //Abstract is Final?
-                    item.award[0]?.final || false, //Awarding is Final?
-                    item.po[0]?.final || false, //PO is Final,
-                    //TODO include delivery status too.
-                ],
+                status: progress,
             };
         });
 
-        return NextResponse.json(parsed);
+        const response = await Promise.all(parsed)
+
+        return NextResponse.json(response);
     } catch (err) {
-        console.log(err);
+        console.log(err)
+        if (err instanceof APIError) {
+            logger.error(err.message)
+            return new Response(JSON.stringify({ message: err.message, type: err.type }), { status: 500 })
+        }
         return new Response("", { status: 500 });
     }
 };

@@ -1,7 +1,15 @@
+/**
+ * * PURCHASE ORDER CRUD
+ * * CREATE -> [PR, RECOMMENDATION, RFQ]
+ * * UPDATE
+ * * PATCH -> [final]
+ */
+
 import db from "@lib/db";
 import fullname from "@lib/client/fullname";
 import dayjs from "dayjs";
 import { NextRequest, NextResponse } from "next/server";
+import { computeParticulars } from "./utlity";
 
 //types
 type IParticulars = {
@@ -11,13 +19,29 @@ type IParticulars = {
     stock: string;
     price: number;
 };
-//GET URI --> /administrator/api/pr?_id=[valid-pr-id]
+
+/**
+ * * GET REQUEST
+ * ? GET URI --> /administrator/api/pr?_id=[valid-pr-id]
+ */
+
 export const GET = async function (req: NextRequest) {
     const { searchParams } = new URL(req.url);
     try {
         const id = searchParams.get("_id") as string;
         const result = await db.purchase_requests.findFirstOrThrow({
-            include: {
+            select: {
+                id: true,
+                budget: true,
+                final: true,
+                purpose: true,
+                reference: true,
+                userId: true,
+                number: true,
+                obr: true,
+                type: true, //TODO document type used for AUTOPROC-V2
+                particulars: true,
+                date: true,
                 user: {
                     select: {
                         fname: true,
@@ -31,10 +55,10 @@ export const GET = async function (req: NextRequest) {
                         },
                         section: {
                             select: {
-                                description: true
-                            }
-                        }
-                    }
+                                description: true,
+                            },
+                        },
+                    },
                 },
             },
             where: {
@@ -43,10 +67,7 @@ export const GET = async function (req: NextRequest) {
         });
 
         //Compute Total Cost
-        const particulars = (result?.particulars as IParticulars[]).map((item) => {
-            const totalPrice = item.price * item.qty;
-            return { ...item, key: item.description, total: totalPrice };
-        });
+        const particulars = computeParticulars(result?.particulars as IParticulars[]);
 
         return NextResponse.json({
             ...result,
@@ -71,16 +92,21 @@ export const GET = async function (req: NextRequest) {
     }
 };
 
-//CREATE NEW PR -> /administrator/api/pr [application/json] -> {id, ...}
+/**
+ * * POST REQUEST
+ * ? POST URI --> /administrator/api/pr [application/json] -> {id, ...}
+ */
+
 export const POST = async function (req: NextRequest) {
     const { json } = NextResponse;
     try {
         //Create  Request For Quotation & Recommending Document
         const body = await req.json();
+        if (typeof body === "undefined" || body === null) throw new Error("No Body Provided");
 
         await db.purchase_requests.create({
             data: {
-                ...body, //!convert date object to string in client-side
+                ...body,
                 tracking: [],
                 //CREATE RECOMMEND BODY
                 recomend: {
@@ -101,7 +127,6 @@ export const POST = async function (req: NextRequest) {
             },
         });
 
-
         return json({ ok: true });
     } catch (err) {
         console.log(`ERR:PR:POST:(${req.url})`);
@@ -110,16 +135,21 @@ export const POST = async function (req: NextRequest) {
     }
 };
 
-//UPDATE PR URI -> /administrator/api/pr?_id=[valid-pr-id]
+/**
+ * * UPDATE REQUEST
+ * ? PUT URI --> /administrator/api/pr?_id=[valid-pr-id]
+ */
+
 export const PUT = async function (req: NextRequest) {
     const { searchParams } = new URL(req.url);
     try {
         const id = searchParams.get("_id"); //document id
-        if (id === null) throw new Error("No Provided ID");
-        const data = await req.json();
+        if (typeof id === "undefined" || id === null) throw new Error("No Provided ID");
+        const body = await req.json();
+        if (typeof body === "undefined" || body === null) throw new Error("No Body ID");
         //UPDATE
         await db.purchase_requests.update({
-            data: { ...data },
+            data: { ...body },
             where: { id },
         });
 
@@ -131,11 +161,17 @@ export const PUT = async function (req: NextRequest) {
     }
 };
 
-//BITE SIZE UPDATE
+/**
+ * * PATCH REQUEST
+ * ? PATCH URI --> /administrator/api/pr?_id=[valid-pr-id]&[...params]
+ * ? PARAMS
+ * ? - _final="true"
+ */
 export const PATCH = async function (req: NextRequest) {
     const { searchParams } = new URL(req.url);
     try {
         const id = searchParams.get("_id") as string; //document id
+        if (typeof id === "undefined" || id === null) throw new Error("No Provided ID");
         const setFinal = searchParams.get("_final") as string;
 
         //MARK DOCUMENT AS FINAL

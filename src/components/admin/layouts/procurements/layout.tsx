@@ -7,8 +7,7 @@ import ContentWrapper from "@components/admin/content";
 import Header from "./header";
 
 //constants
-const URL = "/administrator/api/procurements";
-const SIZE = 8;
+const SIZE = 8; //TODO FETCH THIS FROM SERVER SETTINGS
 //types
 import type { ResponseType } from '@api/admin/procurements/route'
 import NetworkError from "@components/admin/network-error";

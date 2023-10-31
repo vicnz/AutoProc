@@ -4,7 +4,7 @@ import { Tabs } from "antd";
 import TabsPanes from '@components/admin/procurement/tabitems'
 import ProcurementItem from '@components/admin/procurement'
 import DocumentStatus from "@components/admin/status";
-import PrIdContext from '@/components/admin/pr-number'
+import PrIdContext from '@components/admin/pr-number'
 //
 const Page = function (props: { params: { prId: string } }) {
     return (

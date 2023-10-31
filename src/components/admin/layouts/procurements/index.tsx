@@ -1,10 +1,15 @@
 "use client";
 
-import { useContext } from "react";
-import { ProcurementListContext } from "./pagination";
-import TableColumns from "./columns";
-import { Result, Table } from "antd";
-//constants
+/**
+ * * VIEW PROCUREMENTS
+ */
+
+import { memo, useContext } from "react";
+import { Table } from "antd";
+//components
+import TableColumns from "@components/admin/layouts/procurements/columns";
+import { ProcurementListContext } from "@components/admin/layouts/procurements/layout";
+import NetworkError from '@components/admin/network-error'
 //
 const ProcurementsTable = function () {
     const { data, error, isLoading } = useContext(ProcurementListContext);
@@ -12,11 +17,7 @@ const ProcurementsTable = function () {
     if (error) {
         return (
             <div style={{ height: "calc(100vh - 112px)" }}>
-                <Result
-                    status={"500"}
-                    title="Network Error"
-                    subTitle="Please Try Again Later or Refresh the Page"
-                />
+                <NetworkError title="Network Error" subTitle="Please Reload Page" />
             </div>
         );
     }
@@ -35,4 +36,4 @@ const ProcurementsTable = function () {
     );
 };
 
-export default ProcurementsTable;
+export default memo(ProcurementsTable);

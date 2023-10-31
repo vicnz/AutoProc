@@ -1,8 +1,9 @@
 'use client';
+
 //libs
-import { CSSProperties, PropsWithChildren } from 'react';
+import { CSSProperties, PropsWithChildren, memo } from 'react';
 //components
-import Header from './header'
+import Header from '@components/admin/layouts/procurement-item/header'
 import Content from '@components/admin/content'
 
 //Content Styles
@@ -13,7 +14,7 @@ const WrapperStyles: CSSProperties = {
     width: "calc(100vw - 56px)",
 };
 //
-const ProcurementItem = function (props: PropsWithChildren<{}>) {
+const ProcurementItem = function (props: PropsWithChildren<any>) {
     return (
         <Content header={<Header />}>
             <div style={WrapperStyles}>
@@ -23,4 +24,4 @@ const ProcurementItem = function (props: PropsWithChildren<{}>) {
     )
 }
 
-export default ProcurementItem;
+export default memo(ProcurementItem);

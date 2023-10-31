@@ -14,7 +14,6 @@ const Supplier = function () {
     if (isLoading || !suppliers) {
         return <Skeleton active />;
     }
-    console.log(suppliers);
     return (
         <>
             <Space direction="vertical" style={{ width: "100%" }}>

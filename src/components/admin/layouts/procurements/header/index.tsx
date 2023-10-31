@@ -1,10 +1,11 @@
 "use client";
+
+/**
+ * * PROCUREMENT RECORDS HEADER COMPONENTS
+ */
+
 //libs
-import {
-    ArrowLeftOutlined,
-    ArrowRightOutlined,
-    QuestionCircleOutlined,
-} from "@ant-design/icons";
+import { ArrowLeftOutlined, ArrowRightOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import { Button, Divider } from "antd";
 import { Dispatch, memo } from "react";
 //components
@@ -38,18 +39,10 @@ const ProcurementsHeader = function (props: ProcurementsHeaderProps) {
             <GlobalHeader title="PURCHASE ORDERS">
                 <AddNewPR type="add" /> {/*ADD NEW PURCHASE REQUEST*/}
                 <Divider type="vertical" />
-                <Button
-                    icon={<ArrowLeftOutlined />}
-                    type="text"
-                    onClick={() => prevPage()}
-                >
+                <Button icon={<ArrowLeftOutlined />} type="text" onClick={() => prevPage()}>
                     Prev
                 </Button>
-                <Button
-                    icon={<ArrowRightOutlined />}
-                    type="text"
-                    onClick={() => nextPage()}
-                >
+                <Button icon={<ArrowRightOutlined />} type="text" onClick={() => nextPage()}>
                     Next
                 </Button>
                 <Divider type="vertical" />

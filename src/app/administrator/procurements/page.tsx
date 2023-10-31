@@ -1,5 +1,5 @@
 import Procurements from '@components/admin/layouts/procurements'
-import ProcurementLayout from '@components/admin/layouts/procurements/pagination'
+import ProcurementLayout from '@components/admin/layouts/procurements/layout'
 //
 const Page = function () {
     return (

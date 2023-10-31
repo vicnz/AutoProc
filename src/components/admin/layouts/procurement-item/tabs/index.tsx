@@ -1,19 +1,18 @@
-'use client';
+"use client";
 //libs
 import {
     AuditOutlined,
     BlockOutlined,
     ContactsOutlined,
-    FieldTimeOutlined, ShopOutlined,
+    FieldTimeOutlined,
+    ShopOutlined,
     ShoppingCartOutlined,
-    ShoppingOutlined
+    ShoppingOutlined,
 } from "@ant-design/icons";
 import { Skeleton, TabsProps } from "antd";
 import dynamic from "next/dynamic";
 //components
-import TabPane from "./panel";
-
-//Sections
+import TabPane from "@components/admin/layouts/procurement-item/tabs/panel";
 const PurchaseRequest = dynamic(
     async () => await import("@components/admin/procurement/purchase-request"),
     { loading: () => <Skeleton active /> }
@@ -37,8 +36,15 @@ const Awarding = dynamic(
     async () => await import("@components/admin/procurement/purchase-awarding"),
     { loading: () => <Skeleton active /> }
 );
-// const PurchaseOrder = dynamic(async () => await import('../_po/index'), { loading: () => <Skeleton active /> })
-//configs
+const PurchaseOrder = dynamic(
+    async () => await import("@components/admin/procurement/purchase-order"),
+    { loading: () => <Skeleton active /> }
+);
+
+const Delivery = dynamic(
+    async () => await import("@components/admin/procurement/purchase-delivery"),
+    { loading: () => <Skeleton active /> }
+);
 
 const TabPanes: TabsProps["items"] = [
     {
@@ -48,7 +54,7 @@ const TabPanes: TabsProps["items"] = [
                 <ShoppingOutlined /> Purchase Request
             </span>
         ),
-        destroyInactiveTabPane: true,
+
         tabKey: "pr",
         children: (
             <TabPane>
@@ -63,7 +69,7 @@ const TabPanes: TabsProps["items"] = [
                 <ContactsOutlined /> Recommendation
             </span>
         ),
-        destroyInactiveTabPane: true,
+
         tabKey: "recommend",
         children: (
             <TabPane>
@@ -78,7 +84,7 @@ const TabPanes: TabsProps["items"] = [
                 <ShopOutlined /> Request Quotation
             </span>
         ),
-        destroyInactiveTabPane: true,
+
         tabKey: "rfq",
         children: (
             <TabPane>
@@ -93,7 +99,7 @@ const TabPanes: TabsProps["items"] = [
                 <BlockOutlined /> Abstract of Quotation
             </span>
         ),
-        destroyInactiveTabPane: true,
+
         tabKey: "abstract",
         children: (
             <TabPane>
@@ -108,7 +114,7 @@ const TabPanes: TabsProps["items"] = [
                 <AuditOutlined /> Awarding & Release
             </span>
         ),
-        destroyInactiveTabPane: true,
+
         tabKey: "award",
         children: (
             <TabPane>
@@ -123,9 +129,13 @@ const TabPanes: TabsProps["items"] = [
                 <ShoppingCartOutlined /> Purchase Order
             </span>
         ),
-        destroyInactiveTabPane: true,
+
         tabKey: "po",
-        children: <TabPane>{/* <PurchaseOrder /> */}</TabPane>,
+        children: (
+            <TabPane>
+                <PurchaseOrder />
+            </TabPane>
+        ),
     },
     {
         key: "delivery",
@@ -134,9 +144,11 @@ const TabPanes: TabsProps["items"] = [
                 <FieldTimeOutlined /> Delivery Status
             </span>
         ),
-        destroyInactiveTabPane: true,
+
         tabKey: "delivery",
-        children: <TabPane>{/* <p>Delivery</p> */}</TabPane>,
+        children: <TabPane>
+            <Delivery />
+        </TabPane>,
     },
 ];
 
