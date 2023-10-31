@@ -69,7 +69,7 @@ const ExtendDelivery = function (props: PropsWithChildren<ExtendDeliveryProps>) 
 
     return (
         <>
-            <Button type="text" onClick={() => setOpen(true)} icon={<CalendarOutlined />} disabled={props.final}>
+            <Button onClick={() => setOpen(true)} icon={<CalendarOutlined />} disabled={props.final}>
                 Extend Date
             </Button>
 

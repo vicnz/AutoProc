@@ -6,10 +6,10 @@ import { CSSProperties, useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
 //components
 import NetworkError from "@components/admin/network-error"; //Network Error
-import SubHeader from "@components/admin/procurement/subheader"; //Sub Header
-import Preview from "@components/admin/procurement/preview"; //Preview
+import SubHeader from "@components/admin/layouts/procurement-item/header/sub"; //Sub Header
+import Preview from "@components/admin/layouts/procurement-item/preview-wrapper"; //Preview
 import { usePRId } from "@/components/admin/pr-number"; //PR ID
-import PreviewHeader from "@components/admin/procurement/previewheader"; //Preview Header
+import PreviewHeader from "@components/admin/layouts/procurement-item/preview-wrapper/header"; //Preview Header
 import SignatureBlock from "@/components/admin/signature-block"; //Signature Block
 //Preview
 import MakeFinal from "./final";

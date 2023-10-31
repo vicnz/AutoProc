@@ -1,7 +1,7 @@
 'use client';
 
 import { Table, Descriptions, List } from "antd";
-import PreviewHeader from '@components/admin/procurement/previewheader'
+import PreviewHeader from '@components/admin/layouts/procurement-item/preview-wrapper/header'
 import NumToWords from '@lib/client/num-to-words'
 const AcknowledgementReceipt = function (props: { data: any }) {
     return (

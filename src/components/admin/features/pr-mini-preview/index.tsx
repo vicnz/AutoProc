@@ -53,6 +53,14 @@ const PRPreview = function (props: { showAmount?: boolean }) {
         );
     }
 
+    if (data.empty) {
+        return (
+            <Card title="Not Found">
+                <Result title="PR Not Found" status={'404'} />
+            </Card>
+        )
+    }
+
     return (
         <>
             <Descriptions

@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import { memo, useState } from "react";
 //components
 import NumToWords from "@lib/client/num-to-words";
-import PreviewHeader from "@components/admin/procurement/previewheader";
+import PreviewHeader from "@components/admin/layouts/procurement-item/preview-wrapper/header";
 //local
 import Columns from "./columns";
 import RenderSummary from './renderSummary'

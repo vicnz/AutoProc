@@ -9,9 +9,9 @@ import dynamic from "next/dynamic";
 import useSWR from "swr";
 //components
 import NetworkError from "@components/admin/network-error";
-import SubHeader from "@components/admin/procurement/subheader";
+import SubHeader from "@components/admin/layouts/procurement-item/header/sub";
 import EditPriceQuotation from "@components/admin/features/price-quotation-crud";
-import Preview from "@components/admin/procurement/preview";
+import Preview from "@components/admin/layouts/procurement-item/preview-wrapper";
 import { usePRId } from "@/components/admin/pr-number";
 //Preview
 import DocumentType from "./picker";

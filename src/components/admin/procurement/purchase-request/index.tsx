@@ -5,13 +5,14 @@ import { Button, Skeleton } from "antd";
 import { CSSProperties, useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import useSWR from "swr";
+import { notFound } from 'next/navigation'
 //components
 import { usePRId } from "@/components/admin/pr-number"; //Shared PRIDProvider
 import NetworkError from "@components/admin/network-error"; //Network Error Message
-import SubHeader from "@components/admin/procurement/subheader"; //Subheader
-import Preview from "@components/admin/procurement/preview"; //Preview Wrapper
+import SubHeader from "@components/admin/layouts/procurement-item/header/sub"; //Subheader
+import Preview from "@components/admin/layouts/procurement-item/preview-wrapper"; //Preview Wrapper
 import Edit from "@components/admin/features/purchase-crud"; //EDIT Purchase Request Item
-import PreviewHeader from "@/components/admin/procurement/previewheader"; //Preview Shared Header
+import PreviewHeader from "@/components/admin/layouts/procurement-item/preview-wrapper/header"; //Preview Shared Header
 import Approval from "@/components/admin/signature-block"; //Approva Block
 //specific
 import ParticularsBlock from './particulars'
@@ -52,7 +53,12 @@ const PurchaseRequest = function () {
                 <Skeleton active />
             </>
         );
-    } else {
+    }
+    else {
+
+        if (data.empty) {
+            notFound()
+        }
         //RENDER DATA
         return (
             <>

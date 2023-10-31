@@ -7,9 +7,9 @@ import { useReactToPrint } from "react-to-print";
 import useSWR from "swr";
 //components
 import NetworkError from "@components/admin/network-error";
-import SubHeader from "@components/admin/procurement/subheader";
-import Preview from "@components/admin/procurement/preview";
-import PreviewHeader from "@components/admin/procurement/previewheader";
+import SubHeader from "@components/admin/layouts/procurement-item/header/sub";
+import Preview from "@components/admin/layouts/procurement-item/preview-wrapper";
+import PreviewHeader from "@components/admin/layouts/procurement-item/preview-wrapper/header";
 import { usePRId } from "@/components/admin/pr-number";
 //Preview
 import Resolution from "./resolution";

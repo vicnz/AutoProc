@@ -13,8 +13,8 @@ import { Skeleton } from "antd";
 import useSWR from "swr";
 import dynamic from "next/dynamic";
 //components
-import SubHeader from "@components/admin/procurement/subheader"; //Subheader
-import { usePRId } from "../../pr-number";
+import SubHeader from "@components/admin/layouts/procurement-item/header/sub"; //Subheader
+import { usePRId } from "@components/admin/pr-number";
 import NetworkError from "@components/admin/network-error";
 import RequireFinal from "./requirefinal";
 import CreateNewDelivery from "./create";

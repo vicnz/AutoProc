@@ -7,20 +7,19 @@
  */
 
 import { WarningOutlined } from "@ant-design/icons";
-import { Divider, Select, SelectProps, Skeleton } from "antd";
-import { forwardRef, memo, useMemo } from "react";
+import { Select, SelectProps, Skeleton } from "antd";
+import { forwardRef, memo } from "react";
 import useSWR from "swr";
 
 //UNITS EDITOR
-import UnitsEditor from '@components/admin/features/units-crud'
+import UnitsEditor from '@components/admin/features/units-crud';
 
 //
 const SelectUnit = forwardRef(function SelectUnit(props, ref) {
 
     const { data, isLoading, error } = useSWR<Array<{ id: string, name: string }>, any>('/administrator/api/others/units')
-
     if (error) {
-        return <p><WarningOutlined /> Error...</p>
+        return <p><WarningOutlined /> Faild To Load</p>
     }
 
     if (!data || isLoading) {
@@ -45,7 +44,6 @@ const SelectUnit = forwardRef(function SelectUnit(props, ref) {
             dropdownRender={(menu) => (
                 <>
                     {menu}
-                    <br />
                     {/* OPEN UNIT EDITOR [STILL A TODO FEATURE]  */}
                     <UnitsEditor isEdit={false} buttonProps={{ block: true }} />
                 </>

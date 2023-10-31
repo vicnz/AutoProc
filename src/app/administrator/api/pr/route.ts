@@ -29,7 +29,7 @@ export const GET = async function (req: NextRequest) {
     const { searchParams } = new URL(req.url);
     try {
         const id = searchParams.get("_id") as string;
-        const result = await db.purchase_requests.findFirstOrThrow({
+        const result = await db.purchase_requests.findFirst({
             select: {
                 id: true,
                 budget: true,
@@ -66,25 +66,29 @@ export const GET = async function (req: NextRequest) {
             },
         });
 
-        //Compute Total Cost
-        const particulars = computeParticulars(result?.particulars as IParticulars[]);
+        if (result) {
+            //Compute Total Cost
+            const particulars = computeParticulars(result?.particulars as IParticulars[]);
 
-        return NextResponse.json({
-            ...result,
-            enduser: fullname(
-                {
-                    fname: result?.user?.fname,
-                    mname: result?.user?.mname,
-                    lname: result?.user?.lname,
-                    suffix: result?.user?.suffix,
-                },
-                true
-            ),
-            department: result?.user?.department?.description,
-            sections: result?.user?.section?.description,
-            date: dayjs(result?.date).toISOString(),
-            particulars,
-        });
+            return NextResponse.json({
+                ...result,
+                enduser: fullname(
+                    {
+                        fname: result?.user?.fname,
+                        mname: result?.user?.mname,
+                        lname: result?.user?.lname,
+                        suffix: result?.user?.suffix,
+                    },
+                    true
+                ),
+                department: result?.user?.department?.description,
+                sections: result?.user?.section?.description,
+                date: dayjs(result?.date).toISOString(),
+                particulars,
+            });
+        } else {
+            return NextResponse.json({ empty: true })
+        }
     } catch (err) {
         console.log(`ERR:PR:GET:(${req.url})`);
         console.log(err);

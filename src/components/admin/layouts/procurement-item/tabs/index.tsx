@@ -13,38 +13,34 @@ import { Skeleton, TabsProps } from "antd";
 import dynamic from "next/dynamic";
 //components
 import TabPane from "@components/admin/layouts/procurement-item/tabs/panel";
-const PurchaseRequest = dynamic(
-    async () => await import("@components/admin/procurement/purchase-request"),
-    { loading: () => <Skeleton active /> }
-);
-const Recommendation = dynamic(
-    async () =>
-        await import("@components/admin/procurement/purchase-recommendation"),
-    { loading: () => <Skeleton active /> }
-);
-const RFQ = dynamic(
-    async () =>
-        await import("@components/admin/procurement/purchase-price-quotation"),
-    { loading: () => <Skeleton active /> }
-);
-const Abstract = dynamic(
-    async () =>
-        await import("@components/admin/procurement/purchase-abstract-quotation"),
-    { loading: () => <Skeleton active /> }
-);
-const Awarding = dynamic(
-    async () => await import("@components/admin/procurement/purchase-awarding"),
-    { loading: () => <Skeleton active /> }
-);
-const PurchaseOrder = dynamic(
-    async () => await import("@components/admin/procurement/purchase-order"),
-    { loading: () => <Skeleton active /> }
-);
-
-const Delivery = dynamic(
-    async () => await import("@components/admin/procurement/purchase-delivery"),
-    { loading: () => <Skeleton active /> }
-);
+//PURCHASE ORDER
+const PurchaseRequest = dynamic(async () => await import("@components/admin/procurement/purchase-request"), {
+    loading: () => <Skeleton active />,
+});
+//RECOMMENDATION SECTION
+const Recommendation = dynamic(async () => await import("@components/admin/procurement/purchase-recommendation"), {
+    loading: () => <Skeleton active />,
+});
+//RFQ SECTION
+const RFQ = dynamic(async () => await import("@components/admin/procurement/purchase-price-quotation"), {
+    loading: () => <Skeleton active />,
+});
+//ABSTRACT OF QUOTATION SECTION
+const Abstract = dynamic(async () => await import("@components/admin/procurement/purchase-abstract-quotation"), {
+    loading: () => <Skeleton active />,
+});
+//AWARDING SECTION
+const Awarding = dynamic(async () => await import("@components/admin/procurement/purchase-awarding"), {
+    loading: () => <Skeleton active />,
+});
+//PURCHASE ORDER SECTION
+const PurchaseOrder = dynamic(async () => await import("@components/admin/procurement/purchase-order"), {
+    loading: () => <Skeleton active />,
+});
+//DELIVERY SECTION
+const Delivery = dynamic(async () => await import("@components/admin/procurement/purchase-delivery"), {
+    loading: () => <Skeleton active />,
+});
 
 const TabPanes: TabsProps["items"] = [
     {
@@ -146,9 +142,11 @@ const TabPanes: TabsProps["items"] = [
         ),
 
         tabKey: "delivery",
-        children: <TabPane>
-            <Delivery />
-        </TabPane>,
+        children: (
+            <TabPane>
+                <Delivery />
+            </TabPane>
+        ),
     },
 ];
 
