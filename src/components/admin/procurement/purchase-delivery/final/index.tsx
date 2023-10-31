@@ -19,7 +19,7 @@ const MakeDeliveryFinal = function (props: { final: boolean; id: string; progres
     //* SET DOCUMENT FINAL
     const setFinal = async () => {
         setLoading(true); //start loading
-        const request = await fetch(`/administrator/api/delivery?_id=${encodeURIComponent(props.id)}&final=true`, {
+        const request = await fetch(`/administrator/api/procurement/delivery?_id=${encodeURIComponent(props.id)}&final=true`, {
             method: "PATCH",
             body: JSON.stringify({}),
         });

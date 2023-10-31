@@ -91,7 +91,7 @@ const PurchaseRequestEditor = function (props: PurchaseRequestEditorProps) {
 const FormWithData = function (props: { id: string; close: any }) {
 
     const { data, error, isLoading, isValidating } = useSWR(
-        `/administrator/api/pr?_id=${props.id}`
+        `/administrator/api/procurement/pr?_id=${encodeURIComponent(props.id)}`
     );
 
     //FETCHING ERROR

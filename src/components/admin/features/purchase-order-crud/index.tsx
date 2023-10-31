@@ -28,7 +28,7 @@ const PurchaseOrderFormEdit = function (props: AddNewPurchaseRequestProps) {
     const [open, setOpen] = useState(false); //set open
 
     const onClose = () => {
-        mutate(`/administrator/api/po?_id=${props.prId || ''}`); //update records
+        mutate(`/administrator/api/procurement/po?_id=${encodeURIComponent(props.prId || '')}`); //update records
         setOpen(false);
     };
 
@@ -82,7 +82,7 @@ const PurchaseOrderFormEdit = function (props: AddNewPurchaseRequestProps) {
 //
 const AddFormWithData = function (props: { id: string; close: any }) {
     const { data, error, isLoading, isValidating } = useSWR(
-        `/administrator/api/po?_id=${props.id}`
+        `/administrator/api/procurement/po?_id=${encodeURIComponent(props.id)}`
     );
 
     if (error) {

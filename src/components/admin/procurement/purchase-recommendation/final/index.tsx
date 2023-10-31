@@ -14,7 +14,7 @@ const MakeDocumentFinal = function (props: { final: boolean; id: string, prFinal
     const setFinal = async () => {
         setLoading(true);
         const request = await fetch(
-            `/administrator/api/recommendation?_id=${props.id}&_final=true`,
+            `/administrator/api/procurement/recommendation?_id=${encodeURIComponent(props.id)}&_final=true`,
             {
                 method: "PATCH",
             }

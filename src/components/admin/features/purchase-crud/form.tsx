@@ -75,7 +75,7 @@ const PurchaseRequestForm = function (props: PurchaseRequestFormProps) {
 
         if (isEdit) {
             //* - UPDATE PR INFORMATION
-            let response = await fetch(`/administrator/api/pr?_id=${props.prId}`, {
+            let response = await fetch(`/administrator/api/procurement/pr?_id=${encodeURIComponent(props.prId as string)}`, {
                 method: "PUT",
                 body: JSON.stringify({
                     ...formRef.current?.getFieldsValue(),
@@ -88,7 +88,7 @@ const PurchaseRequestForm = function (props: PurchaseRequestFormProps) {
             if (response.ok) {
                 message.success("Updated Purchase Request!");
                 setSaving(false);
-                mutate(`/administrator/api/pr?_id=${props.prId}`); //? @REFETCH UPDATED DATA
+                mutate(`/administrator/api/procurement/pr?_id=${encodeURIComponent(props.prId as string)}`); //? @REFETCH UPDATED DATA
                 close();
             } else {
                 setSaving(false);
@@ -96,7 +96,7 @@ const PurchaseRequestForm = function (props: PurchaseRequestFormProps) {
             }
         } else {
             //* - CREATE NEW PR DOCUMENT
-            let response = await fetch("/administrator/api/pr", {
+            let response = await fetch("/administrator/api/procurement/pr", {
                 method: "POST",
                 body: JSON.stringify({
                     ...formRef.current?.getFieldsValue(),

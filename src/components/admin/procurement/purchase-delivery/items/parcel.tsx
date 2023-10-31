@@ -35,7 +35,9 @@ const ParcelItem = forwardRef((props: DeliveryManagerProp, ref) => {
                 label: (
                     <span>
                         <NumberOutlined /> {(RowKey + 1).toString().padStart(3, "0")} <Divider type="vertical" />
-                        {items[RowKey].description}
+                        <span style={{ fontWeight: 'bold' }}>
+                            {items[RowKey].description}
+                        </span>
                     </span>
                 ),
                 children: (
@@ -49,7 +51,7 @@ const ParcelItem = forwardRef((props: DeliveryManagerProp, ref) => {
     }, [fields, items]);
     return (
         <>
-            <Collapse {...rest} ref={ref as any} items={renderItems} size="small" />
+            <Collapse {...rest} ref={ref as any} items={renderItems} size="small" accordion />
         </>
     );
 });

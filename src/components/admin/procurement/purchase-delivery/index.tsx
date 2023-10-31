@@ -32,7 +32,7 @@ const WrapperStyles: CSSProperties = {
 //
 const DeliveryView = function () {
     const id = usePRId();
-    const { data, isLoading, error } = useSWR(`/administrator/api/delivery?_id=${encodeURIComponent(id)}`);
+    const { data, isLoading, error } = useSWR(`/administrator/api/procurement/delivery?_id=${encodeURIComponent(id)}`);
 
     if (error) {
         return (
@@ -60,7 +60,6 @@ const DeliveryView = function () {
         if (data.empty === true) {
             return <CreateNewDelivery />;
         } else {
-
             const { startDate, endDate, number, supplier, id: deliveryId, progress, final } = data;
             const { name, address } = supplier;
             return (

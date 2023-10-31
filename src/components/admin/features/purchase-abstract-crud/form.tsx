@@ -81,7 +81,7 @@ const AbstractQuotationForm = function (props: AbstractQuotationFormProps) {
             date: dayjs(form.getFieldValue("date")).toISOString(), //CONVERT DATE TO STRING
         };
         //PUSH DATA
-        const sendUpdate = await fetch(`/administrator/api/abstract?_id=${id}`, {
+        const sendUpdate = await fetch(`/administrator/api/procurement/abstract?_id=${encodeURIComponent(id)}`, {
             method: "PUT",
             body: JSON.stringify(parsed),
             headers: [["Content-Type", "application/json"]],

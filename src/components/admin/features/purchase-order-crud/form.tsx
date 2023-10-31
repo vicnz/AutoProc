@@ -56,7 +56,7 @@ const PurchaseOrderForm = function (props: PurchaseOrderFormProps) {
     const onFinish = async () => {
         if (props.isEdit === true) {
             setSaving(true);
-            let response = await fetch(`/administrator/api/po?_id=${preload.id}`, {
+            let response = await fetch(`/administrator/api/procurement/po?_id=${encodeURIComponent(preload.id)}`, {
                 method: "PUT",
                 body: JSON.stringify({
                     ...formRef.current?.getFieldsValue(),
@@ -75,7 +75,7 @@ const PurchaseOrderForm = function (props: PurchaseOrderFormProps) {
         } else {
             //ADDING NEW PR
             setSaving(true);
-            let response = await fetch(`/administrator/api/po?_id=${prID}`, {
+            let response = await fetch(`/administrator/api/procurement/po?_id=${encodeURIComponent(prID as string)}`, {
                 method: "POST",
                 body: JSON.stringify({
                     ...formRef.current?.getFieldsValue(),
@@ -94,7 +94,7 @@ const PurchaseOrderForm = function (props: PurchaseOrderFormProps) {
             }
         }
 
-        mutate(`/administrator/api/po?_id=${prID}`); //reload data from server
+        mutate(`/administrator/api/procurement/po?_id=${encodeURIComponent(prID as string)}`); //reload data from server
     };
 
     return (

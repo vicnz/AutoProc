@@ -17,7 +17,7 @@ const PRNumberWithGenerator = forwardRef(function PRNumberCreator(
     const [loading, setLoading] = useState(false);
     const handler = async () => {
         setLoading(true);
-        const response = await fetch(`/administrator/api/number?date=${encodeURI(dayjs().toISOString())}`);
+        const response = await fetch(`/administrator/api/number?date=${encodeURIComponent(dayjs().toISOString())}`);
         if (response.ok) {
             const result = await response.json();
             props.instance.current?.setFieldValue(

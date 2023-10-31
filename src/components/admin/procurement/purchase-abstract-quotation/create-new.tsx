@@ -15,7 +15,7 @@ const CreateNewAbstract = function () {
     const addnew = async function () {
         setLoading(true)
         //add new abstract document
-        const response = await fetch(`/administrator/api/abstract?_id=${prID}`, {
+        const response = await fetch(`/administrator/api/procurement/abstract?_id=${encodeURIComponent(prID)}`, {
             method: 'POST'
         })
         if (response.ok) {

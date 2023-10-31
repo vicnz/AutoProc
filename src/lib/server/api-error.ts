@@ -14,6 +14,7 @@ export enum METHOD {
     HEAD,
 }
 
+//change type into 'server' | 'client'
 class APIError extends Error {
     public method: METHOD
     public path: string

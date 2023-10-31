@@ -44,10 +44,10 @@ const DeliveryItems = function (props: DeliveryItemsProps) {
         };
         parsed[`id`] = props.id;
         //request
-        const response = await fetch(
-            `/administrator/api/delivery?update_delivery=true&_id=${encodeURIComponent(props.id)}`,
-            { method: "PATCH", body: JSON.stringify(parsed) }
-        );
+        const response = await fetch(`/administrator/api/procurement/delivery?_id=${encodeURIComponent(props.id)}`, {
+            method: "PUT",
+            body: JSON.stringify(parsed),
+        });
         if (response.ok) {
             message.info("Updated, Delivery Items");
             setIsSaving(false);

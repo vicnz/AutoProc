@@ -37,7 +37,7 @@ const AbstractQuotationEdit = function (props: AbstractQuotationEditProps) {
     //CLOSE DRAWER
     const onClose = () => {
         setOpen(false);
-        mutate(`/administrator/api/abstract?_id=${id}`);
+        mutate(`/administrator/api/procurement/abstract?_id=${encodeURIComponent(id)}`);
     };
 
     //

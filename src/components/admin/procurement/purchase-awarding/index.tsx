@@ -10,7 +10,7 @@ import NetworkError from "@components/admin/network-error";
 import SubHeader from "@components/admin/layouts/procurement-item/header/sub";
 import Preview from "@components/admin/layouts/procurement-item/preview-wrapper";
 import PreviewHeader from "@components/admin/layouts/procurement-item/preview-wrapper/header";
-import { usePRId } from "@/components/admin/pr-number";
+import { usePRId } from "@components/admin/pr-number";
 //Preview
 import Resolution from "./resolution";
 import NoticeOfAward from "./notice-of-award";
@@ -37,7 +37,7 @@ const PurchaseAwarding = function () {
 
     //FETCH Resource
     const { data, isLoading, error, isValidating } = useSWR(
-        `/administrator/api/award?_id=${prId}`
+        `/administrator/api/procurement/award?_id=${encodeURIComponent(prId)}`
     );
 
     if (error) {

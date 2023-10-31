@@ -35,7 +35,7 @@ const PurchaseRecommendation = function () {
     });
 
     const { data, isLoading, error, isValidating } = useSWR(
-        `/administrator/api/recommendation?_id=${prId}`
+        `/administrator/api/procurement/recommendation?_id=${encodeURIComponent(prId)}`
     );
 
     if (error) {

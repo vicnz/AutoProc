@@ -35,7 +35,7 @@ const AbstractOfQuotation = function () {
     });
     //FETCH DATA
     const { data, isLoading, error } = useSWR(
-        `/administrator/api/abstract?_id=${prId}`
+        `/administrator/api/procurement/abstract?_id=${encodeURIComponent(prId)}`
     );
 
     //ERROR

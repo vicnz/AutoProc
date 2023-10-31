@@ -17,7 +17,7 @@ import { usePRId } from '@components/admin/pr-number'
 
 const DocumentState = function () {
     const id = usePRId()
-    const { data, isLoading, error, isValidating } = useSWR(`/administrator/api/status?_pr=${encodeURIComponent(id)}`)
+    const { data, isLoading, error, isValidating } = useSWR(`/administrator/api/procurement/document-status?_pr=${encodeURIComponent(id)}`)
     return (
         <Card
             title={<span>Document Status</span>}

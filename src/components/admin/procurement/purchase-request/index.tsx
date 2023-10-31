@@ -5,7 +5,7 @@ import { Button, Skeleton } from "antd";
 import { CSSProperties, useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import useSWR from "swr";
-import { notFound } from 'next/navigation'
+import { notFound } from "next/navigation";
 //components
 import { usePRId } from "@/components/admin/pr-number"; //Shared PRIDProvider
 import NetworkError from "@components/admin/network-error"; //Network Error Message
@@ -15,9 +15,9 @@ import Edit from "@components/admin/features/purchase-crud"; //EDIT Purchase Req
 import PreviewHeader from "@/components/admin/layouts/procurement-item/preview-wrapper/header"; //Preview Shared Header
 import Approval from "@/components/admin/signature-block"; //Approva Block
 //specific
-import ParticularsBlock from './particulars'
+import ParticularsBlock from "./particulars";
 import DetailsBlock from "./details"; //Section 'DETAILS' Block
-import Final from './final'
+import Final from "./final";
 //configs
 const WrapperStyles: CSSProperties = {
     display: "grid",
@@ -35,7 +35,7 @@ const PurchaseRequest = function () {
 
     //FETCH PR DATA
     const { data, isLoading, error, isValidating } = useSWR(
-        `/administrator/api/pr?_id=${prId}`
+        `/administrator/api/procurement/pr?_id=${encodeURIComponent(prId)}`
     );
 
     //FAILED TO LOAD DATA
@@ -53,11 +53,9 @@ const PurchaseRequest = function () {
                 <Skeleton active />
             </>
         );
-    }
-    else {
-
+    } else {
         if (data.empty) {
-            notFound()
+            notFound();
         }
         //RENDER DATA
         return (
@@ -83,13 +81,21 @@ const PurchaseRequest = function () {
                                 PURCHASE REQUEST
                             </p>
                         </PreviewHeader>
-                        <DetailsBlock data={{ date: data.date, department: data.department, number: data.number, reference: data.reference, obr: data.obr, sai: data.sai, section: data.section }} />{/* PR INFORMATION BLOCK */}
+                        <DetailsBlock
+                            data={{
+                                date: data.date,
+                                department: data.department,
+                                number: data.number,
+                                reference: data.reference,
+                                obr: data.obr,
+                                sai: data.sai,
+                                section: data.section,
+                            }}
+                        />
+                        {/* PR INFORMATION BLOCK */}
                         <ParticularsBlock data={data.particulars} />
                         <div style={{ padding: "5px 25px" }}>
-                            <Approval
-                                approval={true}
-                                enduser={{ name: data.enduser, department: data.department }}
-                            />
+                            <Approval approval={true} enduser={{ name: data.enduser, department: data.department }} />
                         </div>
                     </Preview>
                 </div>

@@ -2,7 +2,7 @@
 
 /**
  * * RENDER STATUS
- * * THIS COMPONENT DISPLAYS THE 
+ * * THIS COMPONENT DISPLAYS THE
  * * CURRENT DELIVERY STATUS
  */
 
@@ -23,7 +23,7 @@ type DeliveryStatusProps = {
     supplier: string;
     address: string;
     progress: any;
-    final: boolean,
+    final: boolean;
 };
 ///
 const DeliveryStatus = function (props: DeliveryStatusProps) {
@@ -35,9 +35,8 @@ const DeliveryStatus = function (props: DeliveryStatusProps) {
     let isDelayed = false;
     if (final) {
         isDelayed = false;
-        deliveryStatus = 'Completed'
-    }
-    else if (dayjs(endDate) <= dayjs()) {
+        deliveryStatus = "Completed";
+    } else if (dayjs(endDate) <= dayjs()) {
         isDelayed = true;
         deliveryStatus = `${Math.abs(
             dayjs(endDate).diff(dayjs(), "day") //TODO Compare Date from Server Time
@@ -55,8 +54,10 @@ const DeliveryStatus = function (props: DeliveryStatusProps) {
                 title="DELIVERY STATUS"
                 extra={
                     <Space>
-                        <div style={{ color: token.colorPrimary }}>Extend <strong>Deadline</strong> Date</div>
-                        <Divider type='vertical' />
+                        <div style={{ color: token.colorPrimary }}>
+                            Extend <strong>Deadline</strong> Date
+                        </div>
+                        <Divider type="vertical" />
                         <ExtendDelivery
                             final={final}
                             number={number}

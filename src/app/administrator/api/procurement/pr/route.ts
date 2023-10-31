@@ -10,25 +10,21 @@ import fullname from "@lib/client/fullname";
 import dayjs from "dayjs";
 import { NextRequest, NextResponse } from "next/server";
 import { computeParticulars } from "./utlity";
-
-//types
-type IParticulars = {
-    qty: number;
-    unit: string;
-    description: string;
-    stock: string;
-    price: number;
-};
+import type { IParticulars } from './types'
+import { logger } from '@logger'
 
 /**
  * * GET REQUEST
- * ? GET URI --> /administrator/api/pr?_id=[valid-pr-id]
+ * ? GET URI --> /administrator/api/procurement/pr?_id=[valid-pr-id]
  */
 
 export const GET = async function (req: NextRequest) {
     const { searchParams } = new URL(req.url);
+
     try {
         const id = searchParams.get("_id") as string;
+        if (typeof id === 'undefined' || id === null || id === "") throw new Error("No ID Provided")
+
         const result = await db.purchase_requests.findFirst({
             select: {
                 id: true,
@@ -69,8 +65,7 @@ export const GET = async function (req: NextRequest) {
         if (result) {
             //Compute Total Cost
             const particulars = computeParticulars(result?.particulars as IParticulars[]);
-
-            return NextResponse.json({
+            const response = {
                 ...result,
                 enduser: fullname(
                     {
@@ -85,24 +80,25 @@ export const GET = async function (req: NextRequest) {
                 sections: result?.user?.section?.description,
                 date: dayjs(result?.date).toISOString(),
                 particulars,
-            });
+            }
+
+            return NextResponse.json(response); //send to client
         } else {
-            return NextResponse.json({ empty: true })
+            return NextResponse.json({ empty: true }) //return empty when no PR was found
         }
     } catch (err) {
         console.log(`ERR:PR:GET:(${req.url})`);
         console.log(err);
-        return new Response("", { status: 500 });
+        return new Response("Server Error", { status: 500 });
     }
 };
 
 /**
  * * POST REQUEST
- * ? POST URI --> /administrator/api/pr [application/json] -> {id, ...}
+ * ? POST URI --> /administrator/api/procurement/pr [application/json] -> {id, ...}
  */
 
 export const POST = async function (req: NextRequest) {
-    const { json } = NextResponse;
     try {
         //Create  Request For Quotation & Recommending Document
         const body = await req.json();
@@ -112,7 +108,7 @@ export const POST = async function (req: NextRequest) {
             data: {
                 ...body,
                 tracking: [],
-                //CREATE RECOMMEND BODY
+                //CREATE RECOMMENDED DOCUMENT TEMPLATE
                 recomend: {
                     create: {
                         content: [],
@@ -120,7 +116,7 @@ export const POST = async function (req: NextRequest) {
                         tracking: [],
                     },
                 },
-                //CREATE RFQ BODY
+                //CREATE RFQ DOCUMENT TEMPLATE
                 rfq: {
                     create: {
                         suppliers: [],
@@ -131,17 +127,17 @@ export const POST = async function (req: NextRequest) {
             },
         });
 
-        return json({ ok: true });
+        return NextResponse.json({ ok: true }); //send to client
     } catch (err) {
         console.log(`ERR:PR:POST:(${req.url})`);
-        console.log(err);
+        logger.error(err)
         return new Response("", { status: 500 });
     }
 };
 
 /**
  * * UPDATE REQUEST
- * ? PUT URI --> /administrator/api/pr?_id=[valid-pr-id]
+ * ? PUT URI --> /administrator/api/procurement/pr?_id=[valid-pr-id]
  */
 
 export const PUT = async function (req: NextRequest) {
@@ -160,14 +156,14 @@ export const PUT = async function (req: NextRequest) {
         return NextResponse.json({ ok: true });
     } catch (err) {
         console.log(`ERR:PR:PUT:(${req.url})`);
-        console.log(err);
-        return new Response("", { status: 500 });
+        logger.error(err)
+        return new Response("Server Error", { status: 500 });
     }
 };
 
 /**
  * * PATCH REQUEST
- * ? PATCH URI --> /administrator/api/pr?_id=[valid-pr-id]&[...params]
+ * ? PATCH URI --> /administrator/api/procurement/pr?_id=[valid-pr-id]&[...params]
  * ? PARAMS
  * ? - _final="true"
  */
@@ -188,11 +184,9 @@ export const PATCH = async function (req: NextRequest) {
             });
             return NextResponse.json({ ok: true });
         }
-
-        return NextResponse.json({ action: "none" });
     } catch (err) {
         console.log(`ERROR:PR:PATCH:${req.url}`);
-        console.log(err);
+        logger.error(err)
         return new Response("", { status: 500 });
     }
 };

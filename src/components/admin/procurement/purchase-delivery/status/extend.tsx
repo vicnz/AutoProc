@@ -20,15 +20,15 @@ type ExtendDeliveryProps = {
     endDate: string;
     startDate: string;
     deliveryStatus: string;
-    number: string,
-    final: boolean
+    number: string;
+    final: boolean;
 };
 
 // ? COMPONENT : EXTENDED DELIVERY
 const ExtendDelivery = function (props: PropsWithChildren<ExtendDeliveryProps>) {
     const { message } = App.useApp();
     const [form] = Form.useForm();
-    const { token } = theme.useToken()
+    const { token } = theme.useToken();
     //STATES
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
@@ -52,10 +52,13 @@ const ExtendDelivery = function (props: PropsWithChildren<ExtendDeliveryProps>) 
          * * }
          */
         const values = { extension: form.getFieldValue("extended_days"), id: props.id, endDate: props.endDate };
-        const response = await fetch(`/administrator/api/delivery?_id=${encodeURIComponent(props.id)}&extend=true`, {
-            method: "PATCH",
-            body: JSON.stringify(values),
-        });
+        const response = await fetch(
+            `/administrator/api/procurement/delivery?_id=${encodeURIComponent(props.id)}&extend=true`,
+            {
+                method: "PATCH",
+                body: JSON.stringify(values),
+            }
+        );
 
         if (response.ok) {
             setLoading(false);

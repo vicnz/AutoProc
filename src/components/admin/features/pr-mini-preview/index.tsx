@@ -30,7 +30,7 @@ import { usePRId } from "@/components/admin/pr-number";
 const PRPreview = function (props: { showAmount?: boolean }) {
     const id = usePRId();
     const { data, isLoading, isValidating, error } = useSWR(
-        `/administrator/api/pr?_id=${id}`
+        `/administrator/api/procurement/pr?_id=${encodeURIComponent(id)}`
     );
 
     if (error) {

@@ -1,7 +1,7 @@
 "use client";
 
-import { usePRId } from "@/components/admin/pr-number";
-import NetworkError from "@/components/admin/network-error";
+import { usePRId } from "@components/admin/pr-number";
+import NetworkError from "@components/admin/network-error";
 import { Skeleton, Spin } from "antd";
 import dynamic from "next/dynamic";
 import useSWR from "swr";
@@ -9,7 +9,7 @@ const DeliveryForm = dynamic(async () => await import('./form'), { loading: () =
 
 const CreateNewDelivery = function () {
     const useId = usePRId()
-    const { data, isLoading, error } = useSWR(`/administrator/api/po?_id=${useId}`)
+    const { data, isLoading, error } = useSWR(`/administrator/api/procurement/po?_id=${encodeURIComponent(useId)}`)
 
     if (error) {
         return (

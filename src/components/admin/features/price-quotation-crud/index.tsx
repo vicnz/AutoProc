@@ -34,7 +34,7 @@ const PriceQuotationForm = function (props: ProceQuotationFormProps) {
     //Close Drawer
     const onClose = () => {
         setOpen(false);
-        mutate(`/administrator/api/rfq?_id=${id}`);
+        mutate(`/administrator/api/procurement/rfq?_id=${encodeURIComponent(id)}`);
     };
 
     //

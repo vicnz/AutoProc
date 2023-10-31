@@ -23,7 +23,7 @@ const PrintQRCode = function () {
     const [open, setOpen] = useState(false);
 
     const { data, isLoading, error } = useSWR<{ token: string; payload: any }>(
-        `/administrator/api/qr?_id=${id}`,
+        `/administrator/api/procurement/qrcode?_id=${encodeURIComponent(id)}`,
         { revalidateIfStale: false }
     );
 

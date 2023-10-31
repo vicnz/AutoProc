@@ -40,7 +40,7 @@ const PurchaseOrder = function () {
     });
 
     const { data, isLoading, error } = useSWR(
-        `/administrator/api/po?_id=${prId}`
+        `/administrator/api/procurement/po?_id=${encodeURIComponent(prId)}`
     );
 
     if (error) {

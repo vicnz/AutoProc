@@ -63,7 +63,7 @@ const RequestForQuotationForm = function (props: RequestForQuotationFormProps) {
         };
 
         //PUSH DATA
-        const result = await fetch(`/administrator/api/rfq?_id=${id}`, {
+        const result = await fetch(`/administrator/api/procurement/rfq?_id=${encodeURIComponent(id)}`, {
             method: "PUT",
             body: JSON.stringify(parsed),
             headers: [["Content-Type", "application/json"]],

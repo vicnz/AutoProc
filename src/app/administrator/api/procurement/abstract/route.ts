@@ -1,22 +1,19 @@
 import fullname from "@lib/client/fullname";
 import db, { PrismaModels } from "@lib/db";
 import { NextRequest, NextResponse } from "next/server";
+import { parseQuotation, parseCreateQuotation, computeLowestAmount } from "./utility";
+import type { CreateQuotationItem, QuotationItem } from "./type";
+import { logger } from "@logger";
+import APIError, { METHOD } from "@lib/server/api-error";
 //types
 
-//Specific Custom Error For Request For Quotation
-class AbstractQuotationError extends Error {
-    constructor(message: string) {
-        super(message);
-        this.name = "RequestForQuotationError";
-    }
-}
 
 //GET ABSTRACT QUOTATIONS -> /administrator/api/abstract?_id=[valid-pr-id]
 export const GET = async function (req: NextRequest) {
     const { searchParams } = new URL(req.url);
     try {
         const prID = searchParams.get("_id") as string; //PR ID
-        if (prID === null) throw new Error("Please Provide an ID");
+        if (typeof prID === "undefined" || prID === null || prID === "") throw new Error("Please Provide an ID");
 
         //check if PR Exists and Is Final
         const pr = await db.purchase_requests.findFirst({
@@ -30,14 +27,15 @@ export const GET = async function (req: NextRequest) {
             where: { prId: prID },
         });
 
-        let isDocumentFinal = await Promise.all([pr, rfq]);
+        let isDocumentFinal = await Promise.all([pr?.final || false, rfq?.final || false]);
 
         //!NOTE: making sure the PR and RFQ are final since the data in the ABSTRACT is static,
         //!\ any changes done in the PR or RFQ will not cascade into the abstract record
         //!\ we are making sure that modification is not allowed to prevent inaccurate information
 
-        if (isDocumentFinal.every((item) => item?.final === true)) {
+        if (isDocumentFinal.every((item) => item === true)) {
             //fetch abstract
+            //! REMINDER: DO NOT USE `includes` IN QUERIES
             const result = await db.purchase_quotation_abstracts.findFirst({
                 include: {
                     pr: {
@@ -52,11 +50,11 @@ export const GET = async function (req: NextRequest) {
                                     department: {
                                         select: {
                                             description: true,
-                                            sections: {
-                                                select: {
-                                                    description: true,
-                                                },
-                                            },
+                                        },
+                                    },
+                                    section: {
+                                        select: {
+                                            description: true,
                                         },
                                     },
                                 },
@@ -80,35 +78,7 @@ export const GET = async function (req: NextRequest) {
                 return NextResponse.json({ empty: true });
             } else {
                 //parse quotations data from RFQ
-                const quotations = (
-                    result?.quotations as Array<{
-                        id: string;
-                        supplier: string;
-                        particulars: Array<{ total: number; description: string }>;
-                    }>
-                ).map((item) => {
-                    return {
-                        supplier: item.supplier,
-                        id: item.id,
-                        //Parse Abstract Quotations
-                        ...Object.fromEntries(
-                            Object.entries(
-                                item.particulars.reduce((result: any, item, index) => {
-                                    //TODO create an alternative way to be used to identify the row
-                                    result[`${item["description"]}`] = item.total; //!Removed Quantity -> Assuming the Price is already the computed amount of (unit-price * quantity)
-                                    return result;
-                                }, {})
-                            )
-                        ),
-                        //Compute ROW total
-                        total: (item.particulars as Array<{ total: number }>).reduce(
-                            (accumulator, item) => {
-                                return accumulator + item.total;
-                            },
-                            0
-                        ),
-                    };
-                });
+                const quotations = await parseQuotation(result?.quotations as QuotationItem[]);
 
                 const mapped = {
                     id: result.id,
@@ -136,15 +106,15 @@ export const GET = async function (req: NextRequest) {
                     suppliers: result.rfq?.suppliers,
                     rfqFinal: rfq?.final,
                 };
-                return NextResponse.json(mapped || { empty: true });
+                return NextResponse.json(mapped);
             }
         } else {
             return NextResponse.json({ requiredFinal: true }); //requires the PR document and RFQ to be final
         }
     } catch (err) {
         console.log(`ERRR:ABSTRACT:GET:${req.url}`);
-        console.log(err);
-        if (err instanceof AbstractQuotationError) {
+        logger.error(err);
+        if (err instanceof APIError) {
             return new Response(err.message, { status: 500 });
         }
         return new Response("Server Error", { status: 500 });
@@ -156,6 +126,7 @@ export const POST = async function (req: NextRequest) {
     const { searchParams } = new URL(req.url);
     try {
         const prID = searchParams.get("_id") as string; //PR ID
+        if (typeof prID === "undefined" || prID === null || prID === "") throw new Error("No ID Provided");
         //FIND PR
         const pr = await db.purchase_requests.findFirst({
             select: {
@@ -178,19 +149,9 @@ export const POST = async function (req: NextRequest) {
         //!\ we are making sure that modification is not allowed to prevent inaccurate information
 
         if (isDocumentFinal.every((item) => item?.final === true)) {
-            //parse quotations
-            const quotations = (
-                rfq?.suppliers as Array<{ id: string; name: string }>
-            ).map((item) => {
-                return {
-                    id: item.id,
-                    supplier: item.name,
-                    particulars: (
-                        pr?.particulars as Array<{ qty: number; description: string }>
-                    ).map((item) => {
-                        return { description: item.description, total: 0.0 };
-                    }),
-                };
+            const quotations = await parseCreateQuotation({
+                suppliers: rfq?.suppliers as CreateQuotationItem["suppliers"],
+                particulars: pr?.particulars as CreateQuotationItem["particulars"],
             });
 
             //CREATE PR
@@ -214,12 +175,12 @@ export const POST = async function (req: NextRequest) {
 
             return NextResponse.json({ ok: true });
         } else {
-            throw new AbstractQuotationError("Required RFQ to be Completed");
+            throw new APIError("Required RFQ to be Completed", req.url, METHOD.POST, "server");
         }
     } catch (err) {
         console.log(`ERRR:ABSTRACT:POST:${req.url}`);
-        console.log(err);
-        if (err instanceof AbstractQuotationError) {
+        logger.error(err);
+        if (err instanceof APIError) {
             return new Response(err.message, { status: 500 });
         }
         return new Response("Server Error", { status: 500 });
@@ -231,22 +192,17 @@ export const PUT = async function (req: NextRequest) {
     const { searchParams } = new URL(req.url);
     try {
         const id = searchParams.get("_id") as string; //document id
+        if (typeof id === "undefined" || id === null || id === "") throw new Error("No ID Provided");
         const data = await req.json();
-        if (data === null || typeof data === "undefined")
-            throw "Please Provide A Request Body";
+        if (data === null || typeof data === "undefined") throw new Error("Please Provide A Request Body");
 
         //calculate Bidder Amount
-        let bidderAmount = 0;
-        if (data.lowestBidder) {
-            bidderAmount = data.quotations.filter(
-                (item: { id: string }) => item.id === data?.lowestBidder
-            )[0].total;
-        }
+        const amount = await computeLowestAmount(data.quotations, data.lowestBidder);
 
         await db.purchase_quotation_abstracts.update({
             data: {
                 ...data,
-                lowestAmount: bidderAmount,
+                lowestAmount: amount,
             },
             where: {
                 id,
@@ -256,9 +212,8 @@ export const PUT = async function (req: NextRequest) {
         return NextResponse.json({ ok: true });
     } catch (err) {
         console.log(`ERROR:ABSTRACT:PUT:${req.url}`);
-        console.log(err);
-
-        if (err instanceof AbstractQuotationError) {
+        logger.error(err);
+        if (err instanceof APIError) {
             return new Response(err.message, { status: 500 });
         }
         return new Response("Server Error", { status: 500 });
@@ -270,9 +225,10 @@ export const PATCH = async function (req: NextRequest) {
     const { searchParams } = new URL(req.url);
     try {
         const abstractId = searchParams.get("_id") as string; //document id
-        const setFinal = searchParams.get("_final") as "true" | "false";
+        if (typeof abstractId === "undefined" || abstractId === null || abstractId === "")
+            throw new Error("No ID Provided");
 
-        if (setFinal === "true") {
+        if (searchParams.get("_final") === "true") {
             const result = await db.purchase_quotation_abstracts.findFirst({
                 select: {
                     lowestBidder: true,
@@ -283,7 +239,7 @@ export const PATCH = async function (req: NextRequest) {
             });
 
             if (!result?.lowestBidder) {
-                throw new AbstractQuotationError("Please Select The Lowest Bidder");
+                throw new APIError("Please Select The Lowest Bidder", req.url, METHOD.PATCH, "client");
             }
 
             await db.purchase_quotation_abstracts.update({
@@ -294,13 +250,11 @@ export const PATCH = async function (req: NextRequest) {
             });
             return NextResponse.json({ ok: true });
         }
-
-        return NextResponse.json({ action: "none" });
     } catch (err) {
         console.log(`ERROR:ABSTRACT:PATCH:${req.url}`);
-        console.log(err);
+        logger.error(err);
 
-        if (err instanceof AbstractQuotationError) {
+        if (err instanceof APIError) {
             return new Response(err.message, { status: 500 });
         }
         return new Response(`Server Error`, { status: 500 });

@@ -68,7 +68,7 @@ const PurchaseRecommendation = function () {
 
     //FETCH Resource
     const { data, isLoading, error, isValidating } = useSWR(
-        `/administrator/api/rfq?_id=${prId}`
+        `/administrator/api/procurement/rfq?_id=${encodeURIComponent(prId)}`
     );
 
     if (error) {

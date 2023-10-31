@@ -1,14 +1,19 @@
 import fullname from "@lib/client/fullname";
 import db from "@lib/db";
 import { NextRequest, NextResponse } from "next/server";
+import { computeQuotation } from "./utility";
+import type { QuotationType } from "./type";
+import APIError from "@/lib/server/api-error";
+import { logger } from "@logger";
 
 //GET Award Information -> /administrator/api/award?_id=[pr-id]
 export const GET = async function (req: NextRequest) {
     const { searchParams } = new URL(req.url);
     try {
         const prID = searchParams.get("_id") as string; //pr ID
-        if (prID === null) throw new Error("No ID Provided");
+        if (typeof prID === "undefined" || prID === null || prID === "") throw new Error("No ID Provided");
 
+        //! REMINDER: DO NOT USE `include` IN QUERIES
         const result = await db.purchase_awards.findFirst({
             include: {
                 pr: {
@@ -27,11 +32,11 @@ export const GET = async function (req: NextRequest) {
                                 department: {
                                     select: {
                                         description: true,
-                                        sections: {
-                                            select: {
-                                                description: true,
-                                            },
-                                        },
+                                    },
+                                },
+                                section: {
+                                    select: {
+                                        description: true,
                                     },
                                 },
                             },
@@ -77,36 +82,8 @@ export const GET = async function (req: NextRequest) {
                 },
             });
 
-            //Parse Quotations
-            const quotations = (
-                result.abstract.quotations as Array<{
-                    supplier: string;
-                    id: string;
-                    particulars: Array<{
-                        total: number;
-                        description: string;
-                    }>;
-                }>
-            ).map((item) => {
-                return {
-                    supplier: item.supplier,
-                    id: item.id,
-                    ...Object.fromEntries(
-                        Object.entries(
-                            item.particulars.reduce((result: any, item, index) => {
-                                result[`${item["description"]}`] = item.total; //!Removed Quantity -> Assuming the Price is already the computed amount of (unit-price * quantity)
-                                return result;
-                            }, {})
-                        )
-                    ),
-                    total: (item.particulars as Array<{ total: number }>).reduce(
-                        (accumulator, item) => {
-                            return accumulator + item.total;
-                        },
-                        0
-                    ),
-                };
-            });
+            //parse quotation
+            const quotations = await computeQuotation(result.abstract.quotations as QuotationType[]);
 
             //Parse Result
             const parsed = {
@@ -128,9 +105,7 @@ export const GET = async function (req: NextRequest) {
                     department: result.pr.user?.department?.description,
                 },
                 particulars: ListFormatter.format(
-                    (result.pr.particulars as Array<{ description: string }>).map(
-                        (item) => item.description
-                    )
+                    (result.pr.particulars as Array<{ description: string }>).map((item) => item.description)
                 ),
                 rfqDate: result.abstract.rfq?.date, //Request for Quotation Date of Issuance
                 abstractDate: result.abstract.date, //Abstract of Quotation Date of Issuance
@@ -145,14 +120,17 @@ export const GET = async function (req: NextRequest) {
                 final: result.final,
                 abstractFinal: result.abstract.final,
                 quotations,
-                amount: result.abstract.lowestAmount
+                amount: result.abstract.lowestAmount,
             };
 
             return NextResponse.json(parsed);
         }
     } catch (err) {
         console.log(`ERROR:AWARD:GET:${req.url}`);
-        console.log(err);
+        logger.error(err);
+        if (err instanceof APIError) {
+            return new Response(err.message, { status: 500 });
+        }
         return new Response("", { status: 500 });
     }
 };
@@ -162,10 +140,9 @@ export const PATCH = async function (req: NextRequest) {
     const { searchParams } = new URL(req.url);
     try {
         const awardId = searchParams.get("_id") as string; //document id
-        const setFinal = searchParams.get("_final") as string;
-        if (awardId === null) throw new Error("Please provide an ID")
+        if (typeof awardId === "undefined" || awardId === null || awardId === "") throw new Error("No ID Provided");
 
-        if (setFinal === "true") {
+        if (searchParams.get("_final") === "true") {
             await db.purchase_awards.update({
                 data: { final: true },
                 where: {
@@ -174,11 +151,12 @@ export const PATCH = async function (req: NextRequest) {
             });
             return NextResponse.json({ ok: true });
         }
-
-        return NextResponse.json({ action: "none" });
     } catch (err) {
         console.log(`ERROR:AWARD:PATCH:${req.url}`);
-        console.log(err);
+        logger.error(err);
+        if (err instanceof APIError) {
+            return new Response(err.message, { status: 500 });
+        }
         return new Response("", { status: 500 });
     }
 };
