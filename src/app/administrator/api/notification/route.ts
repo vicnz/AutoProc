@@ -1,7 +1,7 @@
 import db, { PrismaModels } from "@lib/db";
 import { NextRequest, NextResponse } from "next/server";
 import dayjs from "dayjs";
-import APIError from "@/lib/server/api-error";
+import APIError from "@lib/server/api-error";
 import { randomRange } from "@lib/client/random-range";
 import { logger } from "@logger";
 

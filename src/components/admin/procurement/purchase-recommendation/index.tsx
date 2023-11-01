@@ -8,9 +8,9 @@ import { useReactToPrint } from "react-to-print";
 import NetworkError from "@components/admin/network-error"; //Network Error
 import SubHeader from "@components/admin/layouts/procurement-item/header/sub"; //Sub Header
 import Preview from "@components/admin/layouts/procurement-item/preview-wrapper"; //Preview
-import { usePRId } from "@/components/admin/pr-number"; //PR ID
+import { usePRId } from "@components/admin/pr-number"; //PR ID
 import PreviewHeader from "@components/admin/layouts/procurement-item/preview-wrapper/header"; //Preview Header
-import SignatureBlock from "@/components/admin/signature-block"; //Signature Block
+import SignatureBlock from "@components/admin/signature-block"; //Signature Block
 //Preview
 import MakeFinal from "./final";
 import DocumentType from "./picker";

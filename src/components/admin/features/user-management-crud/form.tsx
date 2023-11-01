@@ -1,7 +1,7 @@
 'use client';
 
 import { Form } from 'antd';
-import FlexContainer from '@/components/shared/flex-container';
+import FlexContainer from '@components/shared/flex-container';
 import { openEditor, } from 'react-profile';
 type UserManagementFormProps = {
     id?: string,

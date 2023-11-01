@@ -2,7 +2,7 @@ import { Typography } from "antd";
 import dayjs from "dayjs";
 import ContentEditable from '@components/admin/features/content-editable'
 import Content from './content'
-import Approval from '@/components/admin/signature-block'
+import Approval from '@components/admin/signature-block'
 
 const { Paragraph, Text } = Typography
 

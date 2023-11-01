@@ -3,7 +3,7 @@ import db from "@lib/db";
 import { NextRequest, NextResponse } from "next/server";
 import { computeQuotation } from "./utility";
 import type { QuotationType } from "./type";
-import APIError from "@/lib/server/api-error";
+import APIError from "@lib/server/api-error";
 import { logger } from "@logger";
 
 //GET Award Information -> /administrator/api/award?_id=[pr-id]

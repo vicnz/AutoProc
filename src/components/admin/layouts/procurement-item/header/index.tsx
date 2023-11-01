@@ -12,7 +12,7 @@ import { memo } from "react";
 import dynamic from "next/dynamic";
 //components
 import GlobalHeader from "@components/admin/header";
-import { usePRId } from "@/components/admin/pr-number";
+import { usePRId } from "@components/admin/pr-number";
 import Link from "next/link";
 
 const QRCodeGen = dynamic(async () => await import('@components/admin/qr-code'), { loading: () => <Skeleton.Button /> })

@@ -10,7 +10,7 @@ import { Button, Drawer, Result, Skeleton } from "antd";
 import { ReactNode, useState } from "react";
 import dynamic from "next/dynamic";
 import useSWR, { mutate } from "swr";
-import { usePRId } from "@/components/admin/pr-number"; //TODO
+import { usePRId } from "@components/admin/pr-number"; //TODO
 //components
 const PurchaseOrderForm = dynamic(async () => await import("./form"), {
     loading: () => <Skeleton active />,

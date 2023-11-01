@@ -1,7 +1,7 @@
 import { PlusCircleOutlined } from "@ant-design/icons";
 import { App, Button, Result } from "antd";
 import { CSSProperties, useState } from "react";
-import { usePRId } from "@/components/admin/pr-number";
+import { usePRId } from "@components/admin/pr-number";
 
 const WrapperStyles: CSSProperties = {
     height: 'calc(100vh - 112px)',

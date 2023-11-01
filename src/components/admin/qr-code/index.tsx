@@ -13,7 +13,7 @@ import { useReactToPrint } from "react-to-print";
 //components
 import CodeGenerator from "./code";
 import AlternativeRender from "./alt-monitoring";
-import { usePRId } from '@/components/admin/pr-number'
+import { usePRId } from '@components/admin/pr-number'
 //configs
 
 //TODO prevent re-generation of QR Code

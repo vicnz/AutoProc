@@ -1,4 +1,4 @@
-import APIError from "@/lib/server/api-error";
+import APIError from "@lib/server/api-error";
 import db, { PrismaModels } from "@lib/db";
 import { logger } from "@logger";
 import { NextRequest, NextResponse } from "next/server";

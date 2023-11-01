@@ -2,7 +2,7 @@
 /**
  * * CREATE NEW DELIVERY
  */
-import { usePRId } from "@/components/admin/pr-number";
+import { usePRId } from "@components/admin/pr-number";
 import { CalendarOutlined, InfoCircleOutlined, NumberOutlined } from "@ant-design/icons";
 import { App, Form, Card, Button, Descriptions, DatePicker } from "antd";
 import dayjs from "dayjs";

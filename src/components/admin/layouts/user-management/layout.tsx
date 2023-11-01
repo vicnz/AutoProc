@@ -2,7 +2,7 @@
 
 import { PropsWithChildren, createContext, useState } from "react";
 import ContentWrapper from '@components/admin/content'
-import NetworkError from "@/components/admin/network-error";
+import NetworkError from "@components/admin/network-error";
 import Header from './header'
 import useSWR from "swr";
 import { Skeleton } from "antd";

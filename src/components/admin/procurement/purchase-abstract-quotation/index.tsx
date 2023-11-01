@@ -6,13 +6,13 @@ import { CSSProperties, useRef } from "react";
 import useSWR from "swr";
 import { useReactToPrint } from "react-to-print";
 //components
-import { usePRId } from "@/components/admin/pr-number";
+import { usePRId } from "@components/admin/pr-number";
 import NetworkError from "@components/admin/network-error";
 import Preview from "@components/admin/layouts/procurement-item/preview-wrapper";
 import PreviewHeader from "@components/admin/layouts/procurement-item/preview-wrapper/header";
 import SubHeader from "@components/admin/layouts/procurement-item/header/sub";
 import Approval from "@components/admin/signature-block";
-import EditAbstractQuotation from "@/components/admin/features/purchase-abstract-crud";
+import EditAbstractQuotation from "@components/admin/features/purchase-abstract-crud";
 //local
 import CreateNewAbstract from "./create-new";
 import RequireFinal from "./requirefinal";

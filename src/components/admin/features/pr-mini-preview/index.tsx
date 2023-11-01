@@ -25,7 +25,7 @@ import dayjs from "dayjs";
 import useSWR from "swr";
 //
 import { ToPeso } from "@lib/intl/currency";
-import { usePRId } from "@/components/admin/pr-number";
+import { usePRId } from "@components/admin/pr-number";
 
 const PRPreview = function (props: { showAmount?: boolean }) {
     const id = usePRId();

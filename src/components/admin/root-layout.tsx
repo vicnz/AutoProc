@@ -8,7 +8,7 @@ import { PropsWithChildren, memo } from "react";
 import { App, theme } from "antd";
 
 //components
-import AntDConfigProvider from "@/lib/theme/theme-config";
+import AntDConfigProvider from "@lib/theme/theme-config";
 import Styles from "./root-layout.module.css";
 //# COMPONENTS
 import Topbar from "@components/admin/topbar";
