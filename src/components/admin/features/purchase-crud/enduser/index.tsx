@@ -14,7 +14,7 @@ import SelectUser from './user';
 const SelectUserWrapper = forwardRef(function SelectUserWrap(props, ref) {
     //FETCH ONLY PARTIAL DATA
     const { data, error, isLoading, isValidating } = useSWR(
-        "/administrator/api/users?_pick_only=true"
+        "/administrator/api/user?pick_only=true"
     );
 
 
