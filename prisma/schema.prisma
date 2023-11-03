@@ -59,6 +59,8 @@ model users {
     lname        String
     suffix       String?             @db.VarChar(10)
     profile      Bytes?              @db.MediumBlob //profile image minimum 5MB size
+    phone        String? //phone
+    link         String? //social link ex: https://me.m/username -> Facebook Messenger
     departmentId String?
     department   departments?        @relation(fields: [departmentId], references: [id], onDelete: SetNull, onUpdate: Cascade)
     sectionId    String?

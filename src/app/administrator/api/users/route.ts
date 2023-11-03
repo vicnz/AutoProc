@@ -77,6 +77,8 @@ export const GET = async function (req: NextRequest) {
                     username: true,
                     userType: true,
                     suffix: true,
+                    phone: true,
+                    link: true,
                     department: {
                         select: {
                             description: true,
@@ -107,6 +109,8 @@ export const GET = async function (req: NextRequest) {
                     type: item.userType,
                     department: item.department?.description,
                     profile: thumbnail,
+                    phone: item.phone,
+                    link: item.link
                     //TODO add Phone
                 }
             }))
