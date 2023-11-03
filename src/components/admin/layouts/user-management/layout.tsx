@@ -19,7 +19,7 @@ export const PaginationContextWrapper = createContext<PaginationContext>({ data:
 const UserLayout = function (props: PropsWithChildren<any>) {
     const [currentPage, setCurrentPage] = useState(0); //Active Current Page (next | prev)
     const { data, isLoading, isValidating, error } = useSWR<ResponseType[], any>(
-        `/administrator/api/users?all=true&page=${currentPage}&size=${SIZE}`
+        `/administrator/api/user?all=true&page=${encodeURIComponent(currentPage)}&size=${encodeURIComponent(SIZE)}`
     );
     //
     const context = { data, isLoading, isValidating, error }; //*context to Expose

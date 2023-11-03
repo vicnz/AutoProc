@@ -2,7 +2,7 @@
 import { useContext } from 'react'
 import { PaginationContextWrapper } from './layout'
 import { Table } from 'antd';
-import Columns from './columns'
+import Columns from './column'
 
 
 const UserManagement = function () {
