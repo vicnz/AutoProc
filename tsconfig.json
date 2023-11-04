@@ -45,6 +45,9 @@
       "@components/utility/*": [
         "./src/components/utility/*"
       ],
+      "@styles/*": [
+        "./src/styles/*"
+      ],
       "@logger": [
         "./logger.ts"
       ]

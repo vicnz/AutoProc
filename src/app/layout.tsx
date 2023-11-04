@@ -4,23 +4,19 @@ import "./globals.css";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Auto | Proc",
-  description: "Auto Procurement System",
-  themeColor: "#C0252A",
+    title: "Auto | Proc",
+    description: "Auto Procurement System",
+    themeColor: "#C0252A",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <html lang="en">
-      <body>
-        <SWRConfig>
-          <StyleComponentRegistry>{children}</StyleComponentRegistry>
-        </SWRConfig>
-      </body>
-    </html>
-  );
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+    return (
+        <html lang="en">
+            <body>
+                <SWRConfig>
+                    <StyleComponentRegistry>{children}</StyleComponentRegistry>
+                </SWRConfig>
+            </body>
+        </html>
+    );
 }

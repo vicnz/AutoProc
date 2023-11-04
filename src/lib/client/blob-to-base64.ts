@@ -3,7 +3,7 @@
  * ! RECOMMENDED FILE LIMIT SIZE <2MB
  */
 
-type BlobFromServer = {
+export type BlobFromServer = {
     type: string,
     data: Array<number>
 }
