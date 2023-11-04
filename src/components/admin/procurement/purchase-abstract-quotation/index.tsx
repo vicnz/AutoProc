@@ -6,12 +6,12 @@ import { CSSProperties, useRef } from "react";
 import useSWR from "swr";
 import { useReactToPrint } from "react-to-print";
 //components
-import { usePRId } from "@components/admin/pr-number";
+import { usePRId } from "@components/admin/procurement/purchase-id-context";
 import NetworkError from "@components/admin/network-error";
 import Preview from "@components/admin/layouts/procurement-item/preview-wrapper";
 import PreviewHeader from "@components/admin/layouts/procurement-item/preview-wrapper/header";
 import SubHeader from "@components/admin/layouts/procurement-item/header/sub";
-import Approval from "@components/admin/signature-block";
+import Approval from "@components/admin/procurement/purchase-signatures";
 import EditAbstractQuotation from "@components/admin/features/purchase-abstract-crud";
 //local
 import CreateNewAbstract from "./create-new";
@@ -41,10 +41,7 @@ const AbstractOfQuotation = function () {
     //ERROR
     if (error) {
         return (
-            <NetworkError
-                title="Failed To Load Abstract Quotation"
-                subTitle="Please Reload Page or Try Again Later"
-            />
+            <NetworkError title="Failed To Load Abstract Quotation" subTitle="Please Reload Page or Try Again Later" />
         );
     }
 
@@ -68,15 +65,7 @@ const AbstractOfQuotation = function () {
         } else {
             return (
                 <div style={WrapperStyles}>
-                    <SubHeader
-                        leading={
-                            <MakeFinal
-                                final={data.final}
-                                id={data.id}
-                                rfqFinal={data.rfqFinal}
-                            />
-                        }
-                    >
+                    <SubHeader leading={<MakeFinal final={data.final} id={data.id} rfqFinal={data.rfqFinal} />}>
                         <Button icon={<PrinterOutlined />} onClick={handlePrint}>
                             Print
                         </Button>

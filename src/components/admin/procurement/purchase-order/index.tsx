@@ -7,7 +7,7 @@ import useSWR from "swr";
 import { useReactToPrint } from "react-to-print";
 //components
 //
-import { usePRId } from "@components/admin/pr-number";
+import { usePRId } from "@components/admin/procurement/purchase-id-context";
 import NetworkError from "@components/admin/network-error";
 import CreateNewPO from "./createnew";
 import Preview from "@components/admin/layouts/procurement-item/preview-wrapper";
@@ -31,7 +31,7 @@ const WrapperStyles: CSSProperties = {
 //
 const PurchaseOrder = function () {
     const prId = usePRId();
-    console.log('localized', prId)
+    console.log("localized", prId);
     const { token } = theme.useToken();
 
     const printableComponent = useRef(null);
@@ -39,17 +39,10 @@ const PurchaseOrder = function () {
         content: () => printableComponent.current,
     });
 
-    const { data, isLoading, error } = useSWR(
-        `/administrator/api/procurement/po?_id=${encodeURIComponent(prId)}`
-    );
+    const { data, isLoading, error } = useSWR(`/administrator/api/procurement/po?_id=${encodeURIComponent(prId)}`);
 
     if (error) {
-        return (
-            <NetworkError
-                title="Failed To Load Purchase Order"
-                subTitle="Please Reload Page or Try Again Later"
-            />
-        );
+        return <NetworkError title="Failed To Load Purchase Order" subTitle="Please Reload Page or Try Again Later" />;
     }
     if (isLoading || !data) {
         return <Skeleton active />;
@@ -69,13 +62,7 @@ const PurchaseOrder = function () {
                 <>
                     <div style={WrapperStyles}>
                         <SubHeader
-                            leading={
-                                <MakeFinal
-                                    awardsFinal={data.awardsFinal}
-                                    final={data.final}
-                                    id={data.id}
-                                />
-                            }
+                            leading={<MakeFinal awardsFinal={data.awardsFinal} final={data.final} id={data.id} />}
                         >
                             <Button icon={<PrinterOutlined />} onClick={handlePrint}>
                                 Print
@@ -96,10 +83,7 @@ const PurchaseOrder = function () {
                             </PreviewHeader>
                             <TopSection data={data} />
                             <Content data={data} />
-                            <BottomSection
-                                particulars={data.particulars}
-                                reference={data.reference}
-                            />
+                            <BottomSection particulars={data.particulars} reference={data.reference} />
                         </Preview>
                     </div>
                 </>

@@ -5,7 +5,6 @@ export const DocumentPreviewThemeConfig: ThemeConfig = {
         colorPrimary: '#C0252A',
         colorBorder: 'darkslategray',
         colorBorderBg: 'darkgray',
-        fontFamily: 'arial narrow',
     },
     components: {
         Table: {

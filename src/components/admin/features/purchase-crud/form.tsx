@@ -24,22 +24,18 @@ import dayjs from "dayjs";
 import { mutate } from "swr";
 import dynamic from "next/dynamic";
 //COMPONENTS
-import { usePRId } from "@components/admin/pr-number";
+import { usePRId } from "@components/admin/procurement/purchase-id-context";
 
 //? EDIT PARTICULARS
-const EditParticulars = dynamic(
-    async () => await import("./particulars"),
-    { loading: () => <Skeleton.Input /> }
-);
+const EditParticulars = dynamic(async () => await import("./particulars"), { loading: () => <Skeleton.Input /> });
 //? EDIT END USERS
 const EditEndUsers = dynamic(async () => await import("./enduser"), {
     loading: () => <Skeleton.Input />,
 });
 
-
-const PRGenerator = dynamic(async () => await import('@components/admin/features/reference-num-generator'), {
-    loading: () => <Skeleton.Input active />
-})
+const PRGenerator = dynamic(async () => await import("@components/admin/features/reference-num-generator"), {
+    loading: () => <Skeleton.Input active />,
+});
 
 //types
 interface PurchaseRequestFormProps {
@@ -75,14 +71,17 @@ const PurchaseRequestForm = function (props: PurchaseRequestFormProps) {
 
         if (isEdit) {
             //* - UPDATE PR INFORMATION
-            let response = await fetch(`/administrator/api/procurement/pr?_id=${encodeURIComponent(props.prId as string)}`, {
-                method: "PUT",
-                body: JSON.stringify({
-                    ...formRef.current?.getFieldsValue(),
-                    date: dayjs(formRef.current?.getFieldValue("date")).toISOString(),
-                }),
-                headers: [["Content-Type", "application/json"]],
-            });
+            let response = await fetch(
+                `/administrator/api/procurement/pr?_id=${encodeURIComponent(props.prId as string)}`,
+                {
+                    method: "PUT",
+                    body: JSON.stringify({
+                        ...formRef.current?.getFieldsValue(),
+                        date: dayjs(formRef.current?.getFieldValue("date")).toISOString(),
+                    }),
+                    headers: [["Content-Type", "application/json"]],
+                }
+            );
 
             //
             if (response.ok) {
@@ -119,13 +118,7 @@ const PurchaseRequestForm = function (props: PurchaseRequestFormProps) {
 
     //
     return (
-        <Form
-            ref={formRef}
-            layout="vertical"
-            onFinish={onFinish}
-            autoComplete="false"
-            initialValues={preload}
-        >
+        <Form ref={formRef} layout="vertical" onFinish={onFinish} autoComplete="false" initialValues={preload}>
             <Form.Item
                 name="number"
                 label="Purchase Request Number"
@@ -138,14 +131,13 @@ const PurchaseRequestForm = function (props: PurchaseRequestFormProps) {
                     { required: true, message: "Required Field" },
                 ]}
             >
-                {
-                    isEdit ?
-                        <Input placeholder="0000-00-0000" prefix={<b>PR No.</b>} readOnly />
-                        :
-                        <PRGenerator instance={formRef} />
-                }
+                {isEdit ? (
+                    <Input placeholder="0000-00-0000" prefix={<b>PR No.</b>} readOnly />
+                ) : (
+                    <PRGenerator instance={formRef} />
+                )}
             </Form.Item>
-            <Space style={{ width: "100%", display: 'grid', gridTemplateColumns: '2fr 1fr 1fr' }}>
+            <Space style={{ width: "100%", display: "grid", gridTemplateColumns: "2fr 1fr 1fr" }}>
                 <Form.Item
                     name="obr"
                     label="OBR"
@@ -167,12 +159,8 @@ const PurchaseRequestForm = function (props: PurchaseRequestFormProps) {
                     <Input allowClear prefix={`REF`} />
                 </Form.Item>
                 {/* DATE creation of PR Document */}
-                <Form.Item
-                    name="date"
-                    label="Issued Date"
-                    rules={[{ required: true, message: "Required Field" }]}
-                >
-                    <DatePicker />
+                <Form.Item name="date" label="Issued Date" rules={[{ required: true, message: "Required Field" }]}>
+                    <DatePicker allowClear={false} />
                 </Form.Item>
             </Space>
             <Space
@@ -185,27 +173,15 @@ const PurchaseRequestForm = function (props: PurchaseRequestFormProps) {
             >
                 <div>
                     {/* SELECT END USER AWAITED */}
-                    <Form.Item
-                        name="userId"
-                        label="End User"
-                        rules={[{ required: true }, { min: 1, len: 36 }]}
-                    >
+                    <Form.Item name="userId" label="End User" rules={[{ required: true }, { min: 1, len: 36 }]}>
                         {/**@ts-ignore */}
                         <EditEndUsers data={props?.users} />
                     </Form.Item>
                 </div>
                 <div>
                     {/* ABC Entry */}
-                    <Form.Item
-                        name="budget"
-                        label="ABC"
-                        rules={[{ required: true, message: "Required Field" }]}
-                    >
-                        <InputNumber
-                            min={0}
-                            style={{ width: "100%" }}
-                            addonBefore={<>&#8369;</>}
-                        />
+                    <Form.Item name="budget" label="ABC" rules={[{ required: true, message: "Required Field" }]}>
+                        <InputNumber min={0} style={{ width: "100%" }} addonBefore={<>&#8369;</>} />
                     </Form.Item>
                 </div>
             </Space>
@@ -229,14 +205,7 @@ const PurchaseRequestForm = function (props: PurchaseRequestFormProps) {
             </Form.Item>
             <Divider />
             {/* SUBMIT BUTTON */}
-            <Button
-                block
-                icon={<PlusCircleOutlined />}
-                type="primary"
-                htmlType="submit"
-                size="large"
-                loading={saving}
-            >
+            <Button block icon={<PlusCircleOutlined />} type="primary" htmlType="submit" size="large" loading={saving}>
                 Save Purchase Request
             </Button>
         </Form>

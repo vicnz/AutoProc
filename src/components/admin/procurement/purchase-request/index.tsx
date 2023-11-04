@@ -7,13 +7,13 @@ import { useReactToPrint } from "react-to-print";
 import useSWR from "swr";
 import { notFound } from "next/navigation";
 //components
-import { usePRId } from "@components/admin/pr-number"; //Shared PRIDProvider
+import { usePRId } from "@components/admin/procurement/purchase-id-context"; //Shared PRIDProvider
 import NetworkError from "@components/admin/network-error"; //Network Error Message
 import SubHeader from "@components/admin/layouts/procurement-item/header/sub"; //Subheader
 import Preview from "@components/admin/layouts/procurement-item/preview-wrapper"; //Preview Wrapper
 import Edit from "@components/admin/features/purchase-crud"; //EDIT Purchase Request Item
 import PreviewHeader from "@components/admin/layouts/procurement-item/preview-wrapper/header"; //Preview Shared Header
-import Approval from "@components/admin/signature-block"; //Approva Block
+import Approval from "@components/admin/procurement/purchase-signatures"; //Approva Block
 //specific
 import ParticularsBlock from "./particulars";
 import DetailsBlock from "./details"; //Section 'DETAILS' Block

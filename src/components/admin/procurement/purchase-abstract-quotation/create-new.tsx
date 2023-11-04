@@ -1,31 +1,31 @@
 import { PlusCircleOutlined } from "@ant-design/icons";
 import { App, Button, Result } from "antd";
 import { CSSProperties, useState } from "react";
-import { usePRId } from "@components/admin/pr-number";
+import { usePRId } from "@components/admin/procurement/purchase-id-context";
 
 const WrapperStyles: CSSProperties = {
-    height: 'calc(100vh - 112px)',
-    width: '100%',
-}
+    height: "calc(100vh - 112px)",
+    width: "100%",
+};
 
 const CreateNewAbstract = function () {
-    const prID = usePRId()
-    const { message } = App.useApp()
-    const [loading, setLoading] = useState(false)
+    const prID = usePRId();
+    const { message } = App.useApp();
+    const [loading, setLoading] = useState(false);
     const addnew = async function () {
-        setLoading(true)
+        setLoading(true);
         //add new abstract document
         const response = await fetch(`/administrator/api/procurement/abstract?_id=${encodeURIComponent(prID)}`, {
-            method: 'POST'
-        })
+            method: "POST",
+        });
         if (response.ok) {
-            setLoading(false)
-            message.info('Created New Abstract Quotation Document')
+            setLoading(false);
+            message.info("Created New Abstract Quotation Document");
         } else {
-            setLoading(false)
-            message.error('Oops an Error Occured!')
+            setLoading(false);
+            message.error("Oops an Error Occured!");
         }
-    }
+    };
 
     return (
         <div style={WrapperStyles}>
@@ -35,12 +35,14 @@ const CreateNewAbstract = function () {
                 subTitle="Create New Abstract Quotation Document"
                 extra={
                     <>
-                        <Button icon={<PlusCircleOutlined />} loading={loading} onClick={() => addnew()}>Create New Abstract Quotation</Button>
+                        <Button icon={<PlusCircleOutlined />} loading={loading} onClick={() => addnew()}>
+                            Create New Abstract Quotation
+                        </Button>
                     </>
                 }
             />
         </div>
     );
-}
+};
 
 export default CreateNewAbstract;

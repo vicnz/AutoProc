@@ -14,18 +14,13 @@
  * TODO - shared context, need FIX to this
  */
 
-import {
-    CalendarOutlined,
-    FontSizeOutlined,
-    NumberOutlined,
-    ShoppingCartOutlined,
-} from "@ant-design/icons";
+import { CalendarOutlined, FontSizeOutlined, NumberOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { Card, Descriptions, List, Result, Skeleton } from "antd";
 import dayjs from "dayjs";
 import useSWR from "swr";
 //
 import { ToPeso } from "@lib/intl/currency";
-import { usePRId } from "@components/admin/pr-number";
+import { usePRId } from "@components/admin/procurement/purchase-id-context";
 
 const PRPreview = function (props: { showAmount?: boolean }) {
     const id = usePRId();
@@ -36,11 +31,7 @@ const PRPreview = function (props: { showAmount?: boolean }) {
     if (error) {
         return (
             <Card title="PR Information">
-                <Result
-                    status={"error"}
-                    title="Error!"
-                    subTitle="Unable to Load Purchase Request Info..."
-                />
+                <Result status={"error"} title="Error!" subTitle="Unable to Load Purchase Request Info..." />
             </Card>
         );
     }
@@ -56,20 +47,14 @@ const PRPreview = function (props: { showAmount?: boolean }) {
     if (data.empty) {
         return (
             <Card title="Not Found">
-                <Result title="PR Not Found" status={'404'} />
+                <Result title="PR Not Found" status={"404"} />
             </Card>
-        )
+        );
     }
 
     return (
         <>
-            <Descriptions
-                layout="vertical"
-                bordered
-                title="Purchase Request Information"
-                column={2}
-                size="small"
-            >
+            <Descriptions layout="vertical" bordered title="Purchase Request Information" column={2} size="small">
                 <Descriptions.Item
                     label={
                         <>
@@ -119,8 +104,7 @@ const PRPreview = function (props: { showAmount?: boolean }) {
                                         </>,
                                     ]}
                                 >
-                                    {item.description}{" "}
-                                    {props.showAmount ? <>{ToPeso(item.price)}</> : null}
+                                    {item.description} {props.showAmount ? <>{ToPeso(item.price)}</> : null}
                                 </List.Item>
                             );
                         })}

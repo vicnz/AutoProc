@@ -6,33 +6,21 @@
  */
 
 import { SaveOutlined } from "@ant-design/icons";
-import {
-    Alert,
-    App,
-    Button,
-    DatePicker,
-    Divider,
-    Form,
-    Input,
-    Skeleton,
-    Space,
-} from "antd";
+import { Alert, App, Button, DatePicker, Divider, Form, Input, Skeleton, Space } from "antd";
 import dayjs from "dayjs";
 import { useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 //SELECT LOWEST BIDDER
-const SelectLowestBidder = dynamic(
-    async () => await import("./select-lowest-bidder"),
-    { loading: () => <Skeleton.Input /> }
-);
+const SelectLowestBidder = dynamic(async () => await import("./select-lowest-bidder"), {
+    loading: () => <Skeleton.Input />,
+});
 //PREVIEW PURCHASE REQUEST
-const PurchaseRequestPreview = dynamic(
-    async () => await import("@components/admin/features/pr-mini-preview"),
-    { loading: () => <Skeleton active /> }
-);
+const PurchaseRequestPreview = dynamic(async () => await import("@components/admin/features/pr-mini-preview"), {
+    loading: () => <Skeleton active />,
+});
 
 import QuotationEdit from "./quotations";
-import { usePRId } from "@components/admin/pr-number";
+import { usePRId } from "@components/admin/procurement/purchase-id-context";
 //
 //type
 interface AbstractQuotationFormProps {
@@ -41,9 +29,8 @@ interface AbstractQuotationFormProps {
 }
 //
 const AbstractQuotationForm = function (props: AbstractQuotationFormProps) {
-    const prID = usePRId()
-    const { id, lowestBidder, location, quotations, date, suppliers } =
-        props.data;
+    const prID = usePRId();
+    const { id, lowestBidder, location, quotations, date, suppliers } = props.data;
 
     const [loading, setLoading] = useState(false); //save loading...
     const { message } = App.useApp();
@@ -98,12 +85,7 @@ const AbstractQuotationForm = function (props: AbstractQuotationFormProps) {
     };
     return (
         <>
-            <Form
-                layout="vertical"
-                initialValues={preloadedData}
-                form={form}
-                onFinish={onFinish}
-            >
+            <Form layout="vertical" initialValues={preloadedData} form={form} onFinish={onFinish}>
                 <PurchaseRequestPreview showAmount />
                 <Divider>Abstracts</Divider>
                 <Space>
@@ -124,19 +106,13 @@ const AbstractQuotationForm = function (props: AbstractQuotationFormProps) {
                     message="Enter The Total Quotationed"
                     description={
                         <>
-                            Enter the <strong>Total</strong> price offered (
-                            <i>quantity &times; offered unit-price</i>).
+                            Enter the <strong>Total</strong> price offered (<i>quantity &times; offered unit-price</i>).
                         </>
                     }
                 />
                 <br />
                 <Form.List name="quotations">
-                    {(fields) => (
-                        <QuotationEdit
-                            fields={fields}
-                            quotations={preloadedData.quotations}
-                        />
-                    )}
+                    {(fields) => <QuotationEdit fields={fields} quotations={preloadedData.quotations} />}
                 </Form.List>
                 <br />
                 {/* SELECT LOWEST BIDDER */}
@@ -144,14 +120,7 @@ const AbstractQuotationForm = function (props: AbstractQuotationFormProps) {
                     <SelectLowestBidder data={suppliers} />
                 </Form.Item>
                 {/* SUBMIT */}
-                <Button
-                    htmlType="submit"
-                    type="primary"
-                    icon={<SaveOutlined />}
-                    size="large"
-                    block
-                    loading={loading}
-                >
+                <Button htmlType="submit" type="primary" icon={<SaveOutlined />} size="large" block loading={loading}>
                     Save Abstract
                 </Button>
             </Form>

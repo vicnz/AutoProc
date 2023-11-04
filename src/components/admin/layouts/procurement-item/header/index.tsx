@@ -12,10 +12,12 @@ import { memo } from "react";
 import dynamic from "next/dynamic";
 //components
 import GlobalHeader from "@components/admin/header";
-import { usePRId } from "@components/admin/pr-number";
+import { usePRId } from "@components/admin/procurement/purchase-id-context";
 import Link from "next/link";
 
-const QRCodeGen = dynamic(async () => await import('@components/admin/qr-code'), { loading: () => <Skeleton.Button /> })
+const QRCodeGen = dynamic(async () => await import("@components/admin/procurement/purchase-tracker"), {
+    loading: () => <Skeleton.Button />,
+});
 
 const ProcurementItemHeader = function () {
     const prId = usePRId(); //get current active PR id
@@ -30,18 +32,15 @@ const ProcurementItemHeader = function () {
                 }
                 back={
                     <Link href={`/administrator/procurements`} passHref>
-                        <Button
-                            icon={<ArrowLeftOutlined />}
-                            type="text"
-                        >
+                        <Button icon={<ArrowLeftOutlined />} type="text">
                             Records
                         </Button>
                     </Link>
                 }
             >
                 <QRCodeGen />
-                <Divider type='vertical' />
-                <Button icon={<QuestionCircleOutlined />} type='text' />
+                <Divider type="vertical" />
+                <Button icon={<QuestionCircleOutlined />} type="text" />
             </GlobalHeader>
         </>
     );

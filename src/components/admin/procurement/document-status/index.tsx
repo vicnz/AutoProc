@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 /**
  * * DOCUMENT STATUS VIEWER
@@ -12,12 +12,14 @@ import { Card, Result, Spin } from "antd";
 import useSWR from "swr";
 import { memo } from "react";
 //components
-import StatusItems from './steps'
-import { usePRId } from '@components/admin/pr-number'
+import StatusItems from "./steps";
+import { usePRId } from "@components/admin/procurement/purchase-id-context";
 
 const DocumentState = function () {
-    const id = usePRId()
-    const { data, isLoading, error, isValidating } = useSWR(`/administrator/api/procurement/document-status?_pr=${encodeURIComponent(id)}`)
+    const id = usePRId();
+    const { data, isLoading, error, isValidating } = useSWR(
+        `/administrator/api/procurement/document-status?_pr=${encodeURIComponent(id)}`
+    );
     return (
         <Card
             title={<span>Document Status</span>}
@@ -50,32 +52,29 @@ const DocumentState = function () {
                         padding: "10px",
                     }}
                 >
-                    {
-                        error ?
-                            <Result title={<span>Error Loading</span>} status={'error'} />
-                            :
-                            <>
-                                {!data || isLoading ? (
-                                    <div
-                                        style={{
-                                            display: "grid",
-                                            placeItems: "center",
-                                            height: "calc(100vh - 200px)",
-                                        }}
-                                    >
-                                        <Spin spinning />
-                                    </div>
-                                ) : (
-                                    <StatusItems data={data.documents} />
-                                )}
-                            </>
-
-                    }
+                    {error ? (
+                        <Result title={<span>Error Loading</span>} status={"error"} />
+                    ) : (
+                        <>
+                            {!data || isLoading ? (
+                                <div
+                                    style={{
+                                        display: "grid",
+                                        placeItems: "center",
+                                        height: "calc(100vh - 200px)",
+                                    }}
+                                >
+                                    <Spin spinning />
+                                </div>
+                            ) : (
+                                <StatusItems data={data.documents} />
+                            )}
+                        </>
+                    )}
                 </div>
             </div>
         </Card>
-    )
-}
-
+    );
+};
 
 export default memo(DocumentState);

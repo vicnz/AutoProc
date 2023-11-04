@@ -1,22 +1,22 @@
 "use client";
 
-import { usePRId } from "@components/admin/pr-number";
+import { usePRId } from "@components/admin/procurement/purchase-id-context";
 import NetworkError from "@components/admin/network-error";
 import { Skeleton, Spin } from "antd";
 import dynamic from "next/dynamic";
 import useSWR from "swr";
-const DeliveryForm = dynamic(async () => await import('./form'), { loading: () => <Spin spinning /> })
+const DeliveryForm = dynamic(async () => await import("./form"), { loading: () => <Spin spinning /> });
 
 const CreateNewDelivery = function () {
-    const useId = usePRId()
-    const { data, isLoading, error } = useSWR(`/administrator/api/procurement/po?_id=${encodeURIComponent(useId)}`)
+    const useId = usePRId();
+    const { data, isLoading, error } = useSWR(`/administrator/api/procurement/po?_id=${encodeURIComponent(useId)}`);
 
     if (error) {
         return (
             <>
                 <NetworkError />
             </>
-        )
+        );
     }
 
     if (isLoading || !data) {
@@ -24,7 +24,7 @@ const CreateNewDelivery = function () {
             <>
                 <Skeleton active />
             </>
-        )
+        );
     }
 
     return (
@@ -42,4 +42,3 @@ const CreateNewDelivery = function () {
 };
 
 export default CreateNewDelivery;
-

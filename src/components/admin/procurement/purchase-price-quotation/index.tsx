@@ -12,7 +12,7 @@ import NetworkError from "@components/admin/network-error";
 import SubHeader from "@components/admin/layouts/procurement-item/header/sub";
 import EditPriceQuotation from "@components/admin/features/price-quotation-crud";
 import Preview from "@components/admin/layouts/procurement-item/preview-wrapper";
-import { usePRId } from "@components/admin/pr-number";
+import { usePRId } from "@components/admin/procurement/purchase-id-context";
 //Preview
 import DocumentType from "./picker";
 import SelectedSupplier from "./select-supplier";
@@ -20,10 +20,7 @@ import MakeFinal from "./final";
 //configs
 //Views
 const QuotationView = dynamic(
-    async () =>
-        await import(
-            "@components/admin/procurement/purchase-price-quotation/quotation-view"
-        ),
+    async () => await import("@components/admin/procurement/purchase-price-quotation/quotation-view"),
     {
         loading: () => (
             <div style={{ padding: 25 }}>
@@ -33,10 +30,7 @@ const QuotationView = dynamic(
     }
 );
 const ReceiptView = dynamic(
-    async () =>
-        await import(
-            "@components/admin/procurement/purchase-price-quotation/receipt-view"
-        ),
+    async () => await import("@components/admin/procurement/purchase-price-quotation/receipt-view"),
     {
         loading: () => (
             <div style={{ padding: 25 }}>
@@ -55,10 +49,8 @@ const WrapperStyles: CSSProperties = {
 //
 const PurchaseRecommendation = function () {
     const prId = usePRId(); //PR ID
-    const { message } = App.useApp()
-    const [documentType, setDocumentType] = useState<"quotation" | "receipt">(
-        "quotation"
-    );
+    const { message } = App.useApp();
+    const [documentType, setDocumentType] = useState<"quotation" | "receipt">("quotation");
     const [selectedSupplier, setSelectedSupplier] = useState(""); //Selected Supplier
     //Handle Print
     const printableComponent = useRef(null);
@@ -91,23 +83,17 @@ const PurchaseRecommendation = function () {
                 <>
                     <div style={WrapperStyles}>
                         <SubHeader
-                            leading={
-                                <MakeFinal
-                                    final={data.final}
-                                    id={data.id}
-                                    recommendFinal={data.recommendFinal}
-                                />
-                            }
+                            leading={<MakeFinal final={data.final} id={data.id} recommendFinal={data.recommendFinal} />}
                         >
                             {documentType === "quotation" ? (
                                 <SelectedSupplier
                                     activeSupplier={selectedSupplier}
                                     setSupplier={setSelectedSupplier}
                                     handlePrint={() => {
-                                        if (selectedSupplier === '') {
-                                            message.warning('Please Select A Supplier')
+                                        if (selectedSupplier === "") {
+                                            message.warning("Please Select A Supplier");
                                         } else {
-                                            handlePrint()
+                                            handlePrint();
                                         }
                                     }}
                                     data={data.suppliers}

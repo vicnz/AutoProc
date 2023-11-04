@@ -14,7 +14,7 @@ import useSWR from "swr";
 import dynamic from "next/dynamic";
 //components
 import SubHeader from "@components/admin/layouts/procurement-item/header/sub"; //Subheader
-import { usePRId } from "@components/admin/pr-number";
+import { usePRId } from "@components/admin/procurement/purchase-id-context";
 import NetworkError from "@components/admin/network-error";
 import RequireFinal from "./requirefinal";
 import CreateNewDelivery from "./create";

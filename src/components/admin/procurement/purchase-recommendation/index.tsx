@@ -8,9 +8,9 @@ import { useReactToPrint } from "react-to-print";
 import NetworkError from "@components/admin/network-error"; //Network Error
 import SubHeader from "@components/admin/layouts/procurement-item/header/sub"; //Sub Header
 import Preview from "@components/admin/layouts/procurement-item/preview-wrapper"; //Preview
-import { usePRId } from "@components/admin/pr-number"; //PR ID
+import { usePRId } from "@components/admin/procurement/purchase-id-context"; //PR ID
 import PreviewHeader from "@components/admin/layouts/procurement-item/preview-wrapper/header"; //Preview Header
-import SignatureBlock from "@components/admin/signature-block"; //Signature Block
+import SignatureBlock from "@components/admin/procurement/purchase-signatures"; //Signature Block
 //Preview
 import MakeFinal from "./final";
 import DocumentType from "./picker";
@@ -26,9 +26,7 @@ const WrapperStyles: CSSProperties = {
 //
 const PurchaseRecommendation = function () {
     const prId = usePRId();
-    const [documentType, setDocumentType] = useState<"review" | "approve">(
-        "review"
-    );
+    const [documentType, setDocumentType] = useState<"review" | "approve">("review");
     const printableComponent = useRef(null);
     const handlePrint = useReactToPrint({
         content: () => printableComponent.current,
@@ -83,14 +81,12 @@ const PurchaseRecommendation = function () {
                                         }}
                                     >
                                         <br />
-                                        Approval of BAC Resolution Recommending Alternative Mode of
-                                        Procurement under Small Value Procurement
+                                        Approval of BAC Resolution Recommending Alternative Mode of Procurement under
+                                        Small Value Procurement
                                     </div>
                                 </div>
                             </PreviewHeader>
-                            <div>
-                                {/*Empty Block Accomodate for the Layout of this Preview having Four Children*/}
-                            </div>
+                            <div>{/*Empty Block Accomodate for the Layout of this Preview having Four Children*/}</div>
                             <ContentPane approval={documentType === "approve"} data={data} />
                             <div style={{ padding: "5px 25px" }}>
                                 <SignatureBlock

@@ -10,12 +10,12 @@ import NetworkError from "@components/admin/network-error";
 import SubHeader from "@components/admin/layouts/procurement-item/header/sub";
 import Preview from "@components/admin/layouts/procurement-item/preview-wrapper";
 import PreviewHeader from "@components/admin/layouts/procurement-item/preview-wrapper/header";
-import { usePRId } from "@components/admin/pr-number";
+import { usePRId } from "@components/admin/procurement/purchase-id-context";
 //Preview
 import Resolution from "./resolution";
 import NoticeOfAward from "./notice-of-award";
 import DocumentType from "./picker";
-import MakeFinal from './final'
+import MakeFinal from "./final";
 //configs
 const WrapperStyles: CSSProperties = {
     display: "grid",
@@ -26,9 +26,7 @@ const WrapperStyles: CSSProperties = {
 //
 const PurchaseAwarding = function () {
     const prId = usePRId(); //PR ID
-    const [documentType, setDocumentType] = useState<
-        "review" | "approve" | "notice"
-    >("review");
+    const [documentType, setDocumentType] = useState<"review" | "approve" | "notice">("review");
     //handle printing
     const printableComponent = useRef(null);
     const handlePrint = useReactToPrint({
@@ -60,7 +58,9 @@ const PurchaseAwarding = function () {
             return (
                 <>
                     <div style={WrapperStyles}>
-                        <SubHeader leading={<MakeFinal final={data.final} abstractFinal={data.abstractFinal} id={data.id} />}>
+                        <SubHeader
+                            leading={<MakeFinal final={data.final} abstractFinal={data.abstractFinal} id={data.id} />}
+                        >
                             <DocumentType onChange={(e: any) => setDocumentType(e)} />
                             <Divider type="vertical" />
                             <Button icon={<PrinterOutlined />} onClick={handlePrint}>
@@ -92,9 +92,7 @@ const PurchaseAwarding = function () {
                                                 review: "BAC Resolution Recommending for Award",
                                                 notice: (
                                                     <>
-                                                        <div
-                                                            style={{ fontSize: ".9em", fontWeight: "normal" }}
-                                                        >
+                                                        <div style={{ fontSize: ".9em", fontWeight: "normal" }}>
                                                             BIDS & AWARDS COMMITTEE
                                                         </div>
                                                         <div>NOTICE OF AWARD</div>
@@ -105,9 +103,7 @@ const PurchaseAwarding = function () {
                                     </div>
                                 </div>
                             </PreviewHeader>
-                            <div>
-                                {/*Empty Block Accomodate for the Layout of this Preview having Four Children*/}
-                            </div>
+                            <div>{/*Empty Block Accomodate for the Layout of this Preview having Four Children*/}</div>
                             {documentType === "notice" ? (
                                 <NoticeOfAward
                                     amount={data.amount}
