@@ -1,6 +1,7 @@
 "use client";
 
 import { CSSProperties, PropsWithChildren, memo } from "react";
+import { motion } from "framer-motion";
 //styles
 const WrapperStyle: CSSProperties = {
     height: "calc(100vh - 112px)",
@@ -19,9 +20,18 @@ const ScrollablePane: CSSProperties = {
 //
 const TabPaneWrapper = function (props: PropsWithChildren<any>) {
     return (
-        <div style={WrapperStyle}>
+        <motion.div
+            style={WrapperStyle}
+            layout
+            initial="hidden"
+            whileInView="visible"
+            variants={{
+                visible: { opacity: 1, y: 0 },
+                hidden: { opacity: 0, y: 20 },
+            }}
+        >
             <div style={ScrollablePane}>{props.children}</div>
-        </div>
+        </motion.div>
     );
 };
 
