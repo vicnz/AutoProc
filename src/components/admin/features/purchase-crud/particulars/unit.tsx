@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 /**
  * * - PR UNIT SELECTOR [SELECT PARTICULARS] MINI SUB-FEATURE
@@ -12,27 +12,32 @@ import { forwardRef, memo } from "react";
 import useSWR from "swr";
 
 //UNITS EDITOR
-import UnitsEditor from '@components/admin/features/units-crud';
+import UnitsEditor from "@components/admin/features/units-crud";
 
 //
 const SelectUnit = forwardRef(function SelectUnit(props, ref) {
-
-    const { data, isLoading, error } = useSWR<Array<{ id: string, name: string }>, any>('/administrator/api/others/units')
+    const { data, isLoading, error } = useSWR<Array<{ id: string; name: string }>, any>(
+        "/administrator/api/entities/units"
+    );
     if (error) {
-        return <p><WarningOutlined /> Faild To Load</p>
+        return (
+            <p>
+                <WarningOutlined /> Faild To Load
+            </p>
+        );
     }
 
     if (!data || isLoading) {
-        return <Skeleton.Input active />
+        return <Skeleton.Input active />;
     }
 
     //Render Content
-    const options: SelectProps['options'] = data.map(item => {
+    const options: SelectProps["options"] = data.map((item) => {
         return {
             label: item.name,
-            value: item.id
-        }
-    })
+            value: item.id,
+        };
+    });
 
     return (
         <Select
@@ -49,7 +54,7 @@ const SelectUnit = forwardRef(function SelectUnit(props, ref) {
                 </>
             )}
         />
-    )
-})
+    );
+});
 
 export default memo(SelectUnit);

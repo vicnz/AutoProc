@@ -35,7 +35,7 @@ interface ApprovalBlockProps {
 //Approval Block Consumed by the Documents
 const ApprovalBlock = function (props: ApprovalBlockProps) {
     //FETCH OFFICERS
-    const { data, isLoading, error, isValidating } = useSWR(`/administrator/api/officer`);
+    const { data, isLoading, error, isValidating } = useSWR(`/administrator/api/entities/officers`);
     //
     if (error) {
         //FAILED TO FETCH OFFICERS
