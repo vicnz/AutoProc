@@ -1,13 +1,16 @@
 "use client";
 
+/**
+ * * OPENS LINK OR COPIES CONTENT
+ */
+
 import { CopyOutlined, LinkOutlined } from "@ant-design/icons";
 import { App, Dropdown } from "antd";
 import type { MenuProps } from "antd";
 import { PropsWithChildren, memo, useMemo } from "react";
 
-const LinkDetails = function (props: PropsWithChildren<{ text: string; type: string }>) {
+const LinkDetails = function (props: PropsWithChildren<{ text: string; type: "email" | "phone" | "url" | string }>) {
     const { message } = App.useApp();
-
     const menuProps: MenuProps["items"] = useMemo(
         () => [
             {
@@ -40,7 +43,7 @@ const LinkDetails = function (props: PropsWithChildren<{ text: string; type: str
                 },
             },
         ],
-        [props]
+        [props, message]
     );
 
     return (

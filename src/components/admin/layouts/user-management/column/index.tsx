@@ -13,7 +13,7 @@ import {
 import { Avatar, TableColumnsType, Button } from "antd";
 import toBase64 from "@lib/client/blob-to-base64";
 import BoringAvatar from "boring-avatars";
-import OpenLink from "@components/admin/layouts/user-management/column/link";
+import OpenLink from "@components/shared/open-link";
 import View from "./view";
 
 const UserManagementColumns: TableColumnsType = [
@@ -100,6 +100,7 @@ const UserManagementColumns: TableColumnsType = [
         ),
         dataIndex: "section",
         key: "section",
+        ellipsis: true,
         render: (e: string) => {
             return <>{e || "_"}</>;
         },

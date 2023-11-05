@@ -1,13 +1,19 @@
+/**
+ * * UTILITY FILE
+ * * ALL OF THE API SUB HANDLER ARE DEFINED HERE
+ */
 import { NextRequest, NextResponse } from "next/server";
-import db, { PrismaModels } from '@lib/db'
+import db, { PrismaModels, PrismaClientError } from '@lib/db'
 import sharp from "sharp";
 import fullname from "@lib/client/fullname";
 import { logger } from "@logger";
 import { ClientError } from '@lib/server/client-error'
+import { hashPassword } from '@lib/server/password-hash'
+import { randomRange } from '@lib/client/random-range'
+import { toListLimited } from '@lib/intl/list'
 
 /**
  * * HANDLE SELECT USER ONLY (USE IN PR CREATION)
- * TODO : convert this into a searchable instead of sending whole list of users
  */
 export const handleUserGetPickOnly = async (req: NextRequest) => {
     try {
@@ -34,29 +40,31 @@ export const handleUserGetPickOnly = async (req: NextRequest) => {
                 updatedAt: 'desc'
             },
             where: {
-                userType: { equals: "USER" },
+                userType: { equals: "USER" }, //!PICK ONLY [USER] TYPE
                 isDeleted: { equals: false },
             },
         });
 
-        return NextResponse.json([
-            ...result.map((item) => {
-                return {
-                    id: item.id,
-                    name: fullname(
-                        {
-                            fname: item.fname,
-                            mname: item.mname,
-                            lname: item.lname,
-                            suffix: item.suffix,
-                        },
-                        true
-                    ),
-                    department: item.department?.description,
-                    section: item.section?.description,
-                };
-            }),
-        ]);
+        const parsedData = result && result.map((item) => {
+            return {
+                id: item.id,
+                name: fullname(
+                    {
+                        fname: item.fname,
+                        mname: item.mname,
+                        lname: item.lname,
+                        suffix: item.suffix,
+                    },
+                    true
+                ),
+                department: item.department?.description,
+                section: item.section?.description,
+            };
+        })
+
+        //SEND TO CLIENT
+        return NextResponse.json(parsedData || []);
+
     } catch (err) {
         if (err instanceof Error) {
             logger.error(err.message)
@@ -67,8 +75,15 @@ export const handleUserGetPickOnly = async (req: NextRequest) => {
         return new Response(JSON.stringify({ error: true }), { status: 500 })
     }
 }
+
 /**
- * * HANDLE FETCHING SINGLE USER (ONE)
+ * TODO HANDLE SELECT USER ONLY (SEARCHABLE) -> NEW APPROACH
+ */
+export const handleUserGetPickOnlyBeta = async (req: NextRequest) => {
+
+}
+/**
+ * * HANDLE SELECT USER INFORMATION
  */
 export const handleUserGet = async (id: string, req: NextRequest) => {
     try {
@@ -76,7 +91,8 @@ export const handleUserGet = async (id: string, req: NextRequest) => {
             select: {
                 id: true,
                 email: true,
-                username: true,
+                username: true, //! AVAILABLE ON AUTO-PROC 2
+                password: false, //! AVAILABLE ON AUTO-PROC 2
                 fname: true,
                 mname: true,
                 lname: true,
@@ -104,19 +120,22 @@ export const handleUserGet = async (id: string, req: NextRequest) => {
         })
 
         if (!result) {
+            //THROW A NOT FOUND ERROR
             throw new ClientError("Not Found", req.url, 'server', 404)
         }
+        //PARSE IMAGE 
         let parseImage = null;
         if (result.profile) {
-            parseImage = await sharp(result.profile).resize(100, 100).toBuffer()
+            parseImage = await sharp(result.profile).resize(125, 125).toBuffer() //REDUCE IMAGE SIZE
         }
+        //
         const parsed: Partial<PrismaModels['users'] & { fullname: string, department: string | null, section: string | null }> = {
             id: result.id,
             fname: result.fname,
             mname: result.mname,
             lname: result.lname,
             suffix: result.suffix,
-            fullname: fullname({ fname: result.fname, mname: result.mname, lname: result.lname, suffix: result.suffix }, true),
+            fullname: fullname({ fname: result.fname, mname: result.mname, lname: result.lname, suffix: result.suffix }, true), //SET FULLNAME
             link: result.link,
             email: result.email,
             phone: result.phone,
@@ -129,9 +148,55 @@ export const handleUserGet = async (id: string, req: NextRequest) => {
             username: result.username
         }
 
+        //SEND TO CLIENT
         return NextResponse.json(parsed)
 
     } catch (err: Error | unknown) {
+        if (err instanceof Error) {
+            logger.error(err.message)
+        }
+        if (err instanceof ClientError) {
+            return new Response(JSON.stringify({ message: err.message, type: err.type }), { status: err.status })
+        }
+        return new Response(JSON.stringify({ error: true }), { status: 500 })
+    }
+}
+
+/**
+ * * FETCH USER PURCHASE REQUEST ITEMS
+ */
+export const handleUserPurchaseRequests = async (id: string, req: NextRequest) => {
+    try {
+        const result = await db.users.findUnique({
+            select: {
+                pr: {
+                    select: {
+                        id: true,
+                        date: true,
+                        final: true,
+                        number: true,
+                        purpose: true,
+                        reference: true,
+                        particulars: true
+                    }
+                }
+            },
+            where: {
+                id,
+                isDeleted: false
+            }
+        })
+        const parseParticulars = await Promise.all((result?.pr as Array<{ particulars: any[] }>).map(item => {
+            const descriptions = item.particulars.map((item: { description: string }) => item.description)
+            return {
+                ...item,
+                particulars: toListLimited(descriptions, 3)
+            }
+        }));
+
+
+        return NextResponse.json(parseParticulars || [])
+    } catch (err) {
         if (err instanceof Error) {
             logger.error(err.message)
         }
@@ -169,6 +234,11 @@ export const handleManyUserGet = async (req: NextRequest) => {
                         name: true
                     }
                 },
+                section: {
+                    select: {
+                        description: true
+                    }
+                },
                 profile: true,
             },
             skip: page || 0,
@@ -192,6 +262,7 @@ export const handleManyUserGet = async (req: NextRequest) => {
                 username: item.username,
                 type: item.userType,
                 department: item.department?.description,
+                section: item.section?.description,
                 profile: thumbnail,
                 phone: item.phone,
                 link: item.link
@@ -209,14 +280,80 @@ export const handleManyUserGet = async (req: NextRequest) => {
     }
 }
 
-export const handleAdminGet = async (id: string, req: NextRequest) => {
-
-}
-
+//? CREATE NEW USER
 export const handleUserPost = async (req: NextRequest) => {
+    try {
+        const body: Omit<PrismaModels['users'], 'isDeleted' | 'createdAt' | 'updatedAt'> = await req.json()
+        if (typeof body === 'undefined' || body === null) throw new ClientError("No Body Provided", req.url, 'server', 500)
+        const parseData = {
+            ...body,
+            password: await hashPassword(body.email as string || body.fname.replace(" ", "_")), //?generate a mock password | available on AutoProc V2
+            username: `${body.fname.toLowerCase().replace(" ", "_")}${randomRange(10, 100)}`, //?generate this | available on AutoProc V2   
+        }
+
+        // Handle Passwords
+        await db.users.create({
+            data: {
+                ...parseData
+            }
+        })
+
+        return NextResponse.json({ ok: true })
+
+    } catch (err) {
+        if (err instanceof Error) {
+            logger.error(err.message)
+        }
+        if (err instanceof ClientError) {
+            return new Response(JSON.stringify({ message: err.message, type: err.type }), { status: err.status })
+        }
+        if (err instanceof PrismaClientError) {
+            if (err.code === 'P2002') {
+                return new Response(JSON.stringify({ message: "Duplicate User, Reason: The Same Email, ... ", type: 'client' }), { status: 500 })
+            }
+            return new Response(JSON.stringify({ error: true }), { status: 500 })
+        }
+        return new Response(JSON.stringify({ error: true }), { status: 500 })
+    }
+}
+//? UPDATE USER
+export const handleUserPut = async (id: string, req: NextRequest) => {
+    try {
+        const body: Omit<PrismaModels['users'], 'isDeleted' | 'createdAt' | 'updatedAt'> = await req.json()
+        if (typeof body === 'undefined' || body === null) throw new ClientError("No Body Sent", req.url, 'server', 500)
+        //TODO check if record with {id} exists
+        const parseData = {
+            ...body,
+        }
+        await db.users.update({
+            data: parseData,
+            where: {
+                id
+            }
+        })
+        return NextResponse.json({ ok: true })
+        //
+    } catch (err) {
+        console.log(err)
+        if (err instanceof Error) {
+            logger.error(err.message)
+        }
+        if (err instanceof ClientError) {
+            return new Response(JSON.stringify({ message: err.message, type: err.type }), { status: err.status })
+        }
+        if (err instanceof PrismaClientError) {
+            if (err.code === 'P200') {
+                return new Response(JSON.stringify({ message: "Duplicate User", type: 'client' }), { status: 500 })
+            }
+            return new Response(JSON.stringify({ error: true }), { status: 500 })
+        }
+        return new Response(JSON.stringify({ error: true }), { status: 500 })
+    }
+}
+//@ADMIN
+export const handleAdminPost = async (req: NextRequest) => {
 
 }
-
-export const handleAdminPost = async (req: NextRequest) => {
+export const handleAdminGet = async (id: string, req: NextRequest) => {
 
 }

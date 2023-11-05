@@ -7,7 +7,7 @@
 //!HIGH RESOLUTION IMAGES ARE NOT COMPRESSED IN SIZE
 
 import { CloseOutlined, UserAddOutlined } from "@ant-design/icons";
-import { App, Avatar, Button, Flex, Result } from "antd";
+import { App, Avatar, Button, Flex, Result, Tooltip } from "antd";
 import { memo, useCallback, useRef, useState } from "react";
 import ReactProfile from "react-profile";
 import { ErrorBoundary } from "react-error-boundary";
@@ -72,10 +72,6 @@ const AvatarEditor = function (props: AvatarEditorProps = { readOnly: false, src
         }
     };
 
-    ("use client");
-
-    <ErrorBoundary fallback={<div>Something went wrong</div>}></ErrorBoundary>;
-
     return (
         <div>
             {/* IMAGE EDITOR */}
@@ -93,7 +89,20 @@ const AvatarEditor = function (props: AvatarEditorProps = { readOnly: false, src
                         </>
                     ) : (
                         <>
-                            <Avatar size={150} src={base64Image} onClick={onOpenImage} style={{ cursor: "pointer" }} />
+                            <Tooltip
+                                title={
+                                    <span>
+                                        Profile Editor is still in <span style={{ color: "orangered" }}>BETA</span>
+                                    </span>
+                                }
+                            >
+                                <Avatar
+                                    size={150}
+                                    src={base64Image}
+                                    onClick={onOpenImage}
+                                    style={{ cursor: "pointer" }}
+                                />
+                            </Tooltip>
                             <input
                                 hidden
                                 ref={inputRef}
@@ -113,12 +122,20 @@ const AvatarEditor = function (props: AvatarEditorProps = { readOnly: false, src
                         </>
                     ) : (
                         <>
-                            <Avatar
-                                size={150}
-                                icon={<UserAddOutlined title="Maximum Image Size <30" />}
-                                onClick={onOpenImage}
-                                style={{ cursor: "pointer" }}
-                            />
+                            <Tooltip
+                                title={
+                                    <span>
+                                        Profile Editor is still in <span style={{ color: "orangered" }}>BETA</span>
+                                    </span>
+                                }
+                            >
+                                <Avatar
+                                    size={150}
+                                    icon={<UserAddOutlined title="Maximum Image Size <30" />}
+                                    onClick={onOpenImage}
+                                    style={{ cursor: "pointer" }}
+                                />
+                            </Tooltip>
                             <input
                                 hidden
                                 ref={inputRef}
