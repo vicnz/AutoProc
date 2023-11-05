@@ -12,20 +12,21 @@ import { memo, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 
 //Supplier Management
-const SupplierManagement = dynamic(
-    async () => await import("@components/admin/features/suppliers-crud"),
-    { loading: () => <Skeleton.Input active /> }
-);
+const SupplierManagement = dynamic(async () => await import("@components/admin/features/suppliers-crud"), {
+    loading: () => <Skeleton.Input active />,
+});
+
+const SelectSupplier = dynamic(async () => await import("./supplier-select"), {
+    loading: () => <Skeleton.Input active />,
+});
 //TYPES
 interface RequestForQuotationFormProps {
     data: any; //TODO : create a genuine type
-    suppliers: any[]; //TODO : create a gnuine type
     close: () => any;
 }
 //
 const RequestForQuotationForm = function (props: RequestForQuotationFormProps) {
     //
-    const { suppliers } = props;
     const { id } = props.data;
 
     const { message } = App.useApp();
@@ -37,9 +38,7 @@ const RequestForQuotationForm = function (props: RequestForQuotationFormProps) {
         () => ({
             ...props.data,
             date: dayjs(props.data.date), //CONVERT STRING DATE TO DAYJS OBJECT
-            suppliers: (props.data.suppliers as any[]).map((item) =>
-                JSON.stringify({ ...item })
-            ), //!REQUIRED to be Stringified
+            suppliers: (props.data.suppliers as any[]).map((item) => JSON.stringify({ ...item })), //!REQUIRED to be Stringified
         }),
         [props.data]
     );
@@ -53,13 +52,7 @@ const RequestForQuotationForm = function (props: RequestForQuotationFormProps) {
             ...form.getFieldsValue(),
             date: dayjs(form.getFieldValue("date")).toISOString(), //CONVERT DATE OBEJECT TO STRING
             //CONVERT SELECTED SUPPLIERS "STRING" to JSON Object
-            suppliers: Array.from(
-                new Set(
-                    form
-                        .getFieldValue("suppliers")
-                        .map((item: string) => JSON.parse(item))
-                )
-            ),
+            suppliers: Array.from(new Set(form.getFieldValue("suppliers").map((item: string) => JSON.parse(item)))),
         };
 
         //PUSH DATA
@@ -81,29 +74,14 @@ const RequestForQuotationForm = function (props: RequestForQuotationFormProps) {
 
     return (
         <>
-            <Form
-                layout="vertical"
-                form={form}
-                onFinish={onFinish}
-                initialValues={sanitizedData}
-            >
+            <Form layout="vertical" form={form} onFinish={onFinish} initialValues={sanitizedData}>
                 {/* SELECT DATE */}
                 <Form.Item label="Date" name="date">
                     <DatePicker style={{ width: "100%" }} />
                 </Form.Item>
                 {/* SELECT SUPPLIERS */}
                 <Form.Item name="suppliers" label="Suppliers">
-                    <Select
-                        allowClear
-                        mode="multiple"
-                        style={{ width: "100%" }}
-                        placeholder="Select Suppliers"
-                        options={(suppliers as any).map((item: any) => ({
-                            key: item.id,
-                            label: item.name,
-                            value: JSON.stringify({ id: item.id, name: item.name }),
-                        }))}
-                    />
+                    <SelectSupplier />
                 </Form.Item>
                 {/* TODO */}
                 <SupplierManagement isEdit={false} buttonProps={{ block: true }}>
@@ -111,14 +89,7 @@ const RequestForQuotationForm = function (props: RequestForQuotationFormProps) {
                 </SupplierManagement>
                 {/*TODO*/}
                 <Divider />
-                <Button
-                    block
-                    type="primary"
-                    size="large"
-                    icon={<SaveOutlined />}
-                    htmlType="submit"
-                    loading={loading}
-                >
+                <Button block type="primary" size="large" icon={<SaveOutlined />} htmlType="submit" loading={loading}>
                     Update RFQ Document
                 </Button>
             </Form>

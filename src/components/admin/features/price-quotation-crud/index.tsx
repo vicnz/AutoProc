@@ -7,9 +7,9 @@
  */
 
 import { EditOutlined } from "@ant-design/icons";
-import { Button, Drawer, Result, Skeleton } from "antd";
+import { Button, Drawer, Skeleton } from "antd";
 import { memo, useState } from "react";
-import useSWR, { mutate } from "swr";
+import { mutate } from "swr";
 import dynamic from "next/dynamic";
 
 //FORM EDIT CONTROL
@@ -27,10 +27,6 @@ const PriceQuotationForm = function (props: ProceQuotationFormProps) {
 
     const [open, setOpen] = useState(false); //OPEN DRAWER
 
-    //FETCH SUPPLIER LIST
-    const { data, isLoading, error } = useSWR(
-        "/administrator/suppliers/api?_all=true"
-    );
     //Close Drawer
     const onClose = () => {
         setOpen(false);
@@ -40,32 +36,11 @@ const PriceQuotationForm = function (props: ProceQuotationFormProps) {
     //
     return (
         <>
-            <Button
-                onClick={() => setOpen(true)}
-                icon={<EditOutlined />}
-                type="primary"
-                disabled={final}
-            >
+            <Button onClick={() => setOpen(true)} icon={<EditOutlined />} type="primary" disabled={final}>
                 Edit RFQ
             </Button>
             <Drawer destroyOnClose open={open} onClose={onClose} title="Edit">
-                {error ? (
-                    <>
-                        <Result status="error" title="Unable To Load Data" />
-                    </>
-                ) : (
-                    <>
-                        {!data || isLoading ? (
-                            <Skeleton active />
-                        ) : (
-                            <FormEdit
-                                data={props.data}
-                                suppliers={data}
-                                close={() => setOpen(false)}
-                            />
-                        )}
-                    </>
-                )}
+                <FormEdit data={props.data} close={() => setOpen(false)} />
             </Drawer>
         </>
     );
