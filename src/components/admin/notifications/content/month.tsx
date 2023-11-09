@@ -19,7 +19,6 @@ function Notif30Days(props: { close: any }) {
         return <Empty />;
     }
 
-    console.log("Notify30Days", data);
     return (
         <>
             {data.data.map((item: any) => {

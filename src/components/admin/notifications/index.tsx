@@ -8,7 +8,7 @@
 
 import { BellOutlined, WarningOutlined } from "@ant-design/icons";
 import { Badge, Button, Divider, Drawer, Segmented, Skeleton, Tooltip } from "antd";
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import useSWR from "swr";
 
 import NotifToday from "./content/today";
@@ -20,6 +20,18 @@ const NotificationSection = function () {
     const [open, setOpen] = useState(false);
     const [notifyCategory, setNotifyCategory] = useState<"today" | "month">("today");
     const { data, error, isLoading } = useSWR(`/administrator/api/notification?count=true&days=${numOfDays}`);
+
+    const onShowDrawer = (e: KeyboardEvent) => {
+        if (e.ctrlKey && e.key === "1") {
+            setOpen(true);
+        }
+    };
+
+    //Component Effect
+    useEffect(() => {
+        window.addEventListener("keydown", onShowDrawer);
+        return () => window.removeEventListener("keydown", onShowDrawer);
+    }, []);
 
     if (error) {
         return (

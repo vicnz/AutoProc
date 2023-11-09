@@ -1,22 +1,45 @@
+"use client";
+
 import { EyeOutlined, SearchOutlined } from "@ant-design/icons";
-import { Space, Input, Tag, Button, Divider, Empty, theme } from "antd";
-import { useState, useDeferredValue, useRef, useEffect } from "react";
-import SearchResult from '@components/admin/search/result'
+import { Space, Input, Tag, Button, theme, Skeleton } from "antd";
+import { useState, useRef, useEffect, useMemo, Suspense } from "react";
+import RenderResult from "../result";
+import { useDebounce } from "react-use";
 
 const SearchModal = function (props: { closeModal?: (value: boolean) => {} }) {
     const { token } = theme.useToken();
     const [searchQuery, setSearchQuery] = useState("");
-    const defValue = useDeferredValue(searchQuery);
-    const [active, setActive] = useState<{ label: string; value: string } | null>(
-        null
+    const [query, setQuery] = useState("");
+
+    const [, cancel] = useDebounce(
+        () => {
+            setQuery(searchQuery);
+        },
+        1000,
+        [searchQuery]
     );
+
+    const [active, setActive] = useState<{ label: string; value: string } | null>(null);
     const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
-        const focusRef = inputRef?.current
+        const focusRef = inputRef?.current;
         focusRef?.focus();
         return () => focusRef?.blur();
     }, []);
+
+    const renderResult = useMemo(
+        () => (
+            <RenderResult
+                query={query}
+                type={active?.value}
+                close={() => {
+                    props.closeModal && props?.closeModal(false);
+                }}
+            />
+        ),
+        [query]
+    );
 
     return (
         <Space direction={"vertical"} style={{ width: "100%" }}>
@@ -33,8 +56,7 @@ const SearchModal = function (props: { closeModal?: (value: boolean) => {} }) {
                         {active?.label}
                     </Tag>
                 }
-                placeholder={`Search ${active === null ? "All Section" : `for ${active?.label}...`
-                    }`}
+                placeholder={`Search ${active === null ? "All Section" : `for ${active?.label}...`}`}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 value={searchQuery}
                 addonBefore={<SearchOutlined />}
@@ -45,42 +67,41 @@ const SearchModal = function (props: { closeModal?: (value: boolean) => {} }) {
                 <span>Search for </span>
                 <Button
                     icon={<EyeOutlined />}
-                    onClick={() =>
-                        setActive({ ...active, label: "Records", value: "records" })
-                    }
+                    onClick={() => setActive({ ...active, label: "Records", value: "records" })}
                 >
                     Records
                 </Button>
-                <Button
-                    icon={<EyeOutlined />}
-                    onClick={() =>
-                        setActive({ ...active, label: "Users", value: "users" })
-                    }
-                >
+                <Button icon={<EyeOutlined />} onClick={() => setActive({ ...active, label: "Users", value: "users" })}>
                     Users
                 </Button>
                 <Button
                     icon={<EyeOutlined />}
-                    onClick={() =>
-                        setActive({ ...active, label: "Suppliers", value: "suppliers" })
-                    }
+                    onClick={() => setActive({ ...active, label: "Suppliers", value: "suppliers" })}
                 >
                     Suppliers
                 </Button>
             </Space>
-            <Divider>
-                <span>Searching for</span>
-                <span style={{ color: token.colorPrimary }}>{`"${searchQuery}"`}</span>
-            </Divider>
-            {searchQuery.length == 0 ? (
-                <Empty />
-            ) : (
-                <SearchResult
-                    query={defValue}
-                    category={active?.value}
-                    closeModal={props.closeModal}
-                />
-            )}
+            <br />
+            <div
+                style={{
+                    height: "50vh",
+                    position: "relative",
+                    width: "inherit",
+                    overflowY: "auto",
+                }}
+            >
+                <div
+                    style={{
+                        height: "auto",
+                        position: "absolute",
+                        width: "100%",
+                        top: 0,
+                        left: 0,
+                    }}
+                >
+                    <Suspense fallback={<Skeleton active />}>{renderResult}</Suspense>
+                </div>
+            </div>
         </Space>
     );
 };

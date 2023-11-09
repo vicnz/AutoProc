@@ -1,101 +1,139 @@
-'use client';
-//libs
-import { SearchOutlined, FolderOpenOutlined } from "@ant-design/icons";
-import { Skeleton, List, Tag, Button, theme } from "antd";
-import { useState, useEffect } from "react";
+"use client";
 
-//types
-interface SearchResultProps {
-    query: string,
-    category?: string,
-    closeModal?: (val: boolean) => any
-}
-const SearchResult = function (props: SearchResultProps) {
-    const { token } = theme.useToken();
-    const [active, setActive] = useState(true);
-    let category = props.category; //
+import { ArrowRightOutlined, ShopOutlined, ShoppingCartOutlined, UserOutlined } from "@ant-design/icons";
+import fullname from "@lib/client/fullname";
+import { Avatar, Button, Divider, Empty, List, Skeleton, theme } from "antd";
+import React, { memo, useEffect, useMemo, useState } from "react";
+import RedirectTo from "./view-button";
 
-    //EMULATE SEARCH
-    useEffect(() => {
-        setTimeout(() => {
-            setActive(false);
-        }, 2000);
-    }, [props.query]);
-    //EMULATE SEARCH
-
-    return (
-        <div
-            style={{
-                height: "50vh",
-                position: "relative",
-                width: "inherit",
-                overflowY: "auto",
-            }}
-        >
-            <div
-                style={{
-                    height: "auto",
-                    position: "absolute",
-                    width: "100%",
-                    top: 0,
-                    left: 0,
-                }}
-            >
-                {active ? (
-                    <Skeleton paragraph={{ rows: 8 }} active />
-                ) : (
-                    <List>
-                        {new Array(10).fill(0).map((item, idx) => {
-                            return (
-                                <List.Item
-                                    prefix={"Result"}
-                                    key={`random-str-${idx}`}
-                                    onClick={() => { }}
-                                >
-                                    <div
-                                        style={{
-                                            display: "flex",
-                                            alignItems: "center",
-                                            justifyContent: "space-between",
-                                            width: "100%",
-                                        }}
-                                    >
-                                        <div>
-                                            <SearchOutlined />
-                                            &nbsp;
-                                            <span
-                                                style={{
-                                                    color: token.colorPrimary,
-                                                    fontWeight: "bold",
-                                                }}
-                                            >
-                                                {props.query}
-                                            </span>
-                                        </div>
-                                        <Tag color={token.colorPrimary}>
-                                            {props.category || "All"}
-                                        </Tag>{" "}
-                                        {/**This should be a value from server */}
-                                        <div>
-                                            <Button
-                                                icon={<FolderOpenOutlined />}
-                                                type="text"
-                                                onClick={() =>
-                                                    props?.closeModal && props.closeModal(false)
-                                                }
-                                            >
-                                                View
-                                            </Button>
-                                        </div>
-                                    </div>
-                                </List.Item>
-                            );
-                        })}
-                    </List>
-                )}
-            </div>
-        </div>
-    );
+type ResultTypes = {
+    users?: any[];
+    suppliers?: any[];
+    records?: any[];
+    empty?: boolean;
 };
+function RenderResult(props: { query: string; type?: string; close?: () => any }) {
+    console.count(props.query);
+    const { token } = theme.useToken();
+    const [result, setResult] = useState<ResultTypes | null>(null);
+    const [loading, setLoading] = useState(false);
+    useEffect(() => {
+        //fetch search object
+        setLoading(true);
+        fetch(`/administrator/api/search?q=${props.query}${props.type && `&type=${props.type}`}`)
+            .then((res) => res.json())
+            .then((res) => {
+                setLoading(false);
+                if (result?.empty) {
+                    setResult(null);
+                } else {
+                    setResult({ ...res });
+                }
+            });
+    }, [props.query]);
+    // console.log(result);
+    // return <Skeleton active />;
 
-export default SearchResult;
+    if (loading) {
+        return <Skeleton active />;
+    }
+
+    if (!result) {
+        return <Empty />;
+    }
+    return (
+        <>
+            {result?.records ? (
+                <>
+                    <Divider>Records</Divider>
+                    <List
+                        dataSource={result.records}
+                        renderItem={(item) => (
+                            <List.Item
+                                key={item.id}
+                                extra={
+                                    <RedirectTo
+                                        href={`/administrator/procurements/${item.id}`}
+                                        close={() => props.close && props.close()}
+                                    />
+                                }
+                            >
+                                <List.Item.Meta
+                                    avatar={
+                                        <Avatar
+                                            icon={<ShoppingCartOutlined />}
+                                            style={{ background: token.colorPrimary }}
+                                        />
+                                    }
+                                    title={item.number}
+                                    description={item.reference}
+                                />
+                            </List.Item>
+                        )}
+                    />
+                </>
+            ) : null}
+
+            {result?.users ? (
+                <>
+                    <Divider>Users</Divider>
+                    <List
+                        dataSource={result.users}
+                        renderItem={(item) => (
+                            <List.Item
+                                key={item.id}
+                                extra={
+                                    <RedirectTo
+                                        href={`/administrator/users/${item.id}`}
+                                        close={() => props.close && props.close()}
+                                    />
+                                }
+                            >
+                                <List.Item.Meta
+                                    avatar={
+                                        <Avatar icon={<UserOutlined />} style={{ background: token.colorPrimary }} />
+                                    }
+                                    title={fullname(
+                                        { fname: item.fname, mname: item.mname, lname: item.lname, suffix: null },
+                                        true
+                                    )}
+                                    description={item.email}
+                                />
+                            </List.Item>
+                        )}
+                    />
+                </>
+            ) : null}
+
+            {result?.suppliers ? (
+                <>
+                    <Divider>Suppliers</Divider>
+                    <List
+                        dataSource={result.suppliers}
+                        renderItem={(item) => (
+                            <List.Item
+                                key={item.id}
+                                extra={
+                                    <RedirectTo
+                                        href={`/administrator/suppliers/${item.id}`}
+                                        close={() => props.close && props.close()}
+                                    />
+                                }
+                            >
+                                <List.Item.Meta
+                                    avatar={
+                                        <Avatar icon={<ShopOutlined />} style={{ background: token.colorPrimary }} />
+                                    }
+                                    title={item.name}
+                                    description={item.representative}
+                                />
+                            </List.Item>
+                        )}
+                    />
+                </>
+            ) : null}
+        </>
+    );
+}
+
+export default memo(RenderResult);

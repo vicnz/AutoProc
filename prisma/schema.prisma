@@ -132,7 +132,7 @@ model purchase_requests {
     po          purchase_orders[]
     delivery    delivery[]
 
-    @@fulltext([number, reference, purpose])
+    @@fulltext([number, reference])
 }
 
 //@TYPE OF UNIT

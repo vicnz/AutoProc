@@ -50,6 +50,9 @@
       ],
       "@logger": [
         "./logger.ts"
+      ],
+      "@components": [
+        "./src/components/*"
       ]
     }
   },
