@@ -1,11 +1,14 @@
 import StyleComponentRegistry from "@lib/theme/theme-registry";
 import SWRConfig from "@state/swr/Config";
 import "./globals.css";
-import { Metadata } from "next";
+import { Metadata, Viewport } from "next";
 
 export const metadata: Metadata = {
     title: "Auto | Proc",
     description: "Auto Procurement System",
+};
+
+export const viewport: Viewport = {
     themeColor: "#C0252A",
 };
 

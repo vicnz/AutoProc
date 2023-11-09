@@ -1,17 +1,75 @@
-import UserViewLayout from "@components/admin/layouts/user-item/layout";
-import UserId from "@components/admin/layouts/user-item/context-id";
-import Content from "@components/admin/layouts/user-item";
+//
+import { fetchUser } from "@state/users/preload";
+//
+import { Alert, Button, Card, Divider, Flex, Segmented } from "antd";
+import { CSSProperties } from "react";
+import AvatarPreview from "./_components/details/avatar-view";
+import UserType from "./_components/details/user-type";
+import Content from "./_components/details/content";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import EditUser from "./_components/edit/open-drawer-edit";
+import FormComponent from "./_components/edit/";
 
-const Page = function (props: { params: { id: string } }) {
-    return (
-        <>
-            <UserId id={props.params.id}>
-                <UserViewLayout>
-                    <Content />
-                </UserViewLayout>
-            </UserId>
-        </>
-    );
+const WrapperStyle: CSSProperties = {
+    position: "relative",
+    overflowY: "auto",
+    height: "calc(100vh - 170px)",
+    width: "100%",
 };
 
-export default Page;
+const ScrollView: CSSProperties = {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    padding: "15px 25px",
+};
+
+async function UserInfoPage(props: { params: { id: string } }) {
+    const { id } = props.params;
+    const data = await fetchUser(id);
+    return (
+        <Card
+            title={`${data.fullname}`}
+            style={{ borderRadius: 0, height: "inherit" }}
+            bodyStyle={{ padding: 0, margin: 0 }}
+        >
+            <div style={WrapperStyle}>
+                <div style={ScrollView}>
+                    <AvatarPreview profile={data.profile as any} name={data.fullname} />
+                    <UserType userType={data.userType} />
+                    <br />
+                    <Content data={data} />
+                    <Divider />
+                    <EditUser
+                        content="Edit User Info"
+                        btnProps={{ icon: <EditOutlined />, block: true, type: "primary" }}
+                        title="Edit User"
+                    >
+                        <FormComponent id={props.params.id} />
+                    </EditUser>
+                    <Divider>Danger Section</Divider>
+                    <Alert
+                        message="Delete User"
+                        type="error"
+                        description={
+                            <>
+                                <span>
+                                    Make sure they are <strong>NO Incomplete</strong> Purchase Request associated with
+                                    this User before proceeding for action.
+                                </span>
+                                <br />
+                                <br />
+                                <Button danger icon={<DeleteOutlined />} block type="primary">
+                                    Delete User
+                                </Button>
+                            </>
+                        }
+                    />
+                </div>
+            </div>
+        </Card>
+    );
+}
+
+export default UserInfoPage;

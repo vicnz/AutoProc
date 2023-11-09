@@ -35,22 +35,30 @@ const NavbarRenderedItems: {
             icon: FolderOutlined,
             label: "Records",
         },
+        //! PENDING REMOVAL -> MIGRATE TO NEW-USER LAYOUT
+        // {
+        //     key: "user",
+        //     href: "/administrator/users",
+        //     icon: TeamOutlined,
+        //     label: "End Users",
+        // },
+        //! PENDING REMOVAL -> MIGRATE TO NEW-USER LAYOUT
         {
-            key: "user",
+            key: "users",
             href: "/administrator/users",
             icon: TeamOutlined,
             label: "End Users",
         },
-        { key: "separator1", type: "separator", href: "/" },
         {
             key: "suppliers",
             href: "/administrator/suppliers",
             icon: ShopOutlined,
             label: "Suppliers",
         },
+        { key: "separator1", type: "separator", href: "/" },
         {
             key: "entity",
-            href: "/administrator/others",
+            href: "/administrator/entities",
             icon: AppstoreOutlined,
             label: "Others",
         },
