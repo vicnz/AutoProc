@@ -59,13 +59,13 @@ export async function saveNewUser(formData: FormData) { //TODO convert FORMDATA 
 export async function updateNewUser(formData: FormData) {
     const data: UserInfo = Object.fromEntries(formData)
 
-    const _office = data.office?.split(",") as string[]
-    const dept = _office[0]
-    const sect = _office[1]
+    const office = data.office?.split(",") as string[]
+    const dept = office[0]
+    const sect = office[1]
 
 
 
-    const _userData: UserInfo = {
+    const userData: UserInfo = {
         id: data.id,
         fname: data.fname,
         mname: data.mname !== "" ? data.mname : null,
@@ -78,7 +78,6 @@ export async function updateNewUser(formData: FormData) {
         link: data.link !== '' ? data.link : null,
         email: data.email,
     }
-    // console.log(data.profile, typeof data.profile, (data.profile as string).length)
     //@ts-ignore
     if (typeof data.profile !== 'undefined' && data?.profile !== null && data?.profile !== "") {
         //@ts-ignore
@@ -87,21 +86,21 @@ export async function updateNewUser(formData: FormData) {
         const image = sharp(await data?.profile.arrayBuffer())
         //@ts-ignore
         file = await image.resize(300, 300).toBuffer()
-        _userData.profile = file as any;
+        userData.profile = file as any;
     }
 
     try {
         await db.users.update({
             data: {
-                ..._userData as any,
+                ...userData as any,
                 // password: await hashPassword(_userData.email as string || (_userData.fname as string).replace(" ", "_")), //?generate a mock password | available on AutoProc V2
                 // username: `${(_userData.fname as string).toLowerCase().replace(" ", "_")}${randomRange(10, 100)}`, //?generate this | available on AutoProc V2   
             },
             where: {
-                id: _userData.id
+                id: userData.id
             }
         })
-        revalidatePath(`/administrator/users/${_userData.id}`);
+        revalidatePath(`/administrator/users/${userData.id}`);
     } catch (err) {
         console.log(err)
         return { error: true }

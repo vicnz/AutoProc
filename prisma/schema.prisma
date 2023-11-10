@@ -104,21 +104,22 @@ enum DocType {
     SVP
     BIDDING
     REORDER
+    DIRECT
 }
 
 //@PR
 model purchase_requests {
     id          String                         @id @default(uuid())
     number      String?                        @unique //Purchase Unique Identifier Number
-    sai         String?
+    sai         String? //! REMOVE, UNESSESSARY
     obr         String?
     date        DateTime                       @default(now()) //Purchase Creation/Issued Date
-    reference   String? //reference number/BAC Resolution
+    reference   String //reference number/BAC Resolution
     final       Boolean                        @default(false) //mark document as approved and final NOTE: this toggle can bypass the tracing
-    purpose     String                         @db.VarChar(255) //! RUN THIS ON NEXT COMMIT
+    purpose     String                         @db.VarChar(255)
     budget      Float                          @default(0.00) //Approved Budget for the type of PPMP
     type        DocType                        @default(SVP) //MILESTONE: Document Type
-    userId      String?
+    userId      String? //
     user        users?                         @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: SetNull)
     particulars Json                           @default(dbgenerated("JSON_ARRAY()")) //FORMAT: [{qty: number, description: string, stock?: string, price: number, unit: string}, ...]
     tracking    Json                           @default(dbgenerated("JSON_ARRAY(JSON_OBJECT())")) //FORMAT: [{officeId: string, name: string, type: {in?: datetime, out?: datetime}}]
@@ -255,18 +256,32 @@ model delivery {
 }
 
 model suppliers {
-    id             String   @id @default(uuid())
-    name           String
-    representative String?
-    position       String?
-    address        String?
-    tin            String
-    createdAt      DateTime @default(now())
-    updatedAt      DateTime @updatedAt
-    isDeleted      Boolean  @default(false)
+    id              String           @id @default(uuid())
+    name            String
+    representative  String?
+    position        String?
+    address         String?
+    tin             String
+    createdAt       DateTime         @default(now())
+    updatedAt       DateTime         @updatedAt
+    isDeleted       Boolean          @default(false)
+    supplier_rating supplier_rating?
 
     @@index([tin])
     @@fulltext([name, representative, tin])
+}
+
+model supplier_rating {
+    id         String    @id @default(uuid())
+    supplierId String    @unique
+    selection  Int       @default(0) //number of times supplier is selected compute average from the highest most selected suppliers count / maxCount
+    onTime     Int       @default(0) //calculate on time deliveries - before or on deadline - determine on purchase order not delivery request
+    delays     Int       @default(0) //calculate delays - after deadline - determine both on purchase order and extended delivery
+    extends    Int       @default(0) //calculate amount of extends - if delivery is extended invalidate both onTime and Delay
+    supplier   suppliers @relation(fields: [supplierId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    createdAt  DateTime  @default(now())
+    updatedAt  DateTime  @updatedAt
+    isDeleted  Boolean   @default(false)
 }
 
 enum LevelType {
@@ -276,6 +291,7 @@ enum LevelType {
 }
 
 //Notifications
+//TODO notification cleanup -> simplify schema
 model notifications {
     id          String    @id @default(uuid())
     resolved    Boolean   @default(false)
@@ -292,6 +308,7 @@ model notifications {
 }
 
 //options
+//!remove, shall be replaced with a Server Stored Settings using SQLite or NeDB
 model settings {
     id          String   @id @default(uuid())
     name        String

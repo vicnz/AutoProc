@@ -13,7 +13,6 @@ type ResultTypes = {
     empty?: boolean;
 };
 function RenderResult(props: { query: string; type?: string; close?: () => any }) {
-    console.count(props.query);
     const { token } = theme.useToken();
     const [result, setResult] = useState<ResultTypes | null>(null);
     const [loading, setLoading] = useState(false);

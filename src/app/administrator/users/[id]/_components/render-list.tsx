@@ -13,7 +13,7 @@ function RenderList(props: { item: any }) {
             title={item.number}
             actions={[
                 <span key="date">{dayjs(item.date as string).format("MMMM DD, YYYY")}</span>,
-                <ViewButton id={item.id} />,
+                <ViewButton id={item.id} key={"view-btn"} />,
             ]}
         >
             <List.Item.Meta

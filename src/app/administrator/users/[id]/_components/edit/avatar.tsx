@@ -12,19 +12,20 @@ type UploadImageEditorProps = {
 } & UploadProps;
 //
 
-const AvatarUploader = forwardRef(function wrapper(props: UploadImageEditorProps, ref) {
+const AvatarUploader = function wrapper(props: UploadImageEditorProps) {
     // console.log(props?.initData);
     const imageProps = props?.initData ? [{ url: `data:image/png;base64,${props.initData}` }] : [];
     const [fileList, setFileList] = useState<any[]>(imageProps); //prepend default data
 
     const onChange = (fileList: any) => {
+        console.log(fileList);
         const file = fileList.file;
         if (file.status === "removed") {
             setFileList([]);
             props.onSave && props.onSave(undefined);
         } else {
-            props.onSave && props.onSave(file);
             setFileList([file]);
+            props.onSave && props.onSave(file);
         }
     };
     const onPreview = async (file: UploadFile) => {
@@ -55,21 +56,20 @@ const AvatarUploader = forwardRef(function wrapper(props: UploadImageEditorProps
     };
 
     return (
-        <ImgCrop rotationSlider>
-            <Upload
-                {...props}
-                accept="image/png,image/jpeg,image/svg,image/webp"
-                beforeUpload={beforeUpload}
-                listType="picture-circle"
-                fileList={fileList}
-                onPreview={onPreview}
-                onChange={onChange}
-                ref={ref as any}
-            >
-                {fileList?.length < 1 && "+ Upload"}
-            </Upload>
-        </ImgCrop>
+        <Upload
+            {...props}
+            accept="image/png,image/jpeg,image/svg,image/webp"
+            beforeUpload={beforeUpload}
+            listType="picture-circle"
+            fileList={fileList}
+            onPreview={onPreview}
+            onChange={onChange}
+        >
+            {fileList?.length < 1 && "+ Upload"}
+        </Upload>
+        // <ImgCrop rotationSlider onModalCancel={modalCancel} beforeCrop={modalCropOk} showReset cropShape="round">
+        // </ImgCrop>
     );
-});
+};
 
 export default AvatarUploader;

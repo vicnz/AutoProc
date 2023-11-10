@@ -10,7 +10,7 @@ type UploadImageEditorProps = {
     onCancel?: () => {};
 } & UploadProps;
 //
-const AvatarUploader = forwardRef(function wrapper(props: UploadImageEditorProps, ref) {
+const AvatarUploader = function wrapper(props: UploadImageEditorProps) {
     const [fileList, setFileList] = useState<any[]>([]);
     const onChange = (fileList: any) => {
         const file = fileList.file;
@@ -18,8 +18,8 @@ const AvatarUploader = forwardRef(function wrapper(props: UploadImageEditorProps
             setFileList([]);
             props.onSave && props.onSave(undefined);
         } else {
-            props.onSave && props.onSave(file);
             setFileList([file]);
+            props.onSave && props.onSave(file);
         }
     };
     const onPreview = async (file: UploadFile) => {
@@ -43,27 +43,26 @@ const AvatarUploader = forwardRef(function wrapper(props: UploadImageEditorProps
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = () => {
-            setFileList((state: any) => [{ url: reader.result }]);
+            setFileList([{ url: reader.result }]);
         };
         return false;
     };
 
     return (
-        <ImgCrop rotationSlider>
-            <Upload
-                {...props}
-                accept="image/png,image/jpeg,image/svg,image/webp"
-                beforeUpload={beforeUpload}
-                listType="picture-circle"
-                fileList={fileList}
-                onPreview={onPreview}
-                onChange={onChange}
-                ref={ref as any}
-            >
-                {fileList?.length < 1 && "+ Upload"}
-            </Upload>
-        </ImgCrop>
+        <Upload
+            {...props}
+            accept="image/png,image/jpeg,image/svg,image/webp"
+            beforeUpload={beforeUpload}
+            listType="picture-circle"
+            fileList={fileList}
+            onPreview={onPreview}
+            onChange={onChange}
+        >
+            {fileList?.length < 1 && "+ Upload"}
+        </Upload>
+        // <ImgCrop rotationSlider>
+        // </ImgCrop>
     );
-});
+};
 
 export default AvatarUploader;

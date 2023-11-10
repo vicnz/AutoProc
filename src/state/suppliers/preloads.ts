@@ -1,9 +1,24 @@
 import db from "@lib/db";
 
 export const preload = async () => {
-    //TODO paginate
-    //TODO inquire supplier rating and status
     const result = await db.suppliers.findMany({
+        select: {
+            address: true,
+            id: true,
+            name: true,
+            position: true,
+            representative: true,
+            tin: true,
+            supplier_rating: {
+                select: {
+                    delays: true,
+                    extends: true,
+                    selection: true,
+                    onTime: true
+                }
+            }
+        },
+
         where: {
             isDeleted: false,
         },
@@ -11,5 +26,19 @@ export const preload = async () => {
             updatedAt: "desc",
         },
     });
-    return result;
+
+    type ResultType = Partial<typeof result[0]> & { delays?: number, onTime?: number, extends?: number, selection?: number };
+
+    return result.map<ResultType>((item) => {
+        return {
+            name: item.name,
+            id: item.id,
+            representative: item.representative,
+            tin: item.tin,
+            delays: item.supplier_rating?.delays,
+            onTime: item.supplier_rating?.onTime,
+            extends: item.supplier_rating?.extends,
+            selection: item.supplier_rating?.selection
+        }
+    })
 };

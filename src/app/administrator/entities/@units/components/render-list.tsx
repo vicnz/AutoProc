@@ -1,10 +1,9 @@
 "use client";
 
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { Skeleton, Carousel, Card, List, Statistic, Button } from "antd";
-import React, { Fragment } from "react";
+import { DeleteOutlined } from "@ant-design/icons";
+import { Card, List, Statistic, Button } from "antd";
 
-async function UnitsList(props: { data: Array<{ id: string; name: string }> }) {
+function UnitsList(props: { data: Array<{ id: string; name: string }> }) {
     const { data } = props;
     return (
         <div style={{ padding: 10 }}>

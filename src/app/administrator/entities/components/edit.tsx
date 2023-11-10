@@ -78,7 +78,7 @@ function EditDepartments(props: PropType) {
                 open={open}
                 onCancel={() => setOpen(false)}
                 footer={[
-                    <Button type="primary" icon={<SaveOutlined />} onClick={onFinish}>
+                    <Button key="save" type="primary" icon={<SaveOutlined />} onClick={onFinish}>
                         Save
                     </Button>,
                 ]}

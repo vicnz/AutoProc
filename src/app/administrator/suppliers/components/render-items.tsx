@@ -1,71 +1,76 @@
 "use client";
 
-import { Button, Card, List, Progress, Space, Statistic, Tag } from "antd";
+import { Button, Card, Divider, List, Progress, Space, Statistic, Tag, Tooltip } from "antd";
 import Avatar from "boring-avatars";
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import { motion } from "framer-motion";
-import { EyeOutlined } from "@ant-design/icons";
+import { ArrowUpOutlined, EyeOutlined, LineChartOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import { PrismaModels } from "@lib/db";
+import { Chart as ChartJs, registerables } from "chart.js";
+import { Bar } from "react-chartjs-2";
 
 function RenderSupplierList(props: { data: Partial<PrismaModels["suppliers"]>[] }) {
+    useEffect(() => {
+        ChartJs.register(...registerables);
+    }, []);
+
     return (
         <List
             grid={{ gutter: 16, column: 3 }}
             dataSource={props.data}
-            renderItem={(item: any, idx) => (
-                <motion.div
-                    key={item.tin}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 20 }}
-                    transition={{
-                        delay: ((idx + 1) * 10) / 100,
-                    }}
-                >
-                    <List.Item key={item.tin}>
-                        <Card
-                            title={<span style={{ fontSize: "0.8em" }}>{item.tin}</span>}
-                            extra={
-                                <>
-                                    <Link href={`/administrator/suppliers/${encodeURIComponent(item.id)}`} passHref>
-                                        <Button icon={<EyeOutlined />}>Details</Button>
-                                    </Link>
-                                </>
-                            }
-                        >
-                            <Card.Meta
-                                avatar={<Avatar name={item.name} variant="bauhaus" />}
-                                title={item.name}
-                                description={
-                                    <span>
-                                        Electronics & Appliciances <Tag>TODO</Tag>
-                                    </span>
+            renderItem={(item: any, idx) => {
+                return (
+                    <motion.div
+                        key={item.tin}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 20 }}
+                        transition={{
+                            delay: ((idx + 1) * 10) / 100,
+                        }}
+                    >
+                        <List.Item key={item.tin}>
+                            <Card
+                                title={<span style={{ fontSize: "0.8em" }}>{item.tin}</span>}
+                                extra={
+                                    <>
+                                        <Link href={`/administrator/suppliers/${encodeURIComponent(item.id)}`} passHref>
+                                            <Button icon={<EyeOutlined />}>Details</Button>
+                                        </Link>
+                                    </>
                                 }
-                            />
-                            <br />
-                            <Space
-                                style={{ width: "100%", display: "grid", gridTemplateColumns: "40% 1fr" }}
-                                size="middle"
+                                actions={[
+                                    <Tooltip title="On-Time Deliveries">
+                                        {Intl.NumberFormat("en", { notation: "compact" }).format(item.onTime || 0)}{" "}
+                                        On-Time
+                                    </Tooltip>,
+                                    <Tooltip title="Delayed Deliveries">
+                                        {Intl.NumberFormat("en", { notation: "compact" }).format(item.delays || 0)}{" "}
+                                        Delays
+                                    </Tooltip>,
+                                    <Tooltip title="Deliveries Extended Deadlines">
+                                        {Intl.NumberFormat("en", { notation: "compact" }).format(item.extend || 0)}{" "}
+                                        Extended
+                                    </Tooltip>,
+                                ]}
                             >
-                                <Statistic
-                                    title="Total (Items)"
-                                    value={Intl.NumberFormat("en", { notation: "compact" }).format(94)}
+                                <Card.Meta
+                                    avatar={<Avatar name={item.name} variant="bauhaus" />}
+                                    title={item.name}
+                                    description={<span>{item.representative}</span>}
                                 />
+                                <br />
                                 <Statistic
-                                    title="Selection Chance"
-                                    value={67}
-                                    valueRender={() => (
-                                        <>
-                                            <Progress percent={87} />
-                                        </>
-                                    )}
+                                    suffix={<LineChartOutlined />}
+                                    title="Selection Count"
+                                    value={Intl.NumberFormat("en", { notation: "compact" }).format(item.selection || 0)}
                                 />
-                            </Space>
-                        </Card>
-                    </List.Item>
-                </motion.div>
-            )}
+                            </Card>
+                        </List.Item>
+                    </motion.div>
+                );
+            }}
         />
     );
 }
