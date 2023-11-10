@@ -13,6 +13,7 @@ const NoticeOfAward = function (props: any) {
         <div style={{ padding: "5px 25px" }}>
             <Space direction="vertical" size={"large"}>
                 {/* Letter Head */}
+                <br />
                 <div>
                     <Text
                         style={{
@@ -24,7 +25,7 @@ const NoticeOfAward = function (props: any) {
                         {supplier?.representative || `[[Please Select the Lowest Bidder]]`}
                     </Text>
                     <br />
-                    <Text style={{ fontSize: ".9em", textTransform: "uppercase" }} italic>
+                    <Text style={{ fontSize: ".9em", textTransform: "uppercase" }}>
                         {supplier?.position || "[[Please Select the Lowest Bidder]]"}
                     </Text>
                     <br />
@@ -45,12 +46,10 @@ const NoticeOfAward = function (props: any) {
                     <br />
                     <br />
                     <Paragraph style={{ textIndent: "3em", lineHeight: "2em" }}>
-                        We are happy to notify you that your quotation dated {date && dayjs(date).format('MMMM DD, YYYY')} for the{" "}
-                        <Text italic>{`"${purpose}"`}</Text>, with PR{" "}
-                        <Text style={{ color: token.colorPrimary }}>#{number}</Text> for the
-                        contract price equivalent to{" "}
-                        {amount && (NumberToWords(amount) as string).toUpperCase()} PESOS
-                        ONLY (
+                        We are happy to notify you that your quotation dated{" "}
+                        {date && dayjs(date).format("MMMM DD, YYYY")} for the <Text italic>{`"${purpose}"`}</Text>, with
+                        PR <Text style={{ color: token.colorPrimary }}>#{number}</Text> for the contract price
+                        equivalent to {amount && (NumberToWords(amount) as string).toUpperCase()} PESOS ONLY (
                         {amount &&
                             Intl.NumberFormat("en", {
                                 style: "currency",
@@ -59,36 +58,25 @@ const NoticeOfAward = function (props: any) {
                         ) is hereby accepted.
                     </Paragraph>
                     <Paragraph style={{ textIndent: "3em", lineHeight: "2em" }}>
-                        You are hereby required to provide within Ten (10) days a certified
-                        photocopy of the following requirements:
+                        You are hereby required to provide within Ten (10) days a certified photocopy of the following
+                        requirements:
                     </Paragraph>
                     <List size="small" split>
-                        <List.Item key="1">
-                            1. Updated Mayor&apos;s Permit/Business Permit
-                        </List.Item>
+                        <List.Item key="1">1. Updated Mayor&apos;s Permit/Business Permit</List.Item>
                         <List.Item key="2">2. PhilGEPS Registration no.</List.Item>
                         <List.Item key="3">3. Latest Income/Business Tax Return</List.Item>
-                        <List.Item key="4">
-                            4. Duly Notarized Omnibus Sworn Statement
-                        </List.Item>
-                        <List.Item key="5">
-                            5. Certificate of Registration (BIR 2307)
-                        </List.Item>
+                        <List.Item key="4">4. Duly Notarized Omnibus Sworn Statement</List.Item>
+                        <List.Item key="5">5. Certificate of Registration (BIR 2307)</List.Item>
                         <List.Item key="6">6. Land Bank Account Details</List.Item>
                     </List>
                     <Paragraph style={{ textIndent: "3em", lineHeight: "2em" }}>
-                        However, If you already have a maintaining and updated file of the
-                        above-mentioned requirements in the BAC Office you may no longer
-                        require its re-submission (Annex &lsquo;H&rsquo;, Appendix
+                        However, If you already have a maintaining and updated file of the above-mentioned requirements
+                        in the BAC Office you may no longer require its re-submission (Annex &lsquo;H&rsquo;, Appendix
                         &lsquo;A&rsquo; Section III)
                     </Paragraph>
-                    <Paragraph
-                        style={{ textIndent: "3em", lineHeight: "2em", fontSize: ".9em" }}
-                        italic
-                    >
-                        *For individuals engaged under Sec. 53.6, 53.7, and 53.9 of the IRR
-                        of RA 9184, only the BIR Certificate of Registration shall be
-                        submitted in lieu of DTI Registration and Mayor’s Permit.
+                    <Paragraph style={{ textIndent: "3em", lineHeight: "2em", fontSize: ".9em" }} italic>
+                        *For individuals engaged under Sec. 53.6, 53.7, and 53.9 of the IRR of RA 9184, only the BIR
+                        Certificate of Registration shall be submitted in lieu of DTI Registration and Mayor’s Permit.
                     </Paragraph>
 
                     <br />
@@ -117,7 +105,7 @@ const NoticeOfAward = function (props: any) {
                         <Text>Recieved By:</Text>
                         <br />
                         <br />
-                        <Text>{`_`.padEnd(50, "_")}</Text>
+                        <Text>{`_`.padEnd(25, "_")}</Text>
                         <br />
                         <Text>Signature Over Printed Name</Text>
                         <br />

@@ -232,6 +232,7 @@ export const PATCH = async function (req: NextRequest) {
             const result = await db.purchase_quotation_abstracts.findFirst({
                 select: {
                     lowestBidder: true,
+
                 },
                 where: {
                     id: abstractId,

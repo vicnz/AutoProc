@@ -2,7 +2,7 @@
 //libs
 import { PrinterOutlined } from "@ant-design/icons";
 import { Button, Skeleton } from "antd";
-import { CSSProperties, useRef } from "react";
+import { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import useSWR from "swr";
 import { notFound } from "next/navigation";
@@ -18,22 +18,19 @@ import Approval from "@components/admin/procurement/purchase-signatures"; //Appr
 import ParticularsBlock from "./particulars";
 import DetailsBlock from "./details"; //Section 'DETAILS' Block
 import Final from "./final";
-//configs
-const WrapperStyles: CSSProperties = {
-    display: "grid",
-    gridTemplateRows: "56px 1fr",
-    width: "100%",
-    height: "calc(100vh - 112px)",
-};
+//styles
+import { WrapperStyles } from "./styles";
 //
 const PurchaseRequest = function () {
     const prId = usePRId(); //PR ID
+    //* PRINTING
     const printableComponent = useRef(null); //PRINTABLE COMPONENTS
     const handlePrint = useReactToPrint({
         content: () => printableComponent.current,
     });
+    //* PRINTING
 
-    //FETCH PR DATA
+    //*FETCH PR DATA
     const { data, isLoading, error, isValidating } = useSWR(
         `/administrator/api/procurement/pr?_id=${encodeURIComponent(prId)}`
     );

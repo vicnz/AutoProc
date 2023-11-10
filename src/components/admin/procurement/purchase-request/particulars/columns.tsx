@@ -22,7 +22,7 @@ const columns: TableColumnsType = [
         dataIndex: "unit",
         key: "unit",
         ellipsis: true,
-        width: 50,
+        width: 75,
         render: (e: string) => {
             return (
                 <span style={{ whiteSpace: "normal" }} key={e}>
@@ -38,20 +38,6 @@ const columns: TableColumnsType = [
         ellipsis: true,
         width: 200,
         render: (e: string) => {
-            return (
-                <span style={{ whiteSpace: "normal" }} key={e}>
-                    {e}
-                </span>
-            );
-        },
-    },
-    {
-        title: "Stock",
-        dataIndex: "stock_no",
-        key: "stock_no",
-        ellipsis: true,
-        width: 75,
-        render: (e: any) => {
             return (
                 <span style={{ whiteSpace: "normal" }} key={e}>
                     {e}

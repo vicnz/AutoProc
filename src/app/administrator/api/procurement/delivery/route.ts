@@ -28,10 +28,10 @@ export const GET = async function (req: NextRequest) {
             },
         });
 
-        if (po) {
+        if (po?.final) {
             const result = await db.delivery.findFirst({
                 where: {
-                    poId: po.id,
+                    poId: po?.id,
                 },
             });
 
@@ -40,8 +40,8 @@ export const GET = async function (req: NextRequest) {
                 const [status, progress] = await computeDelivery(result.parcels as ParcelItem[], result.endDate);
                 const data = {
                     id: result.id,
-                    number: po.number,
-                    supplier: po.supplier,
+                    number: po?.number,
+                    supplier: po?.supplier,
                     startDate: result.startDate,
                     endDate: result.endDate,
                     parcels: result.parcels,

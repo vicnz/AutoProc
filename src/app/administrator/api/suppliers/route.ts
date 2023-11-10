@@ -1,6 +1,8 @@
 import db from "@lib/db";
 import { NextRequest, NextResponse } from "next/server";
 
+//! MIGRATE THIS FUNCTION TO SERVER COMPONENT
+//! WHEN SUPPLIER SELECTOR IS UPDATES TO THE NEW FILE APPROACH
 export const GET = async function (req: NextRequest) {
     const { searchParams } = new URL(req.url);
     try {

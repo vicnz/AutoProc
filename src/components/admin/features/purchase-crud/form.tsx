@@ -118,7 +118,13 @@ const PurchaseRequestForm = function (props: PurchaseRequestFormProps) {
 
     //
     return (
-        <Form ref={formRef} layout="vertical" onFinish={onFinish} autoComplete="false" initialValues={preload}>
+        <Form
+            ref={formRef}
+            layout="vertical"
+            onFinish={onFinish}
+            autoComplete="false"
+            initialValues={{ ...preload, budget: 0 }}
+        >
             <Form.Item
                 name="number"
                 label="Purchase Request Number"
@@ -137,7 +143,7 @@ const PurchaseRequestForm = function (props: PurchaseRequestFormProps) {
                     <PRGenerator instance={formRef} />
                 )}
             </Form.Item>
-            <Space style={{ width: "100%", display: "grid", gridTemplateColumns: "2fr 1fr 1fr" }}>
+            <Space style={{ width: "100%", display: "grid", gridTemplateColumns: "1fr 1fr" }}>
                 <Form.Item
                     name="obr"
                     label="OBR"
@@ -153,14 +159,9 @@ const PurchaseRequestForm = function (props: PurchaseRequestFormProps) {
                 <Form.Item
                     name="reference"
                     label="Reference Number"
-                    style={{ width: 200 }}
                     rules={[{ required: true, message: "Required Field" }]}
                 >
                     <Input allowClear prefix={`REF`} />
-                </Form.Item>
-                {/* DATE creation of PR Document */}
-                <Form.Item name="date" label="Issued Date" rules={[{ required: true, message: "Required Field" }]}>
-                    <DatePicker allowClear={false} />
                 </Form.Item>
             </Space>
             <Space
@@ -179,8 +180,12 @@ const PurchaseRequestForm = function (props: PurchaseRequestFormProps) {
                     </Form.Item>
                 </div>
                 <div>
+                    {/* DATE creation of PR Document */}
+                    <Form.Item name="date" label="Issued Date" rules={[{ required: true, message: "Required Field" }]}>
+                        <DatePicker allowClear={false} />
+                    </Form.Item>
                     {/* ABC Entry */}
-                    <Form.Item name="budget" label="ABC" rules={[{ required: true, message: "Required Field" }]}>
+                    <Form.Item hidden name="budget" label="ABC">
                         <InputNumber min={0} style={{ width: "100%" }} addonBefore={<>&#8369;</>} />
                     </Form.Item>
                 </div>

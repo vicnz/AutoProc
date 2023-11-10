@@ -21,7 +21,7 @@ const RenderSummary = (pageData: any[]) => {
             {new Array(8 - count).fill(0).map((item, idx) => {
                 return (
                     <Table.Summary.Row key={idx + "row"}>
-                        {new Array(6).fill(0).map((item, idx) => {
+                        {new Array(5).fill(0).map((item, idx) => {
                             return <Table.Summary.Cell index={idx} key={idx + "cell"}></Table.Summary.Cell>;
                         })}
                     </Table.Summary.Row>
@@ -33,11 +33,10 @@ const RenderSummary = (pageData: any[]) => {
                 <Table.Summary.Cell index={0} key={"1cell"}></Table.Summary.Cell>
                 <Table.Summary.Cell index={1} key={"2cell"}></Table.Summary.Cell>
                 <Table.Summary.Cell index={2} key={"3cell"}></Table.Summary.Cell>
-                <Table.Summary.Cell index={3} key={"4cell"}></Table.Summary.Cell>
-                <Table.Summary.Cell index={4} key={"5cell"}>
+                <Table.Summary.Cell index={3} key={"4cell"}>
                     Total
                 </Table.Summary.Cell>
-                <Table.Summary.Cell index={5} key={"6cell"}>
+                <Table.Summary.Cell index={4} key={"5cell"}>
                     {total}
                 </Table.Summary.Cell>
             </Table.Summary.Row>

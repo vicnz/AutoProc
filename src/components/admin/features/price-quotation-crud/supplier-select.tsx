@@ -6,7 +6,7 @@ import React, { forwardRef, memo } from "react";
 import useSWR from "swr";
 
 const SupplierSelectFormItem = forwardRef(function Wrapper(props, ref) {
-    const { data, isLoading, error } = useSWR("/administrator/suppliers/api?_all=true");
+    const { data, isLoading, error } = useSWR("/administrator/api/suppliers?_all=true");
     const { ...rest } = props;
 
     if (error) {

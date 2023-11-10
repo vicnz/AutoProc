@@ -25,10 +25,9 @@ import dayjs from "dayjs";
 import { mutate } from "swr";
 import dynamic from "next/dynamic";
 //coomponents
-const PreviewPR = dynamic(
-    async () => await import("@components/admin/features/pr-mini-preview"),
-    { loading: () => <Skeleton active /> }
-);
+const PreviewPR = dynamic(async () => await import("@components/admin/features/pr-mini-preview"), {
+    loading: () => <Skeleton active />,
+});
 //types
 interface PurchaseOrderFormProps {
     close: () => any;
@@ -44,7 +43,7 @@ const PurchaseOrderForm = function (props: PurchaseOrderFormProps) {
         if (props.isEdit == true) {
             return { ...props.data, date: dayjs(props.data.date) };
         } else {
-            return { date: dayjs(), particulars: [], duration: 30, mode: 'Small-Value' };
+            return { date: dayjs(), particulars: [], duration: 30, mode: "Small-Value" };
         }
     }, [props.isEdit, props.data]);
 
@@ -98,78 +97,34 @@ const PurchaseOrderForm = function (props: PurchaseOrderFormProps) {
     };
 
     return (
-        <Form
-            layout="vertical"
-            ref={formRef}
-            onFinish={onFinish}
-            autoComplete="false"
-            colon
-            initialValues={preload}
-        >
+        <Form layout="vertical" ref={formRef} onFinish={onFinish} autoComplete="false" colon initialValues={preload}>
             <PreviewPR />
             <br />
             <Divider>CREATE NEW</Divider>
-            {/* <Form.Item
-                style={{ width: "100%" }}
-                label="PO Number"
-                name="number"
-                rules={[
-                    {
-                        pattern: /\d\d\d\d-\d\d-[a-zA-Z0-9]{4}/g,
-                        message: "Invalid Format",
-                    },
-                    { required: true },
-                ]}
-            >
-                <Input allowClear />
-            </Form.Item> */}
             <Space style={{ width: "100%" }}>
-                <Form.Item
-                    label="Entity/Agency"
-                    name="entity"
-                    rules={[{ required: true }]}
-                >
+                <Form.Item label="Entity/Agency" name="entity" rules={[{ required: true }]}>
                     <Input allowClear />
                 </Form.Item>
-                <Form.Item
-                    label="Date"
-                    name="date"
-                    style={{ width: "100%" }}
-                    rules={[{ required: true }]}
-                >
+                <Form.Item label="Date" name="date" style={{ width: "100%" }} rules={[{ required: true }]}>
                     <DatePicker style={{ width: "100%" }} />
                 </Form.Item>
             </Space>
-            <Form.Item
-                label="Destination"
-                name="destination"
-                rules={[{ required: true }]}
-            >
+            <Form.Item label="Destination" name="destination" rules={[{ required: true }]}>
                 <Input allowClear />
             </Form.Item>
-            <Space
-                style={{
-                    width: "100%",
-                    display: "grid",
-                    gridTemplateColumns: "1fr 1fr",
-                }}
-            >
-                <Form.Item label="Mode" name="mode" rules={[{ required: true }]}>
-                    <Input allowClear />
-                </Form.Item>
-                <Form.Item
-                    label="Delivery"
-                    name="duration"
-                    style={{ width: "inherit" }}
-                    rules={[{ required: true }]}
-                >
-                    <InputNumber
-                        min={1}
-                        style={{ width: "inherit" }}
-                        addonAfter={"Day(s)"}
-                    />
-                </Form.Item>
-            </Space>
+            <Form.Item name="mode" hidden>
+                <Input /> {/**REMOVE THIS IN DATABASE */}
+            </Form.Item>
+            <Form.Item label="Delivery" name="duration" style={{ width: "inherit" }} rules={[{ required: true }]}>
+                <Select
+                    options={[
+                        { label: "30 Days", value: 30 },
+                        { label: "60 Days", value: 60 },
+                        { label: "90 Days", value: 90 },
+                    ]}
+                    style={{ width: "100%" }}
+                />
+            </Form.Item>
             <Form.Item label="Delivery Term" name="term" rules={[{ required: true }]}>
                 <Select
                     options={[
@@ -178,22 +133,11 @@ const PurchaseOrderForm = function (props: PurchaseOrderFormProps) {
                     ]}
                 />
             </Form.Item>
-            <Form.Item
-                label="Payment Term"
-                name="payment"
-                rules={[{ required: true }]}
-            >
+            <Form.Item label="Payment Term" name="payment" rules={[{ required: true }]}>
                 <Input allowClear />
             </Form.Item>
             <Divider />
-            <Button
-                block
-                icon={<PlusCircleOutlined />}
-                type="primary"
-                htmlType="submit"
-                size="large"
-                loading={saving}
-            >
+            <Button block icon={<PlusCircleOutlined />} type="primary" htmlType="submit" size="large" loading={saving}>
                 Save Purchase Request
             </Button>
         </Form>

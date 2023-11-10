@@ -106,15 +106,46 @@ export const PATCH = async function (req: NextRequest) {
             let rfq = await db.purchase_price_quotations.findFirst({ select: { suppliers: true }, where: { id: rfqId } })
             if (rfq && (rfq.suppliers as any[]).length < 1) throw new APIERROR("Please Add At Least One Supplier", req.url, METHOD.PATCH, 'client')
 
-            await db.purchase_price_quotations.update({
+            const result = await db.purchase_price_quotations.update({
+                select: {
+                    suppliers: true
+                },
                 data: { final: true },
                 where: {
                     id: rfqId,
                 },
             });
+            //TODO calculate suppliers choices
+            type Suppliers = {
+                id: string,
+                name: string
+            }
+
+            if (result?.suppliers) {
+                //TODO
+                //@ NEED PROPER DEBUGGING
+                await Promise.resolve((result.suppliers as Suppliers[]).forEach(async item => {
+                    //selection type
+                    await db.supplier_rating.upsert({
+                        create: {
+                            id: item.id,
+                            supplierId: item.id,
+                            selection: 1,
+                        },
+                        update: {
+                            selection: {
+                                increment: 1
+                            },
+                        },
+                        where: {
+                            id: item.id
+                        }
+                    })
+
+                }))
+            }
             return NextResponse.json({ ok: true });
         }
-        return NextResponse.json({ action: "none" });
     } catch (err) {
         console.log(`ERROR:RFQ:PATCH:${req.url}`);
         logger.error(err)

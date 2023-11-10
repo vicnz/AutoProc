@@ -31,7 +31,6 @@ const WrapperStyles: CSSProperties = {
 //
 const PurchaseOrder = function () {
     const prId = usePRId();
-    console.log("localized", prId);
     const { token } = theme.useToken();
 
     const printableComponent = useRef(null);
@@ -50,8 +49,8 @@ const PurchaseOrder = function () {
         if (data.requiredFinal === true) {
             return (
                 <RequireFinal
-                    title="Required Abstract of Quotation to be Final"
-                    subTitle="Abstract of Quotation required to be final first"
+                    title="Required Abstract of Quotation & Awarding to be Final"
+                    subTitle="Abstract of Quotation & Awarding required to be final first"
                 />
             );
         }

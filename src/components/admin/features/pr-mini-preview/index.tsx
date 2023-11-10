@@ -104,7 +104,14 @@ const PRPreview = function (props: { showAmount?: boolean }) {
                                         </>,
                                     ]}
                                 >
-                                    {item.description} {props.showAmount ? <>{ToPeso(item.price)}</> : null}
+                                    {props.showAmount ? (
+                                        <List.Item.Meta
+                                            title={item.description}
+                                            description={<span>{ToPeso(item.price)}</span>}
+                                        />
+                                    ) : (
+                                        <List.Item.Meta title={item.description} />
+                                    )}
                                 </List.Item>
                             );
                         })}

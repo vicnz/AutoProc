@@ -1,31 +1,19 @@
-/**
- * * PURCHASE ORDER CRUD
- * * CREATE -> [PR, RECOMMENDATION, RFQ]
- * * UPDATE
- * * PATCH -> [final]
- */
-
 import db from "@lib/db";
+import { NextRequest, NextResponse } from "next/server";
+import { computeParticulars } from "../utlity";
+import { IParticulars } from "../types";
 import fullname from "@lib/client/fullname";
 import dayjs from "dayjs";
-import { NextRequest, NextResponse } from "next/server";
-import { computeParticulars } from "./utlity";
-import type { IParticulars } from './types'
-import { logger } from '@logger'
+import { logger } from "@logger";
+//
+type ParamType = {
+    params: {
+        id: string
+    }
+}
 
-/**
- * * GET REQUEST
- * ? GET URI --> /administrator/api/procurement/pr?_id=[valid-pr-id]
- * @ FUNCTION MIGRATED TO -> PR/[ID]/ROUTE.TS
- */
-
-export const GET = async function (req: NextRequest) {
-    const { searchParams } = new URL(req.url);
-
+export const GET = async function (req: NextRequest, slug: ParamType) {
     try {
-        const id = searchParams.get("_id") as string;
-        if (typeof id === 'undefined' || id === null || id === "") throw new Error("No ID Provided")
-
         const result = await db.purchase_requests.findFirst({
             select: {
                 id: true,
@@ -59,7 +47,7 @@ export const GET = async function (req: NextRequest) {
                 },
             },
             where: {
-                id,
+                id: slug.params.id
             },
         });
 
@@ -94,65 +82,20 @@ export const GET = async function (req: NextRequest) {
     }
 };
 
-/**
- * * POST REQUEST
- * ? POST URI --> /administrator/api/procurement/pr [application/json] -> {id, ...}
- */
-
-export const POST = async function (req: NextRequest) {
-    try {
-        //Create  Request For Quotation & Recommending Document
-        const body = await req.json();
-        if (typeof body === "undefined" || body === null) throw new Error("No Body Provided");
-
-        await db.purchase_requests.create({
-            data: {
-                ...body,
-                tracking: [],
-                //CREATE RECOMMENDED DOCUMENT TEMPLATE
-                recomend: {
-                    create: {
-                        content: [],
-                        title: "",
-                        tracking: [],
-                    },
-                },
-                //CREATE RFQ DOCUMENT TEMPLATE
-                rfq: {
-                    create: {
-                        suppliers: [],
-                        tracking: [],
-                        ris: "",
-                    },
-                },
-            },
-        });
-
-        return NextResponse.json({ ok: true }); //send to client
-    } catch (err) {
-        console.log(`ERR:PR:POST:(${req.url})`);
-        logger.error(err)
-        return new Response("", { status: 500 });
-    }
-};
 
 /**
  * * UPDATE REQUEST
  * ? PUT URI --> /administrator/api/procurement/pr?_id=[valid-pr-id]
- * @ FUNCTION MIGRATED TO -> PR/[ID]/ROUTE.TS
  */
 
-export const PUT = async function (req: NextRequest) {
-    const { searchParams } = new URL(req.url);
+export const PUT = async function (req: NextRequest, slug: ParamType) {
     try {
-        const id = searchParams.get("_id"); //document id
-        if (typeof id === "undefined" || id === null) throw new Error("No Provided ID");
         const body = await req.json();
         if (typeof body === "undefined" || body === null) throw new Error("No Body ID");
         //UPDATE
         await db.purchase_requests.update({
             data: { ...body },
-            where: { id },
+            where: { id: slug.params.id },
         });
 
         return NextResponse.json({ ok: true });
@@ -168,13 +111,10 @@ export const PUT = async function (req: NextRequest) {
  * ? PATCH URI --> /administrator/api/procurement/pr?_id=[valid-pr-id]&[...params]
  * ? PARAMS
  * ? - _final="true"
- * @ FUNCTION MIGRATED TO -> PR/[ID]/ROUTE.TS
  */
-export const PATCH = async function (req: NextRequest) {
+export const PATCH = async function (req: NextRequest, slug: ParamType) {
     const { searchParams } = new URL(req.url);
     try {
-        const id = searchParams.get("_id") as string; //document id
-        if (typeof id === "undefined" || id === null) throw new Error("No Provided ID");
         const setFinal = searchParams.get("_final") as string;
 
         //MARK DOCUMENT AS FINAL
@@ -182,7 +122,7 @@ export const PATCH = async function (req: NextRequest) {
             await db.purchase_requests.update({
                 data: { final: true },
                 where: {
-                    id: id,
+                    id: slug.params.id,
                 },
             });
             return NextResponse.json({ ok: true });

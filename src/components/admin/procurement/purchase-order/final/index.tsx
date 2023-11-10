@@ -4,7 +4,7 @@ import { CheckOutlined, LockOutlined } from "@ant-design/icons";
 import { Alert, App, Button, Modal, Tag, Typography, theme } from "antd";
 import { memo, useState } from "react";
 
-const MakeDocumentFinal = function (props: { final: boolean; id: string, awardsFinal: boolean }) {
+const MakeDocumentFinal = function (props: { final: boolean; id: string; awardsFinal: boolean }) {
     const [loading, setLoading] = useState(false);
     const [show, setShow] = useState(false);
     const { token } = theme.useToken();
@@ -20,9 +20,7 @@ const MakeDocumentFinal = function (props: { final: boolean; id: string, awardsF
             }
         );
         if (request.ok) {
-            message.info(
-                "Purchase Order was set to FINAL, any Modification will be Limited"
-            );
+            message.info("Purchase Order was set to FINAL, any Modification will be Limited");
             setLoading(false);
             setShow(false);
         } else {
@@ -54,7 +52,7 @@ const MakeDocumentFinal = function (props: { final: boolean; id: string, awardsF
                 maskClosable={false}
                 width={350}
                 okButtonProps={{
-                    disabled: props.final || !(props.awardsFinal),
+                    disabled: props.final || !props.awardsFinal,
                     loading,
                     onClick() {
                         setFinal();
@@ -62,13 +60,13 @@ const MakeDocumentFinal = function (props: { final: boolean; id: string, awardsF
                 }}
             >
                 <Typography.Paragraph style={{ textAlign: "justify" }}>
-                    Make this Document final, allowing following to be created, Requiring Document {" "}
+                    Make this Document final, allowing following to be created, Requiring Document{" "}
                     <Typography.Text strong style={{ color: token.colorPrimary }}>
                         Deliver Monitoring
                     </Typography.Text>{" "}
                     to be completed first
                 </Typography.Paragraph>
-                {props.awardsFinal ? null : <Tag color='red'>Awarding has not yet Completed!</Tag>}
+                {props.awardsFinal ? null : <Tag color="red">Awarding has not yet Completed!</Tag>}
             </Modal>
         </>
     );

@@ -4,7 +4,7 @@ import { CheckOutlined, LockOutlined } from "@ant-design/icons";
 import { Alert, App, Button, Modal, Tag, Typography, theme } from "antd";
 import { memo, useState } from "react";
 
-const MakeDocumentFinal = function (props: { final: boolean, id: string }) {
+const MakeDocumentFinal = function (props: { final: boolean; id: string }) {
     const [loading, setLoading] = useState(false);
     const [show, setShow] = useState(false);
     const { token } = theme.useToken();
@@ -22,7 +22,7 @@ const MakeDocumentFinal = function (props: { final: boolean, id: string }) {
         if (request.ok) {
             message.info("PR was set to FINAL, any Modification will be Limited");
             setLoading(false);
-            setShow(false)
+            setShow(false);
         } else {
             message.error("Server Error, Please Try Again...");
             setLoading(false);
@@ -59,7 +59,7 @@ const MakeDocumentFinal = function (props: { final: boolean, id: string }) {
                     },
                 }}
             >
-                <Typography.Paragraph style={{ textAlign: "justify", color: 'dimgray' }}>
+                <Typography.Paragraph style={{ textAlign: "justify", color: "dimgray" }}>
                     Make this Document Final, This will allow the creation of{" "}
                     <Typography.Text strong style={{ color: token.colorPrimary }}>
                         Request For Quotation
@@ -77,10 +77,6 @@ const MakeDocumentFinal = function (props: { final: boolean, id: string }) {
                     message={`Not Allowed For Changes!`}
                     description={`Once a document is marked final it can no longer be updated or modified`}
                 />
-                <br />
-                <Typography.Paragraph>
-                    It can be reverted but it is not a recommended action, It will be address later. <Typography.Text italic>This feature is part of the <Tag>Feature Roadmap</Tag></Typography.Text>
-                </Typography.Paragraph>
             </Modal>
         </>
     );

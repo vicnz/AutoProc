@@ -8,7 +8,7 @@ import NumToWords from "@lib/client/num-to-words";
 import PreviewHeader from "@components/admin/layouts/procurement-item/preview-wrapper/header";
 //local
 import Columns from "./columns";
-import RenderSummary from './renderSummary'
+import RenderSummary from "./renderSummary";
 const { Text } = Typography;
 
 const PriceQuotationPreview = function (props: { data: any; supplier: any }) {
@@ -18,9 +18,7 @@ const PriceQuotationPreview = function (props: { data: any; supplier: any }) {
         <>
             {/* PREVIEW HEADER */}
             <PreviewHeader height={150}>
-                <div
-                    style={{ display: "flex", justifyContent: "center", width: "100%" }}
-                >
+                <div style={{ display: "flex", justifyContent: "center", width: "100%" }}>
                     <div
                         style={{
                             fontSize: "1.2em",
@@ -34,40 +32,24 @@ const PriceQuotationPreview = function (props: { data: any; supplier: any }) {
                     </div>
                 </div>
             </PreviewHeader>
-            <Descriptions
-                style={{ padding: "5px 25px" }}
-                bordered
-                layout="vertical"
-                size="small"
-                column={5}
-            >
-                <Descriptions.Item
-                    label="Supplier"
-                    span={4}
-                    style={{ fontWeight: "bold", whiteSpace: "normal" }}
-                >
+            <Descriptions style={{ padding: "5px 25px" }} bordered layout="vertical" size="small" column={5}>
+                <Descriptions.Item label="Supplier" span={4} style={{ fontWeight: "bold", whiteSpace: "normal" }}>
                     {props.supplier?.padEnd(50, "\u2002")}
                 </Descriptions.Item>
-                <Descriptions.Item
-                    label="Date"
-                    span={1}
-                    contentStyle={{ maxWidth: 200 }}
-                >
+                <Descriptions.Item label="Date" span={1} contentStyle={{ maxWidth: 200 }}>
                     {dayjs(props?.data.date).format("MM/DD/YYYY")}
                 </Descriptions.Item>
                 <Descriptions.Item label="Note" span={5}>
                     <List size="small">
                         <List.Item key={0} style={{ fontSize: ".9em" }}>
-                            Please give us your best and final price offer for the item/s
-                            listed below, have this signed and submit this by you or by your
-                            duly authorized representative WITHIN SEVEN (7) CALENDAR DAYS upon
-                            receipt to Procurement Section, Batanes State College.
+                            Please give us your best and final price offer for the item/s listed below, have this signed
+                            and submit this by you or by your duly authorized representative WITHIN SEVEN (7) CALENDAR
+                            DAYS upon receipt to Procurement Section, Batanes State College.
                         </List.Item>
                         <List.Item key={1} style={{ fontSize: ".8em" }}>
-                            1. THE DEFAULT MODE OF PRICE EVALUATION SHALL BE ON A LOT BASIS,
-                            OTHERWISE PER ITEMS EVALUATION SHALL BE USED IF THERE WILL BE
-                            LACKING ITEMS IN ALL RFQ&apos;s AND SUBJECT TO END-USER APPROVAL.,
-                            (Clause 15.2, Section I, Instruction to Bidders of the Philippine
+                            1. THE DEFAULT MODE OF PRICE EVALUATION SHALL BE ON A LOT BASIS, OTHERWISE PER ITEMS
+                            EVALUATION SHALL BE USED IF THERE WILL BE LACKING ITEMS IN ALL RFQ&apos;s AND SUBJECT TO
+                            END-USER APPROVAL., (Clause 15.2, Section I, Instruction to Bidders of the Philippine
                             Bidding Documents for goods and infrastructure projects)
                         </List.Item>
                         <List.Item key={2} style={{ fontSize: ".8em" }}>
@@ -82,20 +64,16 @@ const PriceQuotationPreview = function (props: { data: any; supplier: any }) {
                                 style: "currency",
                                 currency: "PHP",
                             }).format(props?.data?.total)}{" "}
-                            ({NumToWords(props?.data?.total).toUpperCase()} PESOS) (GPPB
-                            Resolution No. 09-2009)
+                            ({NumToWords(props?.data?.total).toUpperCase()} PESOS) (GPPB Resolution No. 09-2009)
                         </List.Item>
                         <List.Item key={5} style={{ fontSize: ".8em" }}>
-                            5. PURSUANT TO ANNEX &lsquo;H&rsquo;, APPENDIX A, SECTION II,
-                            SUBMISSION OF APPLICABLE DOCUMENTS (e.g.MAYORS/BUSINESS PERMIT,
-                            PROFESSIONAL LICENSE/CURRICULUM VITAE (CONSULTING
-                            SEERVICES),PHILGEPS CERT. NO., PCAB LICENSE (INFRA),
-                            INCOME/BUSINESS TAX RETURN,OMNIBUS SWORN STATEMENT SHALL BE
-                            REQUIRED BEFORE THE ISSUANCE OF NOA OR PRIOR TO PAYMENT.
+                            5. PURSUANT TO ANNEX &lsquo;H&rsquo;, APPENDIX A, SECTION II, SUBMISSION OF APPLICABLE
+                            DOCUMENTS (e.g.MAYORS/BUSINESS PERMIT, PROFESSIONAL LICENSE/CURRICULUM VITAE (CONSULTING
+                            SEERVICES),PHILGEPS CERT. NO., PCAB LICENSE (INFRA), INCOME/BUSINESS TAX RETURN,OMNIBUS
+                            SWORN STATEMENT SHALL BE REQUIRED BEFORE THE ISSUANCE OF NOA OR PRIOR TO PAYMENT.
                         </List.Item>
                         <List.Item key={6} style={{ fontSize: ".8em" }}>
-                            6. In case the item is not availble, please write
-                            &lsquo;None&rsquo;.
+                            6. In case the item is not availble, please write &lsquo;None&rsquo;.
                         </List.Item>
                     </List>
                 </Descriptions.Item>
@@ -112,8 +90,8 @@ const PriceQuotationPreview = function (props: { data: any; supplier: any }) {
             {/* PARTICULARS VIEW */}
             <div style={{ padding: "5px 25px" }}>
                 <p style={{ fontSize: ".9em" }}>
-                    After having carefully read and accepted your conditions, I/We have
-                    place my /our best and final price offer on the item/s listed above.
+                    After having carefully read and accepted your conditions, I/We have place my /our best and final
+                    price offer on the item/s listed above.
                 </p>
                 <Descriptions layout="vertical" column={2} bordered size="small">
                     <Descriptions.Item label="Representative" span={1}>
@@ -153,35 +131,15 @@ const PriceQuotationPreview = function (props: { data: any; supplier: any }) {
                                     textTransform: "uppercase",
                                     textAlign: "center",
                                 }}
-                                editable={{
-                                    text: approval,
-                                    triggerType: ["text"],
-                                    onChange(value) {
-                                        setApproval(value);
-                                    },
-                                }}
                             >
                                 {approval}
                             </Text>
-                            <Text
-                                style={{ width: "100%", textAlign: "center" }}
-                                editable={{
-                                    text: office,
-                                    triggerType: ["text"],
-                                    onChange(value) {
-                                        setOffice(value);
-                                    },
-                                }}
-                            >
-                                {office}
-                            </Text>
+                            <Text style={{ width: "100%", textAlign: "center" }}>{office}</Text>
                         </div>
                     </Descriptions.Item>
                 </Descriptions>
                 <Descriptions>
-                    <Descriptions.Item label="Reference No:">
-                        {props?.data?.reference}
-                    </Descriptions.Item>
+                    <Descriptions.Item label="Reference No:">{props?.data?.reference}</Descriptions.Item>
                 </Descriptions>
             </div>
         </>

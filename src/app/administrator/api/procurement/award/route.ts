@@ -1,7 +1,7 @@
 import fullname from "@lib/client/fullname";
 import db from "@lib/db";
 import { NextRequest, NextResponse } from "next/server";
-import { computeQuotation } from "./utility";
+import { computeQuotation, computeParticulars } from "./utility";
 import type { QuotationType } from "./type";
 import APIError from "@lib/server/api-error";
 import { logger } from "@logger";
@@ -84,7 +84,7 @@ export const GET = async function (req: NextRequest) {
 
             //parse quotation
             const quotations = await computeQuotation(result.abstract.quotations as QuotationType[]);
-
+            const [preCompParticulars, subTotal] = await computeParticulars(result.pr.particulars as Array<any>)
             //Parse Result
             const parsed = {
                 id: result.id,
@@ -121,10 +121,13 @@ export const GET = async function (req: NextRequest) {
                 abstractFinal: result.abstract.final,
                 quotations,
                 amount: result.abstract.lowestAmount,
+                subTotal: subTotal
             };
 
             return NextResponse.json(parsed);
         }
+
+
     } catch (err) {
         console.log(`ERROR:AWARD:GET:${req.url}`);
         logger.error(err);

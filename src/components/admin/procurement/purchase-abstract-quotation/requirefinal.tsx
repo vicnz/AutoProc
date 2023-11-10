@@ -1,22 +1,10 @@
-'use client';
+"use client";
 
+import { Result, App } from "antd";
+import { PropsWithChildren, memo } from "react";
 
-import { Result, App } from "antd"
-import { PropsWithChildren, memo } from "react"
+const RFQDocFinal = function (props: PropsWithChildren<{ title: string; subTitle?: string }>) {
+    return <Result status="403" title={props.title} subTitle={props.subTitle} extra={<>{props.children}</>} />;
+};
 
-const RFQDocFinal = function (props: PropsWithChildren<{ title: string, subTitle?: string }>) {
-    return (
-        <Result
-            status='403'
-            title={props.title}
-            subTitle={props.subTitle}
-            extra={
-                <>
-                    {props.children}
-                </>
-            }
-        />
-    )
-}
-
-export default memo(RFQDocFinal)
+export default memo(RFQDocFinal);

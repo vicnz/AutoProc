@@ -9,9 +9,6 @@ import TabPaneWrapper from "./tab-pane";
 const Overview = dynamic(async () => await import("@components/admin/layouts/dashboard/statistics"), {
     loading: () => <Skeleton />,
 });
-const Supplier = dynamic(async () => await import("@components/admin/layouts/dashboard/supplier"), {
-    loading: () => <Skeleton />,
-});
 const Reports = dynamic(async () => await import("@components/admin/layouts/dashboard/reports"), {
     loading: () => <Skeleton />,
 });
@@ -47,38 +44,6 @@ const TabPanes: TabsProps["items"] = [
         children: (
             <TabPaneWrapper>
                 <Reports />
-            </TabPaneWrapper>
-        ),
-    },
-    {
-        key: "supplier",
-        label: (
-            <span>
-                <AuditOutlined />
-                &nbsp;Suppliers&nbsp;<Tag color="red">ALPHA</Tag>
-            </span>
-        ),
-        destroyInactiveTabPane: true,
-        tabKey: "suppliers",
-        children: (
-            <TabPaneWrapper>
-                <Supplier />
-            </TabPaneWrapper>
-        ),
-    },
-    {
-        key: "activity",
-        label: (
-            <span>
-                <DashboardOutlined />
-                &nbsp;Activity&nbsp;<Tag color="red">PREVIEW</Tag>
-            </span>
-        ),
-        destroyInactiveTabPane: true,
-        tabKey: "activity",
-        children: (
-            <TabPaneWrapper>
-                <p>Activity Pane : YET TO BE IMPLEMENTED</p>
             </TabPaneWrapper>
         ),
     },

@@ -5,17 +5,21 @@ export const computePurchaseOrderSummary = async (quotation: QuotationItem[], bi
     const getLowestBidderQuotation = quotation.filter(
         (item) => item.id === bidder
     );
-    let renderedparticulars = getLowestBidderQuotation.length > 0 && getLowestBidderQuotation[0].particulars;
+    let renderedparticulars = getLowestBidderQuotation.length > 0 && getLowestBidderQuotation[0].particulars || [];
 
-    renderedparticulars = particulars.map((item) => {
-        const total = (particulars as any[])?.filter((quote) => quote.description === item.description)[0]?.total;
+    renderedparticulars = renderedparticulars?.map((item) => {
+        //TODO
+        const partItem = (particulars as any[])?.find((particularItem) => {
+            return particularItem.description == item.description
+        });
+        //
         return {
             description: item.description,
-            qty: item.qty,
-            unit: item.unit,
-            stock: item.stock,
-            price: total / item.qty, //!TOTAL is divided to quantity from the total computed amount from the abstract -> pre-computed entered total from abstract / item.quantity
-            total,
+            qty: partItem.qty,
+            unit: partItem.unit,
+            stock: partItem.stock,
+            price: item.total / partItem.qty, //!TOTAL is divided to quantity from the total computed amount from the abstract -> pre-computed entered total from abstract / item.quantity
+            total: item.total,
         };
     });
 

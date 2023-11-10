@@ -29,13 +29,16 @@ const CreateDeliveryForm = function (props: { data: any }) {
                 result.destroy();
             },
             onOk: async () => {
-                const request = await fetch(`/administrator/api/delivery?_id=${useId}`, {
-                    method: "POST",
-                    body: JSON.stringify(data),
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                });
+                const request = await fetch(
+                    `/administrator/api/procurement/delivery?_id=${encodeURIComponent(useId)}`,
+                    {
+                        method: "POST",
+                        body: JSON.stringify(data),
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
 
                 if (request.ok) {
                     message.success("Delivery Started");

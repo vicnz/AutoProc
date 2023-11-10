@@ -3,27 +3,34 @@ import dayjs from "dayjs";
 import ContentEditable from "@components/admin/features/content-editable";
 import Content from "./content";
 import Approval from "@components/admin/procurement/purchase-signatures";
+import { memo, useMemo } from "react";
 
 const { Paragraph, Text } = Typography;
 
 const BACResolutionPreview = function (props: { type: "approve" | "review" | "notice"; data: any }) {
+    const { particulars, number, rfqDate, quotations, budget, supplier, enduser, subTotal } = props.data;
     return (
         <div style={{ padding: "5px 25px" }}>
             <br />
             <Paragraph style={{ textIndent: "2em", lineHeight: "2em" }}>
                 <Text strong>WHEREAS</Text> the BATANES STATE COLLEGE advertised the Request for Price Quotation (RFQ)
-                for the {props.data.particulars} with PR #{props.data.number} dated{" "}
-                {dayjs(props.data.rfqDate).format(`MMMM D, YYYY`)}.
+                for the {particulars} with PR #{number} dated {dayjs(rfqDate).format(`MMMM D, YYYY`)}.
             </Paragraph>
             <Paragraph style={{ textIndent: "2em", lineHeight: "2em" }}>
                 <Text strong>WHEREAS</Text>&nbsp;
-                <ContentEditable text="from the period the Request for Price Quotation (RFQ) has started up to the time of bid submission and opening, Nine (9) prospective bidder were able to submit the RFQ;" />
+                <Text>
+                    from the period the Request for Price Quotation (RFQ) has started up to the time of bid submission
+                    and opening, Nine (9) prospective bidder were able to submit the RFQ;
+                </Text>
             </Paragraph>
             <Paragraph style={{ textIndent: "2em", lineHeight: "2em" }}>
                 <Text strong>WHEREAS</Text>&nbsp;
-                <ContentEditable text="the Price Quotation based on the Lowest Calculated & Responsive Bid (LCRB) format of the bidders were opened and its bid price was read as follows:" />
+                <Text>
+                    the Price Quotation based on the Lowest Calculated & Responsive Bid (LCRB) format of the bidders
+                    were opened and its bid price was read as follows:
+                </Text>
             </Paragraph>
-            <Content data={props.data.quotations} abc={props.data.budget} />
+            <Content data={quotations} abc={subTotal} />
             {props.type === "review" ? (
                 <>
                     <br />
@@ -69,4 +76,4 @@ const BACResolutionPreview = function (props: { type: "approve" | "review" | "no
         </div>
     );
 };
-export default BACResolutionPreview;
+export default memo(BACResolutionPreview);

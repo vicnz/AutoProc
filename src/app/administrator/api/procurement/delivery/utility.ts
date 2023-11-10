@@ -24,6 +24,7 @@ export const computeDelivery = async (parcel: ParcelItem[], endDate: Date) => {
 }
 
 export const computeParcels = async (parcels: ParcelViewItem[]) => {
+    console.log(parcels)
     const response = parcels.map((item, idx) => {
         return {
             id: `delivery_id_${idx.toString().padStart(4, "0")}`,
