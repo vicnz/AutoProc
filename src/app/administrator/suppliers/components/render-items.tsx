@@ -41,15 +41,15 @@ function RenderSupplierList(props: { data: Partial<PrismaModels["suppliers"]>[] 
                                     </>
                                 }
                                 actions={[
-                                    <Tooltip title="On-Time Deliveries">
+                                    <Tooltip title="On-Time Deliveries" key="on-time">
                                         {Intl.NumberFormat("en", { notation: "compact" }).format(item.onTime || 0)}{" "}
                                         On-Time
                                     </Tooltip>,
-                                    <Tooltip title="Delayed Deliveries">
+                                    <Tooltip title="Delayed Deliveries" key="delays">
                                         {Intl.NumberFormat("en", { notation: "compact" }).format(item.delays || 0)}{" "}
                                         Delays
                                     </Tooltip>,
-                                    <Tooltip title="Deliveries Extended Deadlines">
+                                    <Tooltip title="Deliveries Extended Deadlines" key="extension">
                                         {Intl.NumberFormat("en", { notation: "compact" }).format(item.extend || 0)}{" "}
                                         Extended
                                     </Tooltip>,

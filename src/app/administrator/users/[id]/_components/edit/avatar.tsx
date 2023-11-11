@@ -12,7 +12,7 @@ type UploadImageEditorProps = {
 } & UploadProps;
 //
 
-const AvatarUploader = function wrapper(props: UploadImageEditorProps) {
+const AvatarUploader = (props: UploadImageEditorProps) => {
     // console.log(props?.initData);
     const imageProps = props?.initData ? [{ url: `data:image/png;base64,${props.initData}` }] : [];
     const [fileList, setFileList] = useState<any[]>(imageProps); //prepend default data

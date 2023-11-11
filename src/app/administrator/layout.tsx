@@ -2,19 +2,13 @@
 import { PropsWithChildren } from "react";
 //components
 import Layout from "@components/admin/root-layout";
-
-/**
- * * START SCHEDULE CHECK FOR DELAYED MONITORED ITEMS
- */
-import { MonitorDeliveries } from "@state/schedules/delivery";
-const monitorDelivery = MonitorDeliveries();
-monitorDelivery.start();
-
+import InitMonitoring from "@state/schedules/init-monitoring";
 //FIXME run only once -> build a logic that prevents it from re-initializing every serve component build
 
 const RootLayout = function (props: PropsWithChildren<any>) {
     return (
         <>
+            <InitMonitoring />
             <Layout>{props.children}</Layout>
         </>
     );

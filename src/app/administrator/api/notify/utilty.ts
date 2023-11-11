@@ -6,12 +6,11 @@ import dayjs from 'dayjs'
  * * RETURN TITLE, DESCRIPTION
  */
 export const DetectNewNotifications = async () => {
-    //FETCH
     const new_notif = await db.notifications.findMany({
         where: {
             createdAt: {
                 lte: dayjs().toISOString(),
-                gte: dayjs().subtract(5, 'seconds').toISOString() //fetch notification every 5 seconds
+                gte: dayjs().subtract(3, 'seconds').toISOString() //fetch notification every 10 seconds
             },
             read: false,
             resolved: false

@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { searchRecords, searchSuppliers, searchUsers } from './utility'
 
 export const GET = async (req: NextRequest) => {
+    const searchParams = req.nextUrl.searchParams
     try {
-        const searchParams = req.nextUrl.searchParams
         if (searchParams.has('q')) {
             let query = searchParams.get('q')
             if (searchParams.has('type')) {

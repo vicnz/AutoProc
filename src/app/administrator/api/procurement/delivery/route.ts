@@ -190,6 +190,7 @@ export const PATCH = async (req: NextRequest) => {
          */
         if (searchParams.get("final") === "true") {
             //check if all parcels are all completed
+
             const result = await db.delivery.findFirstOrThrow({
                 where: {
                     id: id,
@@ -204,10 +205,37 @@ export const PATCH = async (req: NextRequest) => {
                 throw new APIError("Complete First The Deliveries", req.url, METHOD.PATCH, "Invalid");
             }
 
-            await db.delivery.update({
+            const completed = await db.delivery.update({
+                select: {
+                    endDate: true,
+                    po: {
+                        select: {
+                            supplier: true
+                        }
+                    }
+                },
                 data: { final: true },
                 where: { id },
             });
+
+            //@DEBUGGING
+            const supplierInfo = JSON.parse(completed.po?.supplier as string) //! BUGGY CODE
+            const calculateIfDelayed = dayjs(completed.endDate).diff(dayjs(), 'day')
+            //?update supplier status
+            await db.supplier_rating.update({
+                data: {
+                    delays: {
+                        increment: calculateIfDelayed <= 0 ? 1 : 0
+                    },
+                    onTime: {
+                        increment: calculateIfDelayed > 0 ? 1 : 0
+                    }
+                },
+                where: {
+                    id: supplierInfo.id //! BUGGY REFERENCING
+                }
+            })
+            //@DEBUGGING
 
             return NextResponse.json({ ok: true });
         }

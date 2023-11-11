@@ -1,10 +1,18 @@
 "use client";
 
-import { EditOutlined } from "@ant-design/icons";
-import { Button, Table } from "antd";
-import { ColumnsType } from "antd/es/table";
-import React, { useMemo } from "react";
+import { Badge, Table, TableColumnsType, Tag } from "antd";
+import { useMemo } from "react";
 import Edit from "./edit";
+import {
+    BlockOutlined,
+    BranchesOutlined,
+    BuildOutlined,
+    FileDoneOutlined,
+    FileOutlined,
+    FolderOpenOutlined,
+    FolderOutlined,
+    SlackSquareOutlined,
+} from "@ant-design/icons";
 
 type DataType = {
     id: string;
@@ -22,15 +30,30 @@ type DataTypes = Array<{
 }>;
 
 function RenderTable(props: { data: DataTypes }) {
-    const columns = useMemo(() => {
-        const deptInfo = props.data.map((item) => ({ label: item.description, value: item.id }));
+    const columns = useMemo<TableColumnsType>(() => {
         return [
             {
                 title: "Name",
-                dataIndex: "name",
+                dataIndex: "",
                 key: "name",
                 ellipsis: true,
-                width: 150,
+                width: 175,
+                render: (e) => {
+                    if (e.type === "section") {
+                        return (
+                            <span>
+                                <FileOutlined />
+                                &nbsp; {e.name}
+                            </span>
+                        );
+                    }
+                    return (
+                        <span>
+                            <FolderOutlined />
+                            &nbsp; {e.name}
+                        </span>
+                    );
+                },
             },
             {
                 title: "Description",

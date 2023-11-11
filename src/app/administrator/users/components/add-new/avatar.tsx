@@ -10,7 +10,7 @@ type UploadImageEditorProps = {
     onCancel?: () => {};
 } & UploadProps;
 //
-const AvatarUploader = function wrapper(props: UploadImageEditorProps) {
+const AvatarUploader = (props: UploadImageEditorProps) => {
     const [fileList, setFileList] = useState<any[]>([]);
     const onChange = (fileList: any) => {
         const file = fileList.file;

@@ -7,19 +7,22 @@ import db, { PrismaModels } from "@lib/db";
  * * NOTE THIS SCHEDULED TASK WILL BE KEPT ON RUNNING UNTIL THE SERVER
  * * IS [RESTARTED] OR [TERMINATED]
  */
-type NotificationType = PrismaModels["notifications"];
+const notifyBefore = 3; //3 days //TODO this value comes from the database settings
 const interval = `*/60 * * * * *`; // every 60 seconds / 1 Minute //TODO determine this on database settings
 export function MonitorDeliveries() {
     console.log("Delivery Monitoring Started...");
-    const notifyBeforeAtDate = 3; //3 days //TODO this value comes from the database settings
 
     const monitorSchedule = schedule(interval, async (now) => {
-        const nowDate = dayjs(now).add(notifyBeforeAtDate, "days").toISOString(); //TODO compute the days before deadline
+        const nowDate = dayjs(now).add(notifyBefore, "days").toISOString(); //TODO compute the days before deadline
+
+        //? 🧪 USE [NOW] WHEN IN DEMO AND [NOWDATE] WHEN IN DEPLOYMENT 🔥🔥🔥🔥🔥🔥🔥🔥
+
         const result = await db.delivery.findMany({
             include: {
                 po: {
                     select: {
                         prId: true,
+                        number: true,
                     },
                 },
             },
@@ -37,11 +40,11 @@ export function MonitorDeliveries() {
             take: 5, //! APPROXIMATION OF DELAYED DELIVERIES EVERY MINUTE
         });
 
-        const appendToNotifications = result?.map((item: PrismaModels["delivery"] & { po: { prId: string } }) => {
+        const appendToNotifications = result?.map((item: PrismaModels["delivery"] & { po: { prId: string, number: string } }) => {
             return {
-                title: "Delayed Delivery Item",
+                title: "Incoming Deadline For Delivery",
                 read: false,
-                description: `Delivery of Purchase Request ID ${item.poId} is delayed on time`,
+                description: `Incoming Deadline For Purchase Order Number ${item.po.number}, 3 Days from now ${dayjs().format('MMM DD, YYYY')}`,
                 resolved: false,
                 source: item.poId,
                 id: item.poId,

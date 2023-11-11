@@ -53,6 +53,9 @@
       ],
       "@components": [
         "./src/components/*"
+      ],
+      "@app-settings": [
+        "./src/app.settings.json"
       ]
     }
   },

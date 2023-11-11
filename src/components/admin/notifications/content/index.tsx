@@ -39,15 +39,15 @@ const NotificationItem = (props: any) => {
         const action = [
             <>
                 <Popconfirm
-                    title="Clear this Notification?"
-                    description="Remove this Notification Completely?"
+                    title="Clear Me?"
+                    description="Remove this Notification?"
                     onConfirm={onResolve}
                     key={"clear"}
                     placement="left"
                 >
                     <ClearOutlined /> Clear
                 </Popconfirm>
-            </>
+            </>,
         ];
         const url = content?.ref; //ADD THE REFERENCE ID []
 
@@ -55,7 +55,11 @@ const NotificationItem = (props: any) => {
         if (type === "delivery") {
             action.unshift(
                 <>
-                    <Link href={`/administrator/procurements/${encodeURIComponent(url)}`} onClick={() => close()} passHref>
+                    <Link
+                        href={`/administrator/procurements/${encodeURIComponent(url)}`}
+                        onClick={() => close()}
+                        passHref
+                    >
                         <EyeOutlined /> Details
                     </Link>
                 </>
@@ -71,32 +75,24 @@ const NotificationItem = (props: any) => {
             style={{ marginBottom: 10 }}
             title={
                 <>
-                    {{
-                        'delivery': <ShoppingCartOutlined title={title.toUpperCase()} />,
-                        'system': <DesktopOutlined title={title.toUpperCase()} />,
-                        'critical': <WarningOutlined title={title.toUpperCase()} />
-                    }[type as string]
+                    {
+                        {
+                            delivery: <ShoppingCartOutlined title={title.toUpperCase()} />,
+                            system: <DesktopOutlined title={title.toUpperCase()} />,
+                            critical: <WarningOutlined title={title.toUpperCase()} />,
+                        }[type as string]
                     }
                 </>
             }
             extra={
                 <>
-                    <span>
-                        {dayjs(createdAt as string).format("MM/DD/YYYY (hh:mm A)")}
-                    </span>
+                    <span>{dayjs(createdAt as string).format("MMM DD, YYYY (hh:mm A)")}</span>
                 </>
             }
             actions={actions()}
         >
-            <Card.Meta
-                title={title}
-                description={
-                    <>
-                        {description}
-                    </>
-                }
-            />
-        </Card >
+            <Card.Meta title={title} description={<>{description}</>} />
+        </Card>
     );
 };
 

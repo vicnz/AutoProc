@@ -46,8 +46,18 @@ export const GET = async (req: NextRequest) => {
 
         if (typeof type === "string" && type === "month") {
             days = dayjs().subtract(Number.parseInt(day), "day").toISOString();
-            let monthEnd = dayjs().subtract(0, 'hour').toISOString();
+            let monthEnd = dayjs().subtract(0, 'hour').toISOString(); //
             const result = await db.notifications.findMany({
+                select: {
+                    id: true,
+                    title: true,
+                    description: true,
+                    level: true,
+                    content: true,
+                    source: true,
+                    type: true,
+                    createdAt: true,
+                },
                 where: {
                     createdAt: {
                         gte: days,
@@ -99,11 +109,11 @@ export const GET = async (req: NextRequest) => {
 
 //TODO - TEST
 export const POST = async function () {
-    const result = await db.notifications.create({
+    await db.notifications.create({
         data: {
             content: [],
-            title: `Random String ${randomRange(10, 100)}`,
-            description: "Nothing In Particular",
+            title: `Notification Test ${randomRange(10, 100)}`,
+            description: "Development Test, This Notification is Triggered Manually For API Testing",
             source: "notset",
         },
     });

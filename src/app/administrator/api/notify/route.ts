@@ -8,8 +8,8 @@ import { DetectNewNotifications } from "./utilty";
  * * This Route will continously run until an event is trigger
  * * which will be pushed to the client browser subscribe to this
  */
-
 export const dynamic = "force-dynamic"; //REQUIRED for the streamable response to work
+
 export async function GET(req: NextRequest) {
     try {
         /**
@@ -19,9 +19,11 @@ export async function GET(req: NextRequest) {
         const writer = responseStream.writable.getWriter();
         const encoder = new TextEncoder();
         const sseWriter = getSSEWriter(writer, encoder); //CUSTOM STREAM HANDLER
+        //
 
-        /**CREATE WRITTER */
+        //TODO create an alternative way to trigger notification popup
         const result = await DetectNewNotifications(); //CHECK IF NEW NOTIFICATIONS ARRIVED
+        /**CREATE WRITTER */
         const WriterEvent = async (notifier: NotificationType) => {
             if (result) {
                 //SEND TO CLIENT
