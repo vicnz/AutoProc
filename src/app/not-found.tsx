@@ -2,9 +2,10 @@
 
 import { Metadata, Viewport } from "next";
 import Image from "next/image";
-import { Button, ConfigProvider, Flex, Modal, Result, Typography } from "antd";
+import { Button, ConfigProvider, Flex, Modal, Result, Tag, Typography } from "antd";
 import { useEffect, useState } from "react";
-import { ReloadOutlined } from "@ant-design/icons";
+import { ArrowLeftOutlined } from "@ant-design/icons";
+import { usePathname, useRouter } from "next/navigation";
 
 export const metadata: Metadata = {
     title: "AutoProc | Login",
@@ -15,12 +16,14 @@ export const viewport: Viewport = {
     themeColor: "#C0252A",
 };
 
-function ErrorPage({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
+function PageNotFound() {
     const [state, setState] = useState(false);
+    const pathname = usePathname();
+    const { back } = useRouter();
     useEffect(() => {
         setState(true);
-        console.log(error);
     }, []);
+
     return (
         <div
             style={{
@@ -44,7 +47,7 @@ function ErrorPage({ error, reset }: { error: Error & { digest?: string }; reset
                             <Flex align="center" justify="space-between">
                                 <Flex align="center" gap={10}>
                                     <Image src="/logo-small.png" alt="Page Logo" height={25} width={30} />
-                                    <span style={{ color: "#C0252A" }}>CLIENT ERROR</span>
+                                    <span style={{ color: "#C0252A" }}>404</span>
                                 </Flex>
                             </Flex>
                         </>
@@ -59,20 +62,20 @@ function ErrorPage({ error, reset }: { error: Error & { digest?: string }; reset
                 >
                     <Result
                         status="error"
-                        title="Client Error"
+                        title="Page Not Found"
                         subTitle={
                             <>
-                                {"An Unexpected "}
+                                {" "}
                                 <Typography.Text italic style={{ color: "orangered" }}>
-                                    Client-Error
+                                    {pathname}
                                 </Typography.Text>{" "}
-                                occured, please refresh the page or return back to previous page
+                                does not exists or is not available. Go back to previous page.
                             </>
                         }
                         extra={
                             <>
-                                <Button icon={<ReloadOutlined />} onClick={() => reset()}>
-                                    Refresh Page
+                                <Button icon={<ArrowLeftOutlined />} onClick={() => back()}>
+                                    Go Back
                                 </Button>
                             </>
                         }
@@ -83,4 +86,4 @@ function ErrorPage({ error, reset }: { error: Error & { digest?: string }; reset
     );
 }
 
-export default ErrorPage;
+export default PageNotFound;

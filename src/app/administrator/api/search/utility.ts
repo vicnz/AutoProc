@@ -14,7 +14,8 @@ export const searchRecords = async (query: string) => {
             },
             reference: {
                 search: `${query}`
-            }
+            },
+            isDeleted: false,
         },
         take: 10,
     })
@@ -46,7 +47,10 @@ export const searchUsers = async (query: string) => {
             lname: {
                 search: `${query}`
             },
-            //TODO search also username -> available on AutoProc 2
+            userType: {
+                in: ['CHECKER', 'USER', 'TRACKER']
+            },
+            isDeleted: false,
         },
         take: 10,
     })
@@ -71,7 +75,8 @@ export const searchSuppliers = async (query: string) => {
             },
             tin: {
                 search: `${query}`
-            }
+            },
+            isDeleted: false
         }
     })
 
