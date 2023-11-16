@@ -1,5 +1,3 @@
-"use client";
-
 import { CSSProperties, PropsWithChildren, memo } from "react";
 //styles
 const WrapperStyle: CSSProperties = {

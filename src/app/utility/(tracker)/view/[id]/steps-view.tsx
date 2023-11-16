@@ -7,9 +7,7 @@ import { memo, useMemo } from "react";
 
 ///
 
-const Routes = memo(function RouteItem(props: {
-    data: Array<{ id: string; name: string; timestamp: string }>;
-}) {
+const Routes = memo(function RouteItem(props: { data: Array<{ id: string; name: string; timestamp: string }> }) {
     //generate markdown
     const items: TimelineProps["items"] = useMemo(() => {
         return props.data.map((item) => {
@@ -18,9 +16,7 @@ const Routes = memo(function RouteItem(props: {
                     <span>
                         <Tag>{dayjs(item.timestamp).format("MM/DD/YY hh:mm a")}</Tag>
                         <br />
-                        <span style={{ whiteSpace: "normal", fontSize: "0.8em" }}>
-                            {item.name.toUpperCase()}
-                        </span>
+                        <span style={{ whiteSpace: "normal", fontSize: "0.8em" }}>{item.name.toUpperCase()}</span>
                         <br />
                     </span>
                 ),
@@ -36,13 +32,10 @@ const Routes = memo(function RouteItem(props: {
     );
 });
 
-const TrackingDisplay = (props: {
-    data: Array<{ name: string; final: boolean; tracking: any[] }>;
-}) => {
+const TrackingDisplay = (props: { data: Array<{ name: string; final: boolean; tracking: any[] }> }) => {
     const data = useMemo(() => {
         return props.data.map((item, idx) => {
-            const status = (props.data[--idx]?.final || false) &&
-                !props.data[idx++]?.final;
+            const status = (props.data[--idx]?.final || false) && !props.data[idx++]?.final;
             return {
                 status: status ? "process" : item.final ? "finish" : "wait",
                 title: (
@@ -66,11 +59,7 @@ const TrackingDisplay = (props: {
                 description: (
                     <>
                         <br />
-                        {item?.tracking?.length > 0 ? (
-                            <Routes data={item.tracking} />
-                        ) : (
-                            "No Routed Office Yet"
-                        )}
+                        {item?.tracking?.length > 0 ? <Routes data={item.tracking} /> : "No Routed Office Yet"}
                     </>
                 ),
             };

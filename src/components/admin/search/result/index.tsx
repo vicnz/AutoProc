@@ -30,8 +30,6 @@ function RenderResult(props: { query: string; type?: string; close?: () => any }
                 }
             });
     }, [props.query]);
-    // console.log(result);
-    // return <Skeleton active />;
 
     if (loading) {
         return <Skeleton active />;

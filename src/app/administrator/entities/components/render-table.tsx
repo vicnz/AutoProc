@@ -71,7 +71,7 @@ function RenderTable(props: { data: DataTypes }) {
                 },
             },
         ];
-    }, [props.data]);
+    }, []);
 
     return <Table dataSource={props.data} columns={columns as any} pagination={false} sticky />;
 }
