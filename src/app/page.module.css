@@ -1,0 +1,103 @@
+.page-pattern-wrapper {
+    height: 100vh;
+    width: 100vw;
+    background:
+        radial-gradient(circle, transparent 25%, #FFFFFF 26%), linear-gradient(0deg, transparent 44%, #38424F 45%, #38424F 55%, transparent 56%), linear-gradient(90deg, transparent 44%, #38424F 45%, #38424F 55%, transparent 56%);
+    background-size: 2em 2em;
+    background-color: white;
+    position: relative;
+}
+
+.page-pattern-opacity {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.85);
+}
+
+.page-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 400px 1fr;
+}
+
+.page-texts {
+    padding: 0 3em;
+    padding-top: 50px;
+}
+
+.logo-banner {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.lead {
+    font-size: 3.5em;
+}
+
+.caption {
+    font-size: 1.8em;
+    line-height: 1.8em;
+}
+
+.image-figure {
+    display: block;
+}
+
+.border-top {
+    display: none;
+}
+
+@media screen and (max-width: 700px) {
+
+    .border-top {
+        display: block;
+        height: 10px;
+        width: 100%;
+    }
+
+    .image-figure {
+        display: none;
+    }
+
+    .page-pattern-wrapper {
+        height: 100vh;
+        width: 100%;
+    }
+
+    .logo-banner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px
+    }
+
+    .page-texts {
+        padding: 0 1em;
+        padding-top: 50px;
+        text-align: center;
+    }
+
+    .lead {
+        font-size: 2.3em;
+        text-align: center;
+    }
+
+    .caption {
+        font-size: 1.1em;
+    }
+
+    .page-content {
+        height: auto;
+        width: 100%;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+    }
+}

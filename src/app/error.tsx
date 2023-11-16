@@ -20,7 +20,7 @@ function ErrorPage({ error, reset }: { error: Error & { digest?: string }; reset
     useEffect(() => {
         setState(true);
         console.log(error);
-    }, []);
+    }, [error]);
     return (
         <div
             style={{
