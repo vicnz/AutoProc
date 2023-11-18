@@ -1,0 +1,13 @@
+Dockerfile
+.dockerignore
+node_modules
+npm - debug.log
+README.md
+prisma
+tests
+.next
+.git
+.env
+.next
+.vscode
+.certificates

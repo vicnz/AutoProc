@@ -29,7 +29,7 @@ function RenderResult(props: { query: string; type?: string; close?: () => any }
                     setResult({ ...res });
                 }
             });
-    }, [props.query]);
+    }, [props.query, result?.empty, props.type]);
 
     if (loading) {
         return <Skeleton active />;

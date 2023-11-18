@@ -1,11 +1,11 @@
 "use client";
 
 import { Alert, Button, Modal, Space } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import dayjs from "dayjs";
+import { CheckCircleOutlined, ClockCircleOutlined, InfoCircleOutlined } from "@ant-design/icons";
 
 import Scanner from "./scanner";
-import { CheckCircleOutlined, ClockCircleOutlined, InfoCircleOutlined } from "@ant-design/icons";
-import dayjs from "dayjs";
 
 type ScannerModalProps = {
     onSubmit?: (param: { token: string; timestamp: Object }) => any;
@@ -14,13 +14,15 @@ type ScannerModalProps = {
 };
 
 function ScannerModal(props: ScannerModalProps) {
+    const { open, setOpen, onSubmit: onOk } = props;
+
     const currentTimestamp = dayjs();
     const [tokenString, setTokenString] = useState(undefined);
-    let timer: any; //TODO convert timer to useRef()
+    const timer = useRef<any>(null);
+
     const onSubmit = async () => {
         if (tokenString) {
-            props.onSubmit &&
-                props.onSubmit({ token: tokenString, timestamp: currentTimestamp.format("MMMM DD, hh:mm A") });
+            onOk && onOk({ token: tokenString, timestamp: currentTimestamp.format("MMMM DD, hh:mm A") });
         }
     };
 
@@ -31,32 +33,32 @@ function ScannerModal(props: ScannerModalProps) {
     };
 
     useEffect(() => {
-        //Close Scanner After 5 Seconds If There Is No Scanner Result
-        timer = setTimeout(() => {
+        //Close Scanner After 15 Seconds If There Are No Scanner Result
+        timer.current = setTimeout(() => {
             setTokenString(undefined);
-            props.setOpen(false);
+            setOpen(false);
         }, 15000);
 
         return () => {
-            clearTimeout(timer);
+            clearTimeout(timer.current);
         };
-    }, [props.open]);
+    }, [props.open, setOpen, onOk]);
 
     return (
         <Modal
             destroyOnClose
-            open={props.open}
-            onCancel={() => {
-                props.setOpen(false);
-                setTokenString(undefined);
-                clearTimeout(timer);
-            }}
-            cancelButtonProps={{
-                size: "large",
-            }}
+            open={open}
             title={"Scanning Code"}
             centered
             closeIcon={null}
+            cancelButtonProps={{
+                size: "large",
+            }}
+            onCancel={() => {
+                setOpen(false);
+                setTokenString(undefined);
+                clearTimeout(timer.current);
+            }}
             footer={
                 <Space>
                     <Button style={{ pointerEvents: "none" }} size="large" icon={<ClockCircleOutlined />} type="text">
@@ -87,7 +89,9 @@ function ScannerModal(props: ScannerModalProps) {
                 >
                     {tokenString ? <CheckCircleOutlined style={{ color: "white", fontSize: "4em" }} /> : null}
                 </div>
+                {/* SCANNER COMPONENT */}
                 <Scanner onError={() => {}} onScan={onScannerResult} style={{ width: "100%", borderRadius: 8 }} />
+                {/* SCANNER COMPONENT */}
             </div>
             <br />
             <Alert

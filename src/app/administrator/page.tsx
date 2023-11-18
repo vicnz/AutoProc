@@ -1,16 +1,6 @@
-import { Tabs } from 'antd';
-//components
-import Dashboard from '@components/admin/layouts/dashboard'
-import TabItems from '@components/admin/layouts/dashboard/tabs'
-
-//confg
-//
+import { redirect } from "next/navigation";
 const Page = function () {
-    return (
-        <Dashboard>
-            <Tabs items={TabItems} tabPosition='left' />
-        </Dashboard>
-    )
-}
+    redirect("/administrator/dashboard"); //redirect to dashboard
+};
 
 export default Page;

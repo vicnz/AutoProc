@@ -39,6 +39,9 @@
       "@api/admin/*": [
         "./src/app/administrator/api/*"
       ],
+      "@components/*": [
+        "./src/components/*"
+      ],
       "@components/shared/*": [
         "./src/components/shared/*"
       ],

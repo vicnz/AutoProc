@@ -7,6 +7,7 @@ import RenderResult from "../result";
 import { useDebounce } from "react-use";
 
 const SearchModal = function (props: { closeModal?: (value: boolean) => {} }) {
+    const { closeModal } = props;
     const { token } = theme.useToken();
     const [searchQuery, setSearchQuery] = useState("");
     const [query, setQuery] = useState("");
@@ -26,7 +27,7 @@ const SearchModal = function (props: { closeModal?: (value: boolean) => {} }) {
         const focusRef = inputRef?.current;
         focusRef?.focus();
         return () => focusRef?.blur();
-    }, []);
+    }, [closeModal]);
 
     const renderResult = useMemo(
         () => (
@@ -34,7 +35,7 @@ const SearchModal = function (props: { closeModal?: (value: boolean) => {} }) {
                 query={query}
                 type={active?.value}
                 close={() => {
-                    props.closeModal && props?.closeModal(false);
+                    closeModal && closeModal(false);
                 }}
             />
         ),

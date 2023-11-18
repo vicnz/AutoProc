@@ -22,7 +22,7 @@ const NotificationSection = function () {
     const { data, error, isLoading } = useSWR(`/administrator/api/notification?count=true&days=${numOfDays}`);
 
     const onShowDrawer = (e: KeyboardEvent) => {
-        if (e.ctrlKey && e.key === "1") {
+        if (e.ctrlKey && e.key === ".") {
             setOpen(true);
         }
     };
