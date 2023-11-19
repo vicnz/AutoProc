@@ -308,13 +308,10 @@ model notifications {
 }
 
 //options
-//!remove, shall be replaced with a Server Stored Settings using SQLite or NeDB
 model settings {
     id          String   @id @default(uuid())
-    name        String
+    name        String   @unique
+    description String?
     value       String
-    particulars String
-    updatedAt   DateTime @updatedAt()
-
-    @@ignore
+    updatedAt   DateTime @updatedAt
 }

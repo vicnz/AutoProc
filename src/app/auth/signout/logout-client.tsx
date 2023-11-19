@@ -6,8 +6,10 @@ import Image from "next/image";
 import Avatar from "boring-avatars";
 import { signOut } from "next-auth/react";
 import { LogoutOutlined } from "@ant-design/icons";
+import { useRouter } from "next/navigation";
 
 function LogoutClient() {
+    const { replace, refresh } = useRouter();
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
 
@@ -16,7 +18,11 @@ function LogoutClient() {
     }, []);
 
     const signingOut = async () => {
-        await signOut({ callbackUrl: "/" });
+        await signOut({ redirect: false }).then((res) => {
+            //REDIRECT TO ROOT //@DEGUB - Without Using the NEXTAUTH_URL
+            refresh();
+            replace("/");
+        });
         setLoading(true);
     };
 
