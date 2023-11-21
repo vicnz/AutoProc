@@ -133,7 +133,7 @@ function RenderResult(props: { query: string; type?: string; close?: () => any }
                                 key={item.id}
                                 extra={
                                     <>
-                                        <Link href={`administrator/suppliers/${item.id}`} passHref>
+                                        <Link href={`/administrator/suppliers/${item.id}`} passHref>
                                             <OpenSearchResult
                                                 icon={<ArrowRightOutlined />}
                                                 type="text"
