@@ -5,6 +5,7 @@ import { Button, Divider } from "antd";
 import { memo } from "react";
 //components
 import GlobalHeader from "@components/admin/header";
+import Manual from "@components/shared/manual";
 //types
 interface UserManagementHeaderProps {}
 //
@@ -12,7 +13,12 @@ const SupplierManagementHeader = function (props: UserManagementHeaderProps) {
     return (
         <>
             <GlobalHeader title="SUPPLIERS">
-                <Button icon={<QuestionCircleOutlined />} type="text" />
+                <Manual
+                    icon={<QuestionCircleOutlined />}
+                    buttonProps={{ type: "text" }}
+                    drawerProps={{ title: "Supplier Management Manual" }}
+                    pageProp={{ id: "", name: "Supplier Management" }}
+                />
             </GlobalHeader>
         </>
     );

@@ -12,6 +12,7 @@ import { memo } from "react";
 import dynamic from "next/dynamic";
 //components
 import GlobalHeader from "@components/admin/header";
+import Manual from "@components/shared/manual";
 import { usePRId } from "@components/admin/procurement/purchase-id-context";
 import Link from "next/link";
 
@@ -40,7 +41,12 @@ const ProcurementItemHeader = function () {
             >
                 <QRCodeGen />
                 <Divider type="vertical" />
-                <Button icon={<QuestionCircleOutlined />} type="text" />
+                <Manual
+                    icon={<QuestionCircleOutlined />}
+                    buttonProps={{ type: "text" }}
+                    drawerProps={{ title: "PR View Manual" }}
+                    pageProp={{ id: "", name: "Purchase Information" }}
+                />
             </GlobalHeader>
         </>
     );
