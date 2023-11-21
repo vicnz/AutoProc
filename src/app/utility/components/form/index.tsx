@@ -1,10 +1,10 @@
 "use client";
 
 import { QrcodeOutlined } from "@ant-design/icons";
-import { App, Button, Cascader, CascaderProps, Flex, Input, Select, Space } from "antd";
-import React, { useState } from "react";
+import { App, Button, Cascader, CascaderProps, Flex } from "antd";
+import { useState } from "react";
 import ScannerModal from "../scanner";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import dayjs, { Dayjs } from "dayjs";
 
 interface Option {
@@ -39,7 +39,7 @@ function PRScanner(props: PRScannerFormProps) {
     };
 
     return (
-        <Flex style={{ width: "100%", padding: "0 25px" }} vertical align="center">
+        <Flex style={{ width: "100%", padding: "0 25px" }} vertical align="center" gap={5}>
             <Cascader
                 style={{ width: "100%" }}
                 options={props.data}
@@ -47,7 +47,6 @@ function PRScanner(props: PRScannerFormProps) {
                 value={value}
                 size="large"
             />
-            <br />
             <Button type="primary" icon={<QrcodeOutlined />} block size="large" onClick={onSubmit}>
                 Scan QR
             </Button>

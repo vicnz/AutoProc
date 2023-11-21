@@ -3,8 +3,7 @@
 import { Alert, Button, Modal, Space } from "antd";
 import { useEffect, useRef, useState } from "react";
 import dayjs from "dayjs";
-import { CheckCircleOutlined, ClockCircleOutlined, InfoCircleOutlined } from "@ant-design/icons";
-
+import { CheckCircleOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import Scanner from "./scanner";
 
 type ScannerModalProps = {
@@ -13,16 +12,24 @@ type ScannerModalProps = {
     setOpen: (value: boolean) => any;
 };
 
-function ScannerModal(props: ScannerModalProps) {
+/**
+ *
+ */
+function ScannerModal(props: Readonly<ScannerModalProps>) {
     const { open, setOpen, onSubmit: onOk } = props;
 
-    const currentTimestamp = dayjs();
-    const [tokenString, setTokenString] = useState(undefined);
-    const timer = useRef<any>(null);
+    const currentTimestamp = dayjs(); //get current timestamp
+    const [tokenString, setTokenString] = useState(undefined); //set decoded string from QR SCANNER API
+    const timer = useRef<any>(null); //timer
 
     const onSubmit = async () => {
-        if (tokenString) {
-            onOk && onOk({ token: tokenString, timestamp: currentTimestamp.format("MMMM DD, hh:mm A") });
+        //is token String is not
+        if (typeof tokenString !== "undefined") {
+            onOk &&
+                onOk({
+                    token: tokenString,
+                    timestamp: currentTimestamp.format("MMMM DD, hh:mm A"),
+                });
         }
     };
 
@@ -61,9 +68,6 @@ function ScannerModal(props: ScannerModalProps) {
             }}
             footer={
                 <Space>
-                    <Button style={{ pointerEvents: "none" }} size="large" icon={<ClockCircleOutlined />} type="text">
-                        {currentTimestamp.format("MMMM DD, hh:mm A")}
-                    </Button>
                     <Button
                         icon={<CheckCircleOutlined />}
                         onClick={onSubmit}

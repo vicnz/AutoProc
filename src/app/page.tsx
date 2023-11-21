@@ -1,9 +1,5 @@
 "use client";
 
-import { Typography, Button, Space, Col, Row, ConfigProvider, Divider } from "antd";
-import { PRIMARY_COLOR } from "@lib/contants";
-import Image from "next/image";
-import { motion } from "framer-motion";
 import {
     ArrowRightOutlined,
     CodeOutlined,
@@ -11,6 +7,9 @@ import {
     VerticalLeftOutlined,
     VerticalRightOutlined,
 } from "@ant-design/icons";
+import { PRIMARY_COLOR } from "@lib/contants";
+import { Button, ConfigProvider, Typography } from "antd";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import styles from "./page.module.css";
