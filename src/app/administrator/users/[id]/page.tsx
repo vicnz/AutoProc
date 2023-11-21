@@ -55,12 +55,13 @@ async function UserInfoPage(props: { params: { id: string } }) {
                         description={
                             <>
                                 <span>
-                                    Make sure they are <strong>NO Incomplete</strong> Purchase Request associated with
-                                    this User before proceeding for action.
+                                    This Feature is heavily under Testing-Phase to assure proper clean data integrity
+                                    and prevent unhandle system errors. We temporarily disabled this feature for the
+                                    sole purpose of testing its back-end business layer.
                                 </span>
                                 <br />
                                 <br />
-                                <Button danger icon={<DeleteOutlined />} block type="primary">
+                                <Button danger icon={<DeleteOutlined />} block type="primary" disabled>
                                     Delete User
                                 </Button>
                             </>

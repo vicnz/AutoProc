@@ -22,7 +22,7 @@ const NotificationSection = function () {
     const { data, error, isLoading } = useSWR(`/administrator/api/notification?count=true&days=${numOfDays}`);
 
     const onShowDrawer = (e: KeyboardEvent) => {
-        if (e.ctrlKey && e.key === ".") {
+        if (e.ctrlKey && e.key === "/") {
             setOpen(true);
         }
     };
@@ -41,7 +41,7 @@ const NotificationSection = function () {
         );
     }
     if (!data || isLoading) {
-        return <Skeleton.Avatar />;
+        return <Skeleton.Avatar active />;
     }
     const notif = data.count > 0; //toggle badge
     return (

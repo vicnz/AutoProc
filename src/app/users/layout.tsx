@@ -1,7 +1,7 @@
 import { App, ConfigProvider } from "antd";
 import React, { PropsWithChildren } from "react";
 
-function AuthLayout(props: PropsWithChildren<any>) {
+function UsersLayout(props: PropsWithChildren<any>) {
     return (
         <ConfigProvider theme={{ token: { colorPrimary: "#C0252A", fontFamily: "Poppins" } }}>
             <App>{props.children}</App>
@@ -9,4 +9,4 @@ function AuthLayout(props: PropsWithChildren<any>) {
     );
 }
 
-export default AuthLayout;
+export default UsersLayout;

@@ -1,6 +1,6 @@
-import React from "react";
-import { Empty, Result } from "antd";
+import { Result } from "antd";
 import SignOut from "./signout";
+import SignOutBtn from "@components/signout-btn";
 
 function UsersPage() {
     return (
@@ -13,7 +13,7 @@ function UsersPage() {
                     subTitle="End-User Account, this section is still on Heavy Development and hopefully can accumulate a PREVIEW release on AutoProc V2"
                     extra={
                         <>
-                            <SignOut />
+                            <SignOutBtn block={false}>Sign Out</SignOutBtn>
                         </>
                     }
                 />

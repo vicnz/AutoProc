@@ -2,9 +2,10 @@
 
 import { ArrowRightOutlined, ShopOutlined, ShoppingCartOutlined, UserOutlined } from "@ant-design/icons";
 import fullname from "@lib/client/fullname";
-import { Avatar, Button, Divider, Empty, List, Skeleton, theme } from "antd";
-import React, { memo, useEffect, useMemo, useState } from "react";
-import RedirectTo from "./view-button";
+import { Avatar, Divider, Empty, List, Skeleton, theme } from "antd";
+import { memo, useEffect, useState } from "react";
+import OpenSearchResult from "@components/loading-btn";
+import Link from "next/link";
 
 type ResultTypes = {
     users?: any[];
@@ -49,10 +50,20 @@ function RenderResult(props: { query: string; type?: string; close?: () => any }
                             <List.Item
                                 key={item.id}
                                 extra={
-                                    <RedirectTo
-                                        href={`/administrator/procurements/${item.id}`}
-                                        close={() => props.close && props.close()}
-                                    />
+                                    <>
+                                        <Link href={`/administrator/procurements/${item.id}`} passHref>
+                                            <OpenSearchResult
+                                                icon={<ArrowRightOutlined />}
+                                                type="text"
+                                                shape="round"
+                                                onClose={() => props.close && props.close()}
+                                            />
+                                        </Link>
+                                        {/* <RedirectTo
+                                            href={`/administrator/procurements/${item.id}`}
+                                            close={() => props.close && props.close()}
+                                        /> */}
+                                    </>
                                 }
                             >
                                 <List.Item.Meta
@@ -80,10 +91,20 @@ function RenderResult(props: { query: string; type?: string; close?: () => any }
                             <List.Item
                                 key={item.id}
                                 extra={
-                                    <RedirectTo
+                                    <>
+                                        <Link href={`/administrator/users/${item.id}`} passHref>
+                                            <OpenSearchResult
+                                                icon={<ArrowRightOutlined />}
+                                                type="text"
+                                                shape="round"
+                                                onClose={() => props.close && props.close()}
+                                            />
+                                        </Link>
+                                        {/* <RedirectTo
                                         href={`/administrator/users/${item.id}`}
                                         close={() => props.close && props.close()}
-                                    />
+                                    /> */}
+                                    </>
                                 }
                             >
                                 <List.Item.Meta
@@ -111,10 +132,20 @@ function RenderResult(props: { query: string; type?: string; close?: () => any }
                             <List.Item
                                 key={item.id}
                                 extra={
-                                    <RedirectTo
+                                    <>
+                                        <Link href={`administrator/suppliers/${item.id}`} passHref>
+                                            <OpenSearchResult
+                                                icon={<ArrowRightOutlined />}
+                                                type="text"
+                                                shape="round"
+                                                onClose={() => props.close && props.close()}
+                                            />
+                                        </Link>
+                                        {/* <RedirectTo
                                         href={`/administrator/suppliers/${item.id}`}
                                         close={() => props.close && props.close()}
-                                    />
+                                    /> */}
+                                    </>
                                 }
                             >
                                 <List.Item.Meta

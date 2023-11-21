@@ -11,7 +11,10 @@ const SearchModal = function (props: { closeModal?: (value: boolean) => {} }) {
     const { token } = theme.useToken();
     const [searchQuery, setSearchQuery] = useState("");
     const [query, setQuery] = useState("");
+    const [active, setActive] = useState<{ label: string; value: string } | null>(null);
+    const inputRef = useRef<HTMLInputElement>(null);
 
+    //DEBOUNCE RESULT
     const [, cancel] = useDebounce(
         () => {
             setQuery(searchQuery);
@@ -19,9 +22,6 @@ const SearchModal = function (props: { closeModal?: (value: boolean) => {} }) {
         1000,
         [searchQuery]
     );
-
-    const [active, setActive] = useState<{ label: string; value: string } | null>(null);
-    const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         const focusRef = inputRef?.current;

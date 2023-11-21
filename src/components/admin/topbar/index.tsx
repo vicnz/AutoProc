@@ -1,5 +1,3 @@
-"use client";
-
 /**
  * * - GLOBAL TOPBAR COMPONENT
  * * - Navbar consist of the
@@ -7,44 +5,32 @@
  */
 
 //libs
-import { Button, Divider, Skeleton, Space, theme } from "antd";
+import { Divider, Skeleton, Space, theme } from "antd";
 import { memo } from "react";
 import dynamic from "next/dynamic";
-import AvatarBoring from "boring-avatars";
-import { EllipsisOutlined, NotificationOutlined } from "@ant-design/icons";
 //components
-const Search = dynamic(async () => await import('@components/admin/search'), { loading: () => <Skeleton.Input /> })
-const PageLogo = dynamic(async () => await import("./logo"), { loading: () => <Skeleton.Input /> });
-const Notify = dynamic(async () => await import("@components/admin/notifications/notify"), { ssr: false });
+const Search = dynamic(async () => await import("@components/admin/search"), { loading: () => <Skeleton.Input /> });
 const Notification = dynamic(async () => await import("@components/admin/notifications"), { ssr: false });
-//
-const topBarStyle = {
-    height: "56px",
-    padding: "10px 15px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-};
-//
+const AdminProfile = dynamic(async () => await import("@components/admin/admin-preview"), {
+    loading: () => <Skeleton.Avatar />,
+});
+const Notify = dynamic(async () => await import("@components/admin/notifications/notify"), { ssr: false });
+import PageLogo from "./logo";
+import Styles from "./styles.module.css";
+
 const Topbar = function () {
     const { token } = theme.useToken();
     return (
-        <nav style={{ ...topBarStyle, backgroundColor: token.colorBgContainer }}>
+        <nav style={{ backgroundColor: token.colorBgContainer }} className={Styles.topBarStyle}>
             <PageLogo />
             <Search />
             <Space>
                 <Notification />
                 <Divider type="vertical" />
-                <div
-                    onClick={() => {
-                        alert("Authentication Requires To Be Implemented First");
-                    }}
-                    style={{ cursor: "pointer", display: "grid", placeItems: "center" }}
-                >
-                    <AvatarBoring size={28} variant="beam" name="Jennie" />
-                </div>
+                <AdminProfile />
                 {/* Start Listening to Notification */}
                 <Notify />
+                {/* Start Listening to Notification */}
             </Space>
         </nav>
     );
