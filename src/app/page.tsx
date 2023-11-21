@@ -33,7 +33,7 @@ export default function Index() {
                         }}
                         className={styles["image-figure"]}
                     >
-                        <motion.img
+                        <img
                             src="/acad.jpg"
                             style={{
                                 height: "100vh",
@@ -42,10 +42,6 @@ export default function Index() {
                                 top: 0,
                                 left: 0,
                             }}
-                            initial={{ scale: 1 }}
-                            animate={{ scale: 1.5 }}
-                            transition={{ repeat: Infinity, duration: 15, repeatType: "reverse" }}
-                            exit={{ scale: 1 }}
                         />
                         <div
                             style={{
