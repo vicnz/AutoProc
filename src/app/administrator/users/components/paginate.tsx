@@ -3,28 +3,26 @@
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import { useRouter, useSearchParams } from "next/navigation";
-
-function Paginate(props: { count: number }) {
+// ─── Component Base ──────────────────────────────────────────────────────────
+function Paginate(props: { count: number; size: number }) {
     const searchParams = useSearchParams();
     const router = useRouter();
-
-    const page = Number.parseInt(searchParams.get("page") as string) || 0; //TODO make sure the type is number
-    const size = Number.parseInt(searchParams.get("size") as string) || 8; //TODO make sure the type is number
-
+    // ─────────────────────────────────────────────────────────────────────
+    const page = Math.abs(Math.floor(Number.parseInt(searchParams.get("page") as string) || 0)); //TODO make sure the type is number
+    const pageSize = Math.floor(props.size);
+    // ─── Previous Page ───────────────────────────────────────────────────
     const prevPage = () => {
-        //goto prev page
-        if (page >= size) {
-            router.push(`/administrator/users?page=${page - size}&size=${8}`); //fixed size
+        if (page >= pageSize) {
+            router.push(`/administrator/users?page=${page - pageSize}`); //fixed size
         }
     };
-
+    // ─── Next Page ───────────────────────────────────────────────────────
     const nextPage = () => {
-        //goto next page
         if (props.count > 0) {
-            //should not predict
-            router.push(`/administrator/users?page=${page + size}&size=${8}`); //TODO limit call when there is no data
+            router.push(`/administrator/users?page=${page + pageSize}`); //TODO limit call when there is no data
         }
     };
+    // ─────────────────────────────────────────────────────────────────────
     return (
         <>
             <Button icon={<ArrowLeftOutlined />} type="text" onClick={() => prevPage()}>

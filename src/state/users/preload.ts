@@ -1,11 +1,12 @@
-import fullname from "@lib/client/fullname";
-import db from "@lib/db";
 import sharp from "sharp";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
+// ─────────────────────────────────────────────────────────────────────────────
+import db from "@lib/db";
+import fullname from "@lib/client/fullname";
 
-//FETCH MULTIPLE USERS
-export const fetchAllUsers = async (page: string) => {
+// ─── Fetch All User By Page Size ─────────────────────────────────────────────
+export const fetchAllUsers = async (page: string, size: number) => {
     const cookieStore = cookies();
     const theme = cookieStore.get("theme");
     //trigger error.js when page | size is not a number or it's negative
@@ -37,7 +38,7 @@ export const fetchAllUsers = async (page: string) => {
                 profile: true,
             },
             skip: _page,
-            take: 8,
+            take: size,
             orderBy: {
                 updatedAt: "desc",
             },
@@ -76,7 +77,7 @@ export const fetchAllUsers = async (page: string) => {
         return results;
     } catch (err) {
         console.log(err);
-        notFound();
+        return []
     }
 };
 

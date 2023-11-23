@@ -12,7 +12,7 @@ import { forwardRef, memo } from "react";
 import useSWR from "swr";
 
 //UNITS EDITOR
-import AddUnit from "@components/admin/features/units-crud";
+// import AddUnit from "@components/admin/features/units-crud";
 
 //
 const SelectUnit = forwardRef(function SelectUnit(props, ref) {
@@ -49,7 +49,7 @@ const SelectUnit = forwardRef(function SelectUnit(props, ref) {
             dropdownRender={(menu) => (
                 <>
                     {menu}
-                    <AddUnit btnProps={{ block: true }} />
+                    {/* <AddUnit btnProps={{ block: true }} /> */}
                 </>
             )}
         />
