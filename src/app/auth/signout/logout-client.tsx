@@ -7,7 +7,9 @@ import Avatar from "boring-avatars";
 import { signOut } from "next-auth/react";
 import { LogoutOutlined } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
-
+// ─── Config ──────────────────────────────────────────────────────────────────
+import { THEME_COLORS } from "@lib/theme/theme-config";
+// ─── Base Component ──────────────────────────────────────────────────────────
 function LogoutClient() {
     const { replace, refresh } = useRouter();
     const [open, setOpen] = useState(false);
@@ -16,10 +18,10 @@ function LogoutClient() {
     useEffect(() => {
         setOpen(true);
     }, []);
-
+    // ─── Sign Out Function ───────────────────────────────────────────────────────
     const signingOut = async () => {
         await signOut({ redirect: false }).then((res) => {
-            //REDIRECT TO ROOT //@DEGUB - Without Using the NEXTAUTH_URL
+            //@ ─── Debug Use The Nextauth Url Environment ──────────
             refresh();
             replace("/");
         });
@@ -38,7 +40,7 @@ function LogoutClient() {
                         <Flex align="center" justify="space-between">
                             <Flex align="center" gap={10}>
                                 <Image src="/logo-small.png" alt="Page Logo" height={25} width={30} />
-                                <span style={{ color: "#C0252A" }}>AUTOPROC SIGN OUT</span>
+                                <span style={{ color: THEME_COLORS.PRIMARY }}>AUTOPROC SIGN OUT</span>
                             </Flex>
                             <Tag color="orange">BETA</Tag>
                         </Flex>
@@ -48,13 +50,18 @@ function LogoutClient() {
                 width={400}
                 styles={{
                     content: {
-                        borderTop: "solid #C0252A 10px",
+                        borderTop: `solid ${THEME_COLORS.PRIMARY} 10px`,
                     },
                 }}
             >
                 <br />
                 <Flex justify="center" align="center">
-                    <Avatar variant="beam" name="logout" size={100} colors={["#C0252A", "#38424F"]} />
+                    <Avatar
+                        variant="beam"
+                        name="logout"
+                        size={100}
+                        colors={[THEME_COLORS.PRIMARY, THEME_COLORS.ACCENT]}
+                    />
                 </Flex>
                 <br />
                 <Typography.Paragraph style={{ textAlign: "center" }}>

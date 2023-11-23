@@ -4,9 +4,11 @@ import { ArrowLeftOutlined, LockFilled } from "@ant-design/icons";
 import { Modal, Flex, Tag, Typography, Divider, Button } from "antd";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import UnauthorizedImage from "@media/unauthorized.jpg";
 import { useRouter } from "next/navigation";
-
+// ─── Config ──────────────────────────────────────────────────────────────────
+import UnauthorizedImage from "@media/unauthorized.jpg";
+import { THEME_COLORS } from "@lib/theme/theme-config";
+// ─── Base Components ─────────────────────────────────────────────────────────
 function Unauthorized() {
     const [open, setOpen] = useState(false);
     const { back } = useRouter();
@@ -26,7 +28,7 @@ function Unauthorized() {
                     <Flex align="center" justify="space-between">
                         <Flex align="center" gap={10}>
                             <Image src="/logo-small.png" alt="Page Logo" height={25} width={30} />
-                            <span style={{ color: "#C0252A" }}>UNAUTHORIZED</span>
+                            <span style={{ color: THEME_COLORS.PRIMARY }}>UNAUTHORIZED</span>
                         </Flex>
                         <Tag color="orange">BETA</Tag>
                     </Flex>
@@ -35,7 +37,7 @@ function Unauthorized() {
             footer={false}
             styles={{
                 content: {
-                    borderTop: "solid #C0252A 10px",
+                    borderTop: `solid ${THEME_COLORS.PRIMARY} 10px`,
                 },
             }}
         >

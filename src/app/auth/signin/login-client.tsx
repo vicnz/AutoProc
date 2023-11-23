@@ -1,46 +1,51 @@
 "use client";
 
 import { signIn, getSession } from "next-auth/react";
-import { App, Button, Divider, Flex, Form, Input, Modal, Tag, Typography } from "antd";
 import { useEffect, useState } from "react";
+import { App, Button, Divider, Flex, Form, Input, Modal, Tag, Typography } from "antd";
+import { LoginOutlined } from "@ant-design/icons";
 import Image from "next/image";
 import Avatar from "boring-avatars";
-import { LoginOutlined } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
-
+// ─── Config ──────────────────────────────────────────────────────────────────
+import { THEME_COLORS } from "@lib/theme/theme-config";
+// ─── Base Component ──────────────────────────────────────────────────────────
 function LoginClient() {
     const { message } = App.useApp();
-    const [loading, setLoading] = useState(false);
     const [form] = Form.useForm();
-    const [open, setOpen] = useState(false);
+    // ─────────────────────────────────────────────────────────────────────
+    const [loading, setLoading] = useState(false); //Loading State
+    const [open, setOpen] = useState(false); //Open Dialog
     const { replace } = useRouter();
-    //
+    // ─────────────────────────────────────────────────────────────────────
     const onFinish = async () => {
         setLoading(true);
         const { username, password } = form.getFieldsValue();
-
+        //? ─── Sign In User ────────────────────────────────────────────────────────────
         const result = await signIn("credentials", {
             redirect: false,
             password,
             username,
         });
 
-        //
         if (result?.error) {
             setLoading(false);
             message.open({ type: "error", duration: 2, content: "Login Error, Please check your Credentials" });
         } else {
-            message.success("Welcome To AutotProc");
+            message.success("Welcome To AutoProc");
             if (result) {
                 const session = await getSession();
                 if (session) {
                     if (session.user.role === "ADMIN") {
+                        // ─── Goto Administrator ──────
                         replace("/administrator");
                     }
                     if (session.user.role === "TRACKER" || session.user.role === "CHECKER") {
+                        // ─── Goto Utility Users ──────
                         replace("/utility");
                     }
                     if (session.user.role === "USER") {
+                        // ─── Goto Users ──────────────
                         replace("/users");
                     }
                 }
@@ -64,7 +69,7 @@ function LoginClient() {
                         <Flex align="center" justify="space-between">
                             <Flex align="center" gap={10}>
                                 <Image src="/logo-small.png" alt="Page Logo" height={25} width={30} />
-                                <span style={{ color: "#C0252A" }}>AUTOPROC SIGN IN</span>
+                                <span style={{ color: THEME_COLORS.PRIMARY }}>AUTOPROC SIGN IN</span>
                             </Flex>
                             <Tag color="orange">BETA</Tag>
                         </Flex>
@@ -74,13 +79,18 @@ function LoginClient() {
                 width={400}
                 styles={{
                     content: {
-                        borderTop: "solid #C0252A 10px",
+                        borderTop: `solid ${THEME_COLORS.PRIMARY} 10px`,
                     },
                 }}
             >
                 <br />
                 <Flex justify="center" align="center">
-                    <Avatar variant="beam" name="login" size={100} colors={["#C0252A", "#38424F"]} />
+                    <Avatar
+                        variant="beam"
+                        name="login"
+                        size={100}
+                        colors={[THEME_COLORS.PRIMARY, THEME_COLORS.ACCENT]}
+                    />
                 </Flex>
                 <br />
                 <Typography.Paragraph style={{ textAlign: "center" }}>

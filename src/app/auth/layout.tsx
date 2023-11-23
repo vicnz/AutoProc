@@ -1,9 +1,10 @@
-import { App, ConfigProvider } from "antd";
-import React, { PropsWithChildren } from "react";
-
+import { App } from "antd";
+import { PropsWithChildren } from "react";
+import Config, { THEME_COLORS } from "@lib/theme/theme-config";
+// ─── Component Base ──────────────────────────────────────────────────────────
 function AuthLayout(props: PropsWithChildren<any>) {
     return (
-        <ConfigProvider theme={{ token: { colorPrimary: "#C0252A", fontFamily: "Poppins" } }}>
+        <Config token={{ colorPrimary: THEME_COLORS.PRIMARY }}>
             <App>
                 <div
                     style={{
@@ -19,7 +20,7 @@ function AuthLayout(props: PropsWithChildren<any>) {
                     {props.children}
                 </div>
             </App>
-        </ConfigProvider>
+        </Config>
     );
 }
 

@@ -3,7 +3,9 @@
 import { Flex, Modal, Tag, Result } from "antd";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-
+// ─── Config ──────────────────────────────────────────────────────────────────
+import { THEME_COLORS } from "@lib/theme/theme-config";
+// ─── Base Component ──────────────────────────────────────────────────────────
 function ErrorMessage() {
     const [open, setOpen] = useState(false);
 
@@ -23,7 +25,7 @@ function ErrorMessage() {
                         <Flex align="center" justify="space-between">
                             <Flex align="center" gap={10}>
                                 <Image src="/logo-small.png" alt="Page Logo" height={25} width={30} />
-                                <span style={{ color: "#C0252A" }}>AUTH ERROR</span>
+                                <span style={{ color: THEME_COLORS.PRIMARY }}>AUTH ERROR</span>
                             </Flex>
                             <Tag color="orange">BETA</Tag>
                         </Flex>
@@ -33,7 +35,7 @@ function ErrorMessage() {
                 width={400}
                 styles={{
                     content: {
-                        borderTop: "solid #C0252A 10px",
+                        borderTop: `solid ${THEME_COLORS.PRIMARY} 10px`,
                     },
                 }}
             >
