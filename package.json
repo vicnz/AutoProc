@@ -48,6 +48,7 @@
     "server-only": "^0.0.1",
     "sharp": "^0.32.6",
     "swr": "^2.2.4",
+    "toad-scheduler": "^3.0.0",
     "winston": "^3.11.0",
     "zod": "^3.22.4"
   },
