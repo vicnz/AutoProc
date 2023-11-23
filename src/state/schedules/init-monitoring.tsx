@@ -9,7 +9,6 @@ import React, { memo, useEffect } from "react";
 function InitMonitoring() {
     useEffect(() => {
         setTimeout(() => {
-            console.count("Initilized Delivery Monitoring");
             fetch("/administrator/api?monitor=true"); //start monitoring deliveries
         }, 3000);
     }, []);

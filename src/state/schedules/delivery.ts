@@ -7,13 +7,21 @@ import db, { PrismaModels } from "@lib/db";
  * * NOTE THIS SCHEDULED TASK WILL BE KEPT ON RUNNING UNTIL THE SERVER
  * * IS [RESTARTED] OR [TERMINATED]
  */
-const notifyBefore = 3; //3 days //TODO this value comes from the database settings
-const interval = `*/60 * * * * *`; // every 60 seconds / 1 Minute //TODO determine this on database settings
+
+// ─── Check Ever 1 Minute ─────────────────────────────────────────────────────
+const interval = `*/60 * * * * *`;
+// ─── Check Ever 1 Minute ─────────────────────────────────────────────────────
 export function MonitorDeliveries() {
-    console.log("Delivery Monitoring Started...");
+    console.log(" ─── Delivery Monitoring Started ──────────────────────────────────────");
 
     const monitorSchedule = schedule(interval, async (now) => {
-        const nowDate = dayjs(now).add(notifyBefore, "days").toISOString(); //TODO compute the days before deadline
+        const setting = await db.settings.findFirst({
+            select: { value: true },
+            where: { name: 'notice' }
+        })
+        // ─── Days Before Notice ──────────────────────────────────────
+        const nowDate = dayjs(now).add(Number(setting?.value) || 8, "days").toISOString();
+        // ─── Days Before Notice ──────────────────────────────────────
 
         //? 🧪 USE [NOW] WHEN IN DEMO AND [NOWDATE] WHEN IN DEPLOYMENT 🔥🔥🔥🔥🔥🔥🔥🔥
 
@@ -28,7 +36,9 @@ export function MonitorDeliveries() {
             },
             where: {
                 endDate: {
+                    //! CHANGE NOW DATE ON DEPLOYMENT
                     lte: dayjs(now).toISOString(),
+                    //! CHANGE NOW DATE ON DEPLOYMENT
                     gte: dayjs(now).subtract(60, "seconds").toISOString(),
                 },
                 final: false,
