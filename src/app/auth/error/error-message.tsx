@@ -4,7 +4,7 @@ import { Flex, Modal, Tag, Result } from "antd";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 // ─── Config ──────────────────────────────────────────────────────────────────
-import { THEME_COLORS } from "@lib/theme/theme-config";
+import { THEME_COLORS } from "@lib/theme/constant";
 // ─── Base Component ──────────────────────────────────────────────────────────
 function ErrorMessage() {
     const [open, setOpen] = useState(false);

@@ -1,0 +1,15 @@
+{
+    "apps": [
+        {
+            "name": "AutoProc Admin",
+            "script": "./node_modules/next/dist/bin/next",
+            "env": {
+                "PORT": "3000",
+                "DATABASE_URL": "mysql://adamg:zachwaterson09@localhost:3306/autoproc_db",
+                "JWT_SECRET": "sBxpyK0HWjI8rRaYsy+1eMXElDGmBbRLxB19UK6iAPQ=",
+                "NEXTAUTH_SECRET": "b9+36hJRyGMho2VrL45a9MkWdMU3ApwQv2duoleGHkg=",
+                "BCRYPT_SECRET": "cmx76FMP9kNtFko635Bu/wjQcRCi0odfCi4t6NqWiE8="
+            }
+        }
+    ]
+}

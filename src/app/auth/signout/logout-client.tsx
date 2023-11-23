@@ -8,7 +8,7 @@ import { signOut } from "next-auth/react";
 import { LogoutOutlined } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 // ─── Config ──────────────────────────────────────────────────────────────────
-import { THEME_COLORS } from "@lib/theme/theme-config";
+import { THEME_COLORS } from "@lib/theme/constant";
 // ─── Base Component ──────────────────────────────────────────────────────────
 function LogoutClient() {
     const { replace, refresh } = useRouter();

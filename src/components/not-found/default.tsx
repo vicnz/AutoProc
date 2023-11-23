@@ -5,7 +5,7 @@ import { Button, Flex, Modal, Result, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { usePathname, useRouter } from "next/navigation";
-import { THEME_COLORS } from "@lib/theme/theme-config";
+import { THEME_COLORS } from "@lib/theme/constant";
 // ─── Base Component ──────────────────────────────────────────────────────────
 function GlobalNotFoundPage() {
     const [state, setState] = useState(false);

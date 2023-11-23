@@ -7,7 +7,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 // ─── Config ──────────────────────────────────────────────────────────────────
 import UnauthorizedImage from "@media/unauthorized.jpg";
-import { THEME_COLORS } from "@lib/theme/theme-config";
+import { THEME_COLORS } from "@lib/theme/constant";
 // ─── Base Components ─────────────────────────────────────────────────────────
 function Unauthorized() {
     const [open, setOpen] = useState(false);

@@ -7,10 +7,6 @@
 
 import { ConfigProvider, ThemeConfig, theme } from "antd";
 import { PropsWithChildren, memo } from "react";
-export enum THEME_COLORS {
-    PRIMARY = "#C0252A",
-    ACCENT = "#38424F",
-}
 
 const { token } = theme.defaultConfig;
 export const themeConfig: ThemeConfig = {

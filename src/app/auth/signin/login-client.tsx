@@ -8,7 +8,7 @@ import Image from "next/image";
 import Avatar from "boring-avatars";
 import { useRouter } from "next/navigation";
 // ─── Config ──────────────────────────────────────────────────────────────────
-import { THEME_COLORS } from "@lib/theme/theme-config";
+import { THEME_COLORS } from "@lib/theme/constant";
 // ─── Base Component ──────────────────────────────────────────────────────────
 function LoginClient() {
     const { message } = App.useApp();

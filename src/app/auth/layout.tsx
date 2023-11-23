@@ -1,6 +1,7 @@
 import { App } from "antd";
 import { PropsWithChildren } from "react";
-import Config, { THEME_COLORS } from "@lib/theme/theme-config";
+import Config from "@lib/theme/theme-config";
+import { THEME_COLORS } from "@lib/theme/constant";
 // ─── Component Base ──────────────────────────────────────────────────────────
 function AuthLayout(props: PropsWithChildren<any>) {
     return (
