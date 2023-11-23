@@ -1,10 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { Button, ConfigProvider, Flex, Modal, Result, Typography } from "antd";
+import { Button, Flex, Modal, Result, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { ReloadOutlined } from "@ant-design/icons";
-
+import ConfigProvider from "@lib/theme/theme-config";
+// ─── Error Page Base ─────────────────────────────────────────────────────────
 function ErrorPage({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
     const [state, setState] = useState(false);
     useEffect(() => {
@@ -23,7 +24,7 @@ function ErrorPage({ error, reset }: { error: Error & { digest?: string }; reset
                 opacity: 0.2,
             }}
         >
-            <ConfigProvider theme={{ token: { colorPrimary: "#C0252A", fontFamily: "Poppins" } }}>
+            <ConfigProvider token={{ colorPrimary: "#C0252A" }}>
                 <Modal
                     open={state}
                     centered

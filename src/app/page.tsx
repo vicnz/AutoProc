@@ -7,14 +7,15 @@ import {
     VerticalLeftOutlined,
     VerticalRightOutlined,
 } from "@ant-design/icons";
-import { PRIMARY_COLOR } from "@lib/contants";
 import { Button, ConfigProvider, Typography } from "antd";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+// ─────────────────────────────────────────────────────────────────────────────
+import { PRIMARY_COLOR } from "@lib/contants";
 import styles from "./page.module.css";
-
-const { Title, Text, Paragraph } = Typography;
+const { Text } = Typography;
+// ─── Component Base ──────────────────────────────────────────────────────────
 export default function Index() {
     const router = useRouter();
     const [loading, setLoading] = useState(false);

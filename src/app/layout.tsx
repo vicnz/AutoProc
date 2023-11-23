@@ -1,18 +1,18 @@
 import "./globals.css";
+import { Metadata, Viewport } from "next";
+// ─── Utilies ─────────────────────────────────────────────────────────────────
 import StyleComponentRegistry from "@lib/theme/theme-registry";
 import SWRConfig from "@state/swr/Config";
-import { Metadata, Viewport } from "next";
 import SessionAuth from "@lib/auth/SessionProvider";
-
+// ─── Meta Information ────────────────────────────────────────────────────────
 export const metadata: Metadata = {
     title: "Auto | Proc",
     description: "Auto Procurement System",
 };
-
 export const viewport: Viewport = {
     themeColor: "#C0252A",
 };
-
+// ─── Layout Base ─────────────────────────────────────────────────────────────
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="en">
