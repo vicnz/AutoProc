@@ -67,6 +67,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
+    "src/app/administrator/settings/_components/settings/pagination",
   ],
   "exclude": [
     "node_modules"

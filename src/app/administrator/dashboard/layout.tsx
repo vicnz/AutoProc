@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode } from "react";
-import { LineChartOutlined, ProjectOutlined, QuestionCircleOutlined } from "@ant-design/icons";
+import { CompassOutlined, LineChartOutlined, ProjectOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import { Tabs } from "antd";
 //components
 import TabPane from "./components/tab-pane";
@@ -49,6 +49,16 @@ const DashboardLayout = function (props: DashboardLayoutProps) {
                             </>
                         ),
                         children: <TabPane>{props.reports}</TabPane>,
+                    },
+                    {
+                        disabled: true,
+                        key: "activity",
+                        label: (
+                            <>
+                                <CompassOutlined /> Activity
+                            </>
+                        ),
+                        children: <TabPane></TabPane>,
                     },
                 ]}
             />
