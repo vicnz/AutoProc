@@ -59,3 +59,4 @@ certificates
 app.log
 DELETE_DIR_*
 DELETE_FILE_*
+.env.development
