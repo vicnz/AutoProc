@@ -2,7 +2,7 @@ import { Space, InputNumber, App } from "antd";
 import React, { useState } from "react";
 import { update } from "./action";
 const MIN = 5;
-const MAX = 50;
+const MAX = 25;
 
 function SearchLimitSetting(props: {
     default: { id: string; name: string; value: number; description: string | null };
