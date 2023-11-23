@@ -11,6 +11,7 @@ import { Dispatch, memo } from "react";
 //components
 import GlobalHeader from "@components/admin/header";
 import AddNewPR from "@components/admin/features/purchase-crud";
+import Manual from "@components/shared/manual";
 //types
 interface ProcurementsHeaderProps {
     count: number;
@@ -46,7 +47,12 @@ const ProcurementsHeader = function (props: ProcurementsHeaderProps) {
                     Next
                 </Button>
                 <Divider type="vertical" />
-                <Button icon={<QuestionCircleOutlined />} type="text" />
+                <Manual
+                    icon={<QuestionCircleOutlined />}
+                    buttonProps={{ type: "text" }}
+                    drawerProps={{ title: "Procurements Manual" }}
+                    pageProp={{ id: "", name: "Procurement" }}
+                />
             </GlobalHeader>
         </>
     );

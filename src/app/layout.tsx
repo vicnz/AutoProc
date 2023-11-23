@@ -1,6 +1,6 @@
+import "./globals.css";
 import StyleComponentRegistry from "@lib/theme/theme-registry";
 import SWRConfig from "@state/swr/Config";
-import "./globals.css";
 import { Metadata, Viewport } from "next";
 import SessionAuth from "@lib/auth/SessionProvider";
 

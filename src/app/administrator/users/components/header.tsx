@@ -6,6 +6,7 @@ import GlobalHeader from "@components/admin/header";
 import Paginate from "./paginate";
 import OpenAddDrawer from "./open-drawer-edit";
 import AddNewForm from "./add-new";
+import Manual from "@components/shared/manual";
 
 const UserManagementHeader = function (props: { count: number }) {
     return (
@@ -17,7 +18,12 @@ const UserManagementHeader = function (props: { count: number }) {
                     <AddNewForm />
                 </OpenAddDrawer>
                 <Divider type="vertical" />
-                <Button icon={<QuestionCircleOutlined />} type="text" />
+                <Manual
+                    icon={<QuestionCircleOutlined />}
+                    buttonProps={{ type: "text" }}
+                    drawerProps={{ title: "Users Management Manual" }}
+                    pageProp={{ id: "", name: "User Management" }}
+                />
             </GlobalHeader>
         </>
     );

@@ -1,92 +1,67 @@
-import { Row, Col, Anchor, Affix, Card, Badge, DescriptionsProps, Descriptions, Divider, Empty } from "antd";
+import { SettingOutlined, TeamOutlined } from "@ant-design/icons";
+import { Alert, Card, Flex, Result } from "antd";
+import { fetchAccountInfo } from "./_server/account";
+import { fetchSettings } from "./_server/settings";
+import { options } from "@lib/auth/options";
+import { getServerSession } from "next-auth";
+import { notFound } from "next/navigation";
+//components
+import AccountView from "./_components/account";
+import PasswordReset from "./_components/password";
+import Options from "./_components/settings";
 
-const items: DescriptionsProps["items"] = [
-    {
-        key: "1",
-        label: "Product",
-        children: "Cloud Database",
-    },
-    {
-        key: "2",
-        label: "Billing Mode",
-        children: "Prepaid",
-    },
-    {
-        key: "3",
-        label: "Automatic Renewal",
-        children: "YES",
-    },
-    {
-        key: "4",
-        label: "Order time",
-        children: "2018-04-24 18:00:00",
-    },
-    {
-        key: "5",
-        label: "Usage Time",
-        children: "2019-04-24 18:00:00",
-        span: 2,
-    },
-    {
-        key: "6",
-        label: "Status",
-        children: <Badge status="processing" text="Running" />,
-        span: 3,
-    },
-    {
-        key: "7",
-        label: "Negotiated Amount",
-        children: "$80.00",
-    },
-    {
-        key: "8",
-        label: "Discount",
-        children: "$20.00",
-    },
-    {
-        key: "9",
-        label: "Official Receipts",
-        children: "$60.00",
-    },
-    {
-        key: "10",
-        label: "Config Info",
-        children: (
-            <>
-                Data disk type: MongoDB
-                <br />
-                Database version: 3.4
-                <br />
-                Package: dds.mongo.mid
-                <br />
-                Storage space: 10 GB
-                <br />
-                Replication factor: 3
-                <br />
-                Region: East China 1
-                <br />
-            </>
-        ),
-    },
-];
-
-const Page = function () {
+const Page = async function () {
+    const session = await getServerSession(options);
+    if (!session?.user.id) {
+        notFound();
+    }
+    const account = await fetchAccountInfo(session.user.id);
+    const settings = await fetchSettings();
     return (
-        <>
-            <Divider orientation="left">Account</Divider>
-            <div id="account">
-                <Descriptions bordered items={items} />
+        <Flex vertical align="center">
+            <div style={{ width: "600px", padding: "15px 0" }}>
+                <Flex align="center" justify="space-between">
+                    <span style={{ fontSize: "1.5em" }}>
+                        <SettingOutlined /> Settings
+                    </span>
+                </Flex>
                 <br />
+                <AccountView account={account.profile} />
+                <br />
+                <PasswordReset account={account.profile} />
+                <br />
+                <Card
+                    title={
+                        <>
+                            <TeamOutlined /> Administrator Management
+                        </>
+                    }
+                >
+                    <Result
+                        status="warning"
+                        title="TODO"
+                        subTitle="Multiple Administrators is yet to be implemented. Once the End-User Accounts feature is stable-this feature will also follow through."
+                    />
+                </Card>
+                <br />
+                <Options data={settings.settings} />
+                <br />
+                <Card title="Backup & Scheduling">
+                    <Alert
+                        type="info"
+                        message="In Development"
+                        description={
+                            <>
+                                Backup & Schedule usually is handle by the <strong>SUPER ADMIN</strong> although an
+                                intended implementation for setting an automatic scheduled backup will be integrated.
+                                For now this settings is still in it's infancy phase and it's intentionally disabled for
+                                that matter.
+                            </>
+                        }
+                    />
+                </Card>
             </div>
-            <Divider orientation="left">Theme</Divider>
-            <Card id="theme">
-                <Descriptions bordered items={items} />
-            </Card>
-            <Divider orientation="left">Delivery</Divider>
-            <Card id="delivery">
-                <Empty />
-            </Card>
-        </>
+        </Flex>
     );
 };
 

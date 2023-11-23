@@ -39,6 +39,9 @@
       "@api/admin/*": [
         "./src/app/administrator/api/*"
       ],
+      "@components/*": [
+        "./src/components/*"
+      ],
       "@components/shared/*": [
         "./src/components/shared/*"
       ],
@@ -64,6 +67,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
+    "src/app/administrator/settings/_components/settings/pagination",
   ],
   "exclude": [
     "node_modules"

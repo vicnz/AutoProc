@@ -5,24 +5,30 @@
  * * GLOBAL THEME CONFIG
  */
 
-import { ConfigProvider, ThemeConfig } from "antd";
+import { ConfigProvider, ThemeConfig, theme } from "antd";
 import { PropsWithChildren, memo } from "react";
-//
-const FontFamily = `'Poppins', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif`;
-//
+export enum THEME_COLORS {
+    PRIMARY = "#C0252A",
+    ACCENT = "#38424F",
+}
 
-const ThemeConfig: ThemeConfig = {
+const { token } = theme.defaultConfig;
+export const themeConfig: ThemeConfig = {
     token: {
+        ...token,
         colorPrimary: "#C0252A",
-        fontFamily: FontFamily,
+        fontFamily: "Poppins-Regular, " + token.fontFamily,
     },
 };
 
-const ThemeConfigProvider = function (props: PropsWithChildren<any>) {
+type SeedToken = typeof token;
+
+const ThemeConfigProvider = function (props: PropsWithChildren<{ token?: Partial<SeedToken> }>) {
     return (
         <>
-            <ConfigProvider theme={ThemeConfig}>{props.children}</ConfigProvider>
+            <ConfigProvider theme={{ ...themeConfig, token: { ...themeConfig.token, ...props.token } }}>
+                {props.children}
+            </ConfigProvider>
         </>
     );
 };

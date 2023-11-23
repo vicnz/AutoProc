@@ -9,7 +9,7 @@ import SearchModal from "@components/admin/search/modal";
 
 //SHORTCUT Tooltip
 const ShortCutTooltip = (
-    <Tooltip title="Command or Ctrl + /" placement="bottom">
+    <Tooltip title="Command or Ctrl + Space" placement="bottom">
         <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
             <ThunderboltOutlined />
         </div>
@@ -21,7 +21,7 @@ const SearchBar = function () {
 
     //Show Modal on KEY PRESS [CTRL + /]
     const onKeyPress = (e: KeyboardEvent) => {
-        if (e.ctrlKey && e.key === "/") {
+        if (e.ctrlKey && e.code === "Space") {
             setOpen(true);
         }
     };

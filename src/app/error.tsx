@@ -1,26 +1,16 @@
 "use client";
 
-import { Metadata, Viewport } from "next";
 import Image from "next/image";
 import { Button, ConfigProvider, Flex, Modal, Result, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { ReloadOutlined } from "@ant-design/icons";
-
-export const metadata: Metadata = {
-    title: "AutoProc | Login",
-    description: "Login to Auto Procurement System",
-};
-
-export const viewport: Viewport = {
-    themeColor: "#C0252A",
-};
 
 function ErrorPage({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
     const [state, setState] = useState(false);
     useEffect(() => {
         setState(true);
         console.log(error);
-    }, []);
+    }, [error]);
     return (
         <div
             style={{

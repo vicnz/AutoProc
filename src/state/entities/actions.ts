@@ -42,7 +42,7 @@ export const addDepartment = async (clientData: any) => {
             await db.departments.create({
                 data: {
                     name: data.name,
-                    description: data.name
+                    description: data.description
                 }
             })
         }

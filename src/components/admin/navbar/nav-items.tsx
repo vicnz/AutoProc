@@ -25,7 +25,7 @@ const NavbarRenderedItems: {
     top: [
         {
             key: "dashboard",
-            href: "/administrator",
+            href: "/administrator/dashboard",
             icon: HomeOutlined,
             label: "Dashboard",
         },
@@ -35,14 +35,6 @@ const NavbarRenderedItems: {
             icon: FolderOutlined,
             label: "Records",
         },
-        //! PENDING REMOVAL -> MIGRATE TO NEW-USER LAYOUT
-        // {
-        //     key: "user",
-        //     href: "/administrator/users",
-        //     icon: TeamOutlined,
-        //     label: "End Users",
-        // },
-        //! PENDING REMOVAL -> MIGRATE TO NEW-USER LAYOUT
         {
             key: "users",
             href: "/administrator/users",

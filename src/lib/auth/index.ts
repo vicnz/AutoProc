@@ -1,6 +1,6 @@
 import fullname from "@lib/client/fullname";
 import db from "@lib/db";
-import { comparePassword } from "@lib/server/password-hash";
+import { comparePassword, hashPassword } from "@lib/server/password-hash";
 export interface UserCredential {
     username: string; //can be the user email
     password: string;
@@ -69,3 +69,34 @@ export const loginUser = async (credentials: UserCredential) => {
         return null;
     }
 };
+
+export const updateAdminPassword = async (id: string, password: string) => {
+    const adminUsers = await db.users.findFirst({
+        select: {
+            id: true,
+            password: true,
+        },
+        where: {
+            id,
+            AND: [{ userType: "ADMIN" }]
+        }
+    })
+
+    if (!adminUsers) return null;
+    try {
+        const hashed = await hashPassword(password)
+        await db.users.update({
+            data: {
+                password: hashed
+            },
+            where: {
+                id,
+                userType: 'ADMIN',
+            }
+        })
+        return { ok: true }
+    } catch (err) {
+        console.log(err)
+        return null
+    }
+}
