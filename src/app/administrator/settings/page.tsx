@@ -54,8 +54,8 @@ const Page = async function () {
                             <>
                                 Backup & Schedule usually is handle by the <strong>SUPER ADMIN</strong> although an
                                 intended implementation for setting an automatic scheduled backup will be integrated.
-                                For now this settings is still in it's infancy phase and it's intentionally disabled for
-                                that matter.
+                                For now this settings is still in it&apos;s infancy phase and it&apos;s intentionally
+                                disabled for that matter.
                             </>
                         }
                     />
