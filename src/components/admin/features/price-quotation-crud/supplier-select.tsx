@@ -2,12 +2,18 @@
 
 import { WarningOutlined } from "@ant-design/icons";
 import { Select, Skeleton } from "antd";
-import React, { forwardRef, memo } from "react";
+import React, { forwardRef, memo, useState } from "react";
 import useSWR from "swr";
 
 const SupplierSelectFormItem = forwardRef(function Wrapper(props, ref) {
     const { data, isLoading, error } = useSWR("/administrator/api/suppliers?_all=true");
     const { ...rest } = props;
+    const [optionsSelected, setOptionsSelected] = useState([]);
+    const handleChange = (value: any) => {
+        setOptionsSelected(value);
+    };
+
+    const isMaxValues = optionsSelected.length === 10; //LIMIt
 
     if (error) {
         return (

@@ -4,16 +4,11 @@ const renderSummary = (pageData: any[]) => {
     let count = pageData.length;
     return (
         <>
-            {new Array(8 - count).fill(0).map((item, idx) => {
+            {new Array(10 - count).fill(0).map((item, idx) => {
                 return (
                     <Table.Summary.Row key={idx + "-row"}>
                         {new Array(6).fill(0).map((item, idx) => {
-                            return (
-                                <Table.Summary.Cell
-                                    index={idx}
-                                    key={idx + "-cell-spacer"}
-                                ></Table.Summary.Cell>
-                            );
+                            return <Table.Summary.Cell index={idx} key={idx + "-cell-spacer"}></Table.Summary.Cell>;
                         })}
                     </Table.Summary.Row>
                 );

@@ -89,7 +89,7 @@ const renderExtraReceipt = (pageData: any[]) => {
     let count = pageData.length;
     return (
         <>
-            {new Array(9 - count).fill(0).map((item, idxRow) => {
+            {new Array(10 - count).fill(0).map((item, idxRow) => {
                 return (
                     <Table.Summary.Row key={idxRow + "-row"}>
                         {new Array(4).fill(0).map((item, idx) => {

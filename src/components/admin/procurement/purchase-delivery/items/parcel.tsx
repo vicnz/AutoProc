@@ -1,10 +1,18 @@
 "use client";
 
-import { Collapse, Divider, FormListFieldData, CollapsePanelProps } from "antd";
+import { Collapse, Divider, FormListFieldData, CollapsePanelProps, theme } from "antd";
 import { forwardRef, memo, useMemo } from "react";
 
 import ParcelEditor from "./item";
-import { CheckOutlined, CheckSquareOutlined, LoadingOutlined, MinusSquareOutlined, NumberOutlined } from "@ant-design/icons";
+import {
+    CheckCircleOutlined,
+    CheckOutlined,
+    CheckSquareOutlined,
+    LoadingOutlined,
+    MinusCircleOutlined,
+    MinusSquareOutlined,
+    NumberOutlined,
+} from "@ant-design/icons";
 
 type DeliveryManagerProp = {
     items: any[]; //TODO
@@ -12,6 +20,7 @@ type DeliveryManagerProp = {
 };
 
 const ParcelItem = forwardRef(function ParcelItemWrapper(props: DeliveryManagerProp, ref) {
+    const { token } = theme.useToken();
     const { items, fields, ...rest } = props;
 
     const renderItems = useMemo(() => {
@@ -22,12 +31,12 @@ const ParcelItem = forwardRef(function ParcelItemWrapper(props: DeliveryManagerP
                 extra: (
                     <>
                         {items[RowKey].completed ? (
-                            <span>
-                                <CheckSquareOutlined /> Completed
+                            <span style={{ color: token.colorSuccess }}>
+                                <CheckCircleOutlined /> Completed
                             </span>
                         ) : (
-                            <span>
-                                <LoadingOutlined /> Pending
+                            <span style={{ color: token.colorInfo }}>
+                                <MinusCircleOutlined /> Incomplete
                             </span>
                         )}
                     </>
@@ -35,9 +44,7 @@ const ParcelItem = forwardRef(function ParcelItemWrapper(props: DeliveryManagerP
                 label: (
                     <span>
                         <NumberOutlined /> {(RowKey + 1).toString().padStart(3, "0")} <Divider type="vertical" />
-                        <span style={{ fontWeight: 'bold' }}>
-                            {items[RowKey].description}
-                        </span>
+                        <span style={{ fontWeight: "bold" }}>{items[RowKey].description}</span>
                     </span>
                 ),
                 children: (

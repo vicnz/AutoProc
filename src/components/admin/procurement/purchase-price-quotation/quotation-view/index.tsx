@@ -80,6 +80,7 @@ const PriceQuotationPreview = function (props: { data: any; supplier: any }) {
             </Descriptions>
             {/* PARTICULARS VIEW */}
             <Table
+                size="middle"
                 bordered
                 columns={Columns as any}
                 dataSource={props.data?.particulars}

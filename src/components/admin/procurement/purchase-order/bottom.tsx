@@ -1,32 +1,31 @@
-'use client';
+"use client";
 
-import { Descriptions, Divider, Typography } from "antd"
+import { Descriptions, Divider, Typography } from "antd";
 import { useMemo } from "react";
 
-const BottomSection = function (props: { particulars: any[], reference: string }) {
-
+const BottomSection = function (props: { particulars: any[]; reference: string }) {
     const amount = useMemo(() => {
         let totalCost = 0;
         props.particulars.forEach((item: any) => {
-            totalCost += item.total
-        })
+            totalCost += item.total;
+        });
 
         //CONVERT TOTAL NUMBER TO CURRENCY
-        const total = Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'PHP'
-        }).format(totalCost)
+        const total = Intl.NumberFormat("en-US", {
+            style: "currency",
+            currency: "PHP",
+        }).format(totalCost);
 
         return total;
-    }, [props.particulars])
+    }, [props.particulars]);
 
     return (
-        <div style={{ padding: '5px 25px' }}>
+        <div style={{ padding: "5px 25px" }}>
             <Descriptions colon layout="vertical" size="small" column={2} bordered>
                 <Descriptions.Item label="Conforme" span={1}>
                     <div
                         style={{
-                            height: 100,
+                            height: 75,
                             display: "flex",
                             flexDirection: "column",
                             alignItems: "center",
@@ -45,7 +44,7 @@ const BottomSection = function (props: { particulars: any[], reference: string }
                 <Descriptions.Item label="Very Truly Yours" span={1}>
                     <div
                         style={{
-                            height: 100,
+                            height: 75,
                             display: "flex",
                             flexDirection: "column",
                             alignItems: "center",
@@ -63,20 +62,14 @@ const BottomSection = function (props: { particulars: any[], reference: string }
                         >
                             Dr. Djovi R. Durante
                         </Typography.Text>
-                        <Typography.Text
-                            style={{ width: "100%", textAlign: "center" }}
-                        >
+                        <Typography.Text style={{ width: "100%", textAlign: "center" }}>
                             College President
                         </Typography.Text>
                     </div>
                 </Descriptions.Item>
             </Descriptions>
-            <p>
-                Date: {'_'.padEnd(25, '_')}
-            </p>
-            <Divider>
-                ***
-            </Divider>
+            <p>Date: {"_".padEnd(25, "_")}</p>
+            <Divider>***</Divider>
             <Descriptions bordered size="small" column={2}>
                 <Descriptions.Item label="Funds Cluster" span={1}>
                     {"".padEnd(25, "\u2002")}
@@ -96,20 +89,20 @@ const BottomSection = function (props: { particulars: any[], reference: string }
             </Descriptions>
             <br />
             <br />
-            <div style={{ textAlign: 'center', display: "grid", placeItems: 'center' }}>
-                <div style={{ textAlign: 'center', width: 400, }}>
-                    <span style={{ width: 'inherit', fontSize: '1.1em', fontWeight: 'bold', textDecoration: 'uppercase' }}>
+            <div style={{ textAlign: "center", display: "grid", placeItems: "center" }}>
+                <div style={{ textAlign: "center", width: 400 }}>
+                    <span
+                        style={{ width: "inherit", fontSize: "1em", fontWeight: "bold", textDecoration: "uppercase" }}
+                    >
                         RHEA ANGELLICA B. ADDATU,CPA
                     </span>
                     <hr />
                     <span>Accountant I</span>
                 </div>
             </div>
-            <div style={{ textAlign: 'right' }}>
-                REF NO: {props.reference}
-            </div>
+            <div style={{ textAlign: "right" }}>REF NO: {props.reference}</div>
         </div>
-    )
-}
+    );
+};
 
 export default BottomSection;

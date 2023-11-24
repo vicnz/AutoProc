@@ -80,14 +80,30 @@ const RequestForQuotationForm = function (props: RequestForQuotationFormProps) {
                     <DatePicker style={{ width: "100%" }} />
                 </Form.Item>
                 {/* SELECT SUPPLIERS */}
-                <Form.Item name="suppliers" label="Suppliers">
+                <Form.Item
+                    name="suppliers"
+                    label="Suppliers"
+                    rules={[
+                        {
+                            required: true,
+                            message: "Please select at least one tag!",
+                        },
+                        {
+                            validator: (rule, value, callback) => {
+                                if (value) {
+                                    if (value.length >= 11) {
+                                        return Promise.reject("Maximum of 10 Suppliers");
+                                    } else {
+                                        return Promise.resolve("Applied");
+                                    }
+                                }
+                                return;
+                            },
+                        },
+                    ]}
+                >
                     <SelectSupplier />
                 </Form.Item>
-                {/* TODO */}
-                <SupplierManagement isEdit={false} buttonProps={{ block: true }}>
-                    Add New Supplier
-                </SupplierManagement>
-                {/*TODO*/}
                 <Divider />
                 <Button block type="primary" size="large" icon={<SaveOutlined />} htmlType="submit" loading={loading}>
                     Update RFQ Document

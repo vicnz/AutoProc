@@ -42,7 +42,7 @@ const Content = function (props: { data: any[]; abc: number }) {
     }, [props.data, props.abc]);
     return (
         <>
-            <Table columns={Columns as any} dataSource={dataSource as any} pagination={false} bordered />
+            <Table size="middle" columns={Columns as any} dataSource={dataSource as any} pagination={false} bordered />
         </>
     );
 };

@@ -75,7 +75,7 @@ const DeliveryItems = function (props: DeliveryItemsProps) {
                             </div>
                             <Divider type="vertical" />
                             <Button icon={<SaveOutlined />} htmlType="submit" loading={saving}>
-                                Updated Item List
+                                Apply
                             </Button>
                         </Space>
                     }

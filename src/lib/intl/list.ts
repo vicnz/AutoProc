@@ -7,7 +7,7 @@ export function toList(list: any[],) {
 
 export function toListLimited(list: any[], limit: number) {
     const formated = list.slice(0, limit)
-    if (limit > 3) {
+    if (limit < list.length) {
         formated.push("etc.")
     }
 

@@ -1,4 +1,5 @@
 import type { IParticulars } from './type'
+import { toListLimited } from '@lib/intl/list'
 
 export const parseParticulars = async (result: IParticulars[]) => {
     let total = 0;
@@ -11,7 +12,8 @@ export const parseParticulars = async (result: IParticulars[]) => {
         total += item.price * item.qty;
     });
 
-    const ListFormatter = new Intl.ListFormat("en");
-    particulars = ListFormatter.format(particulars);
+    // const ListFormatter = new Intl.ListFormat("en");
+    // particulars = ListFormatter.format(particulars);
+    particulars = toListLimited(particulars, 4);
     return [total, particulars]
 }

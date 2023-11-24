@@ -89,7 +89,11 @@ const AbstractQuotationForm = function (props: AbstractQuotationFormProps) {
                 <PurchaseRequestPreview showAmount />
                 <Divider>Abstracts</Divider>
                 <Space>
-                    <Form.Item label="Place of Bidding" name="location">
+                    <Form.Item
+                        label="Place of Bidding"
+                        name="location"
+                        rules={[{ required: true, message: "Required Bidding Location" }]}
+                    >
                         <Input />
                     </Form.Item>
                     <Form.Item label="Date" name="date">

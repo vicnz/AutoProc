@@ -8,15 +8,12 @@ import { Skeleton } from "antd";
 import { forwardRef, memo } from "react";
 import useSWR from "swr";
 // SELECT USER COMPONENT
-import SelectUser from './user';
+import SelectUser from "./user";
 
 //
-const SelectUserWrapper = forwardRef(function SelectUserWrap(props, ref) {
+const SelectUserWrapper = forwardRef(function SelectUserWrap(props: { isEdit?: boolean }, ref) {
     //FETCH ONLY PARTIAL DATA
-    const { data, error, isLoading, isValidating } = useSWR(
-        "/administrator/api/user?pick_only=true"
-    );
-
+    const { data, error, isLoading, isValidating } = useSWR("/administrator/api/user?pick_only=true");
 
     if (error) {
         return <span>Error Loading Data....</span>;
@@ -27,7 +24,7 @@ const SelectUserWrapper = forwardRef(function SelectUserWrap(props, ref) {
 
     return (
         <>
-            <SelectUser {...props} data={data} ref={ref} />
+            <SelectUser {...props} data={data} ref={ref} disabled={props.isEdit} />
         </>
     );
 });

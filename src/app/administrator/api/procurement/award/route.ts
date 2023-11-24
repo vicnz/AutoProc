@@ -5,6 +5,7 @@ import { computeQuotation, computeParticulars } from "./utility";
 import type { QuotationType } from "./type";
 import APIError from "@lib/server/api-error";
 import { logger } from "@logger";
+import { toListLimited } from '@lib/intl/list'
 
 //GET Award Information -> /administrator/api/award?_id=[pr-id]
 export const GET = async function (req: NextRequest) {
@@ -104,9 +105,10 @@ export const GET = async function (req: NextRequest) {
                     ),
                     department: result.pr.user?.department?.description,
                 },
-                particulars: ListFormatter.format(
-                    (result.pr.particulars as Array<{ description: string }>).map((item) => item.description)
-                ),
+                particulars: toListLimited((result.pr.particulars as { description: string }[]).map(item => item.description), 4),
+                // particulars:  ListFormatter.format(
+                //     (result.pr.particulars as Array<{ description: string }>).map((item) => item.description)
+                // ),
                 rfqDate: result.abstract.rfq?.date, //Request for Quotation Date of Issuance
                 abstractDate: result.abstract.date, //Abstract of Quotation Date of Issuance
                 suppliers: result.abstract.rfq?.suppliers || [],

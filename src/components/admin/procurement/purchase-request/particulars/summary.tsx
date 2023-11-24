@@ -1,24 +1,18 @@
 import { Table } from "antd";
+import { ToPeso } from "@lib/intl/currency";
 
 const RenderSummary = (pageData: any[]) => {
-    let totalCost = 0;
     let count = pageData.length;
 
     //COMPUTE THE TOTAL AMOUNT
-    pageData.forEach((item: any) => {
-        totalCost += item.total;
-    });
-
-    //CONVERT TOTAL NUMBER TO CURRENCY
-    const total = Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "PHP",
-    }).format(totalCost);
+    const subTotal = pageData.reduce((accumulator, currentValue) => {
+        return accumulator + currentValue.total;
+    }, 0);
 
     return (
         <>
             {/* EXTRA FIELDS */}
-            {new Array(8 - count).fill(0).map((item, idx) => {
+            {new Array(10 - count).fill(0).map((item, idx) => {
                 return (
                     <Table.Summary.Row key={idx + "row"}>
                         {new Array(5).fill(0).map((item, idx) => {
@@ -37,7 +31,7 @@ const RenderSummary = (pageData: any[]) => {
                     Total
                 </Table.Summary.Cell>
                 <Table.Summary.Cell index={4} key={"5cell"}>
-                    {total}
+                    {ToPeso(subTotal)}
                 </Table.Summary.Cell>
             </Table.Summary.Row>
             {/* SUMMARY ROW */}

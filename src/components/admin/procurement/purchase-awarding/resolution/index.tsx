@@ -8,7 +8,7 @@ import { memo, useMemo } from "react";
 const { Paragraph, Text } = Typography;
 
 const BACResolutionPreview = function (props: { type: "approve" | "review" | "notice"; data: any }) {
-    const { particulars, number, rfqDate, quotations, budget, supplier, enduser, subTotal } = props.data;
+    const { particulars, number, rfqDate, quotations, subTotal } = props.data;
     return (
         <div style={{ padding: "5px 25px" }}>
             <br />

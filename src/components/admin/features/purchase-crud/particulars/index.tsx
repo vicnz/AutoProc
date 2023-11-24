@@ -6,17 +6,17 @@
  */
 
 //libs
-import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
-import { Form, Space, InputNumber, Input, Button, App } from "antd";
+import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+import { Form, Space, InputNumber, Input, Button, App, Tooltip } from "antd";
 import { forwardRef, memo, useState } from "react";
-//SELECT UNIT TYPE
+// ─────────────────────────────────────────────────────────────────────────────
 import SelectUnit from "./unit";
 import { RuleObject } from "antd/es/form";
-//
+// ─────────────────────────────────────────────────────────────────────────────
 const SelectParticulars = forwardRef(function Particulars(props, ref) {
     const { message } = App.useApp();
     const [limit, setLimit] = useState(0);
-    //PARTICULAR VALIDATOR
+    // ─── Validator ───────────────────────────────────────────────────────
     const validator = (rule: RuleObject, value: any) => {
         if (value?.length < 1) {
             return Promise.reject("Empty Particulars");
@@ -24,7 +24,7 @@ const SelectParticulars = forwardRef(function Particulars(props, ref) {
             return Promise.resolve("Resolved");
         }
     };
-    ///
+    // ─────────────────────────────────────────────────────────────────────
     return (
         <Form.List
             name="particulars"
@@ -61,22 +61,26 @@ const SelectParticulars = forwardRef(function Particulars(props, ref) {
                                     />
                                 </Form.Item>
                                 {/* REMOVE PARTICULAR ITEM */}
-                                <MinusCircleOutlined
-                                    onClick={() => {
-                                        setLimit(limit - 1);
-                                        remove(field.name);
-                                    }}
-                                />
+                                <Tooltip title="Remove Item">
+                                    <Button
+                                        icon={<DeleteOutlined />}
+                                        type="text"
+                                        onClick={() => {
+                                            setLimit(limit - 1);
+                                            remove(field.name);
+                                        }}
+                                    />
+                                </Tooltip>
                             </Space>
                         );
                     })}
 
                     {/* ADD NEW PARTICULAR ITEM */}
-                    <Form.Item key={"submit-btn"}>
+                    <Form.Item key={"add-new-particular"}>
                         <Button
                             type="dashed"
                             onClick={() => {
-                                if (limit >= 8) {
+                                if (limit >= 10) {
                                     message.warning("Maximum Particular Items Reached");
                                 } else {
                                     add();

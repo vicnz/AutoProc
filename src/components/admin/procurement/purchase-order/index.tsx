@@ -73,7 +73,7 @@ const PurchaseOrder = function () {
                                 <p
                                     style={{
                                         textAlign: "center",
-                                        fontSize: "1.3em",
+                                        fontSize: "1.5em",
                                         fontWeight: "bold",
                                     }}
                                 >

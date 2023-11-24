@@ -116,7 +116,6 @@ const PurchaseRequestForm = function (props: PurchaseRequestFormProps) {
         }
     };
 
-    //
     return (
         <Form
             ref={formRef}
@@ -176,7 +175,7 @@ const PurchaseRequestForm = function (props: PurchaseRequestFormProps) {
                     {/* SELECT END USER AWAITED */}
                     <Form.Item name="userId" label="End User" rules={[{ required: true }, { min: 1, len: 36 }]}>
                         {/**@ts-ignore */}
-                        <EditEndUsers data={props?.users} />
+                        <EditEndUsers data={props?.users} isEdit={isEdit} />
                     </Form.Item>
                 </div>
                 <div>

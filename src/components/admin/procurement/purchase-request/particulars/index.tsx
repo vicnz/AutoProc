@@ -5,16 +5,15 @@ import { Table } from "antd";
 import Columns from "./columns";
 import renderSummary from "./summary";
 
-
 //types
 type IParticulars = {
-    qty: number,
-    unit: string,
-    description: string,
-    stock: string,
-    price: number,
-    total: number
-}
+    qty: number;
+    unit: string;
+    description: string;
+    stock: string;
+    price: number;
+    total: number;
+};
 interface DataTableProps {
     data: IParticulars[];
 }
@@ -22,6 +21,7 @@ interface DataTableProps {
 const DataTable = function (props: DataTableProps) {
     return (
         <Table
+            size="middle"
             bordered
             columns={Columns as any}
             dataSource={props.data}
@@ -32,4 +32,4 @@ const DataTable = function (props: DataTableProps) {
     );
 };
 
-export default memo(DataTable)
+export default memo(DataTable);
