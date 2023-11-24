@@ -7,7 +7,7 @@
 import { CopyOutlined, LinkOutlined } from "@ant-design/icons";
 import { App, Dropdown } from "antd";
 import type { DropdownProps, MenuProps } from "antd";
-import { PropsWithChildren, memo, useMemo } from "react";
+import { PropsWithChildren, memo, useCallback, useMemo } from "react";
 import { useCopyToClipboard } from "react-use";
 
 type ViewLinkProps = {
@@ -20,7 +20,7 @@ const LinkDetails = function (props: PropsWithChildren<ViewLinkProps>) {
     const { href, hrefType, ...rest } = props;
     const [copyState, setCopyState] = useCopyToClipboard();
 
-    const onOpenLink = () => {
+    const onOpenLink = useCallback(() => {
         if (window) {
             switch (hrefType) {
                 case "email":
@@ -34,12 +34,12 @@ const LinkDetails = function (props: PropsWithChildren<ViewLinkProps>) {
                     window.open(href, `_blank`);
             }
         }
-    };
+    }, [hrefType, href]);
 
-    const onCopy = () => {
+    const onCopy = useCallback(() => {
         setCopyState(href);
         message.open({ content: `${copyState.value} was copied to the clipboard` });
-    };
+    }, [href, copyState, message, setCopyState]);
 
     const menuProps: MenuProps["items"] = useMemo(
         () => [
@@ -56,7 +56,7 @@ const LinkDetails = function (props: PropsWithChildren<ViewLinkProps>) {
                 onClick: () => onCopy(),
             },
         ],
-        [props, message]
+        [onCopy, onOpenLink]
     );
 
     return (

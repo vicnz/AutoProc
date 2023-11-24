@@ -36,7 +36,7 @@ const Notify = function (props: PropsWithChildren<any>) {
         return () => {
             notification.destroy();
         };
-    }, []); //run once
+    }, [notification, showNotification]); //run once
 
     return <Fragment>{props.children}</Fragment>;
 };

@@ -33,8 +33,9 @@ export default function Index() {
                         }}
                         className={styles["image-figure"]}
                     >
-                        <img
+                        <Image
                             src="/acad.jpg"
+                            alt="Academic Building Picture"
                             style={{
                                 height: "100vh",
                                 width: "150%",
@@ -42,6 +43,8 @@ export default function Index() {
                                 top: 0,
                                 left: 0,
                             }}
+                            height={100}
+                            width={300}
                         />
                         <div
                             style={{

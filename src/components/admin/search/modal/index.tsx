@@ -39,7 +39,7 @@ const SearchModal = function (props: { closeModal?: (value: boolean) => {} }) {
                 }}
             />
         ),
-        [query, active]
+        [query, active, closeModal]
     );
 
     return (
