@@ -55,7 +55,7 @@ const ParcelItem = forwardRef(function ParcelItemWrapper(props: DeliveryManagerP
             };
         });
         return _items;
-    }, [fields, items]);
+    }, [fields, items, token.colorInfo, token.colorSuccess]);
     return (
         <>
             <Collapse {...rest} ref={ref as any} items={renderItems} size="small" accordion />

@@ -22,6 +22,7 @@ export const updateSupplier = async (formData: any) => {
         })
 
         revalidatePath(`/administrator/suppliers/${SupplierSchema.id}`)
+        revalidatePath(`/administrator/suppliers`)
     } catch (err) {
         console.log(err)
         return { error: true }
