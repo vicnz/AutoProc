@@ -1,47 +1,23 @@
-import { CSSProperties, PropsWithChildren, ReactNode } from "react";
-import { App, ConfigProvider, ThemeConfig } from "antd";
-
+import { PropsWithChildren } from "react";
+import ThemeConfig from "@lib/theme/theme-config";
+import { THEME_COLORS } from "@lib/theme/constant";
+import { App } from "antd";
+import Scrollview from "@components/scrollview";
 import Header from "./components/header";
-import TabRender from "./components/tabs";
-//
-const WrapperStyle: CSSProperties = {
-    width: "100vw",
-    display: "flex",
-    justifyContent: "center",
-};
-
-const ContentStyle: CSSProperties = {
-    display: "grid",
-    gridTemplateRows: "50px 1fr",
-    height: "100vh",
-    width: "100%",
-};
-
-const FontFamily = `'Poppins', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif`;
-//
-
-const theme: ThemeConfig = {
-    token: {
-        colorPrimary: "#C0252A",
-        fontFamily: FontFamily,
-    },
-};
-const Layout = async function (props: PropsWithChildren<{ checker: ReactNode }>) {
+// ─────────────────────────────────────────────────────────────────────────────
+function UtilityUserLayout(props: PropsWithChildren<any>) {
     return (
         <>
-            <ConfigProvider theme={theme}>
+            <ThemeConfig token={{ colorPrimary: THEME_COLORS.PRIMARY }}>
                 <App>
-                    <div style={WrapperStyle}>
-                        <div style={ContentStyle}>
-                            <Header />
-                            <TabRender checker={props.checker}>{props.children}</TabRender>
-                        </div>
+                    <div style={{ display: "grid", gridTemplateRows: "56px 1fr" }}>
+                        <Header />
+                        <Scrollview height={"calc(100vh - 56px)"}>{props.children}</Scrollview>
                     </div>
                 </App>
-            </ConfigProvider>
+            </ThemeConfig>
         </>
     );
-};
+}
 
-export default Layout;
+export default UtilityUserLayout;

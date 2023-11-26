@@ -60,3 +60,6 @@ app.log
 DELETE_DIR_*
 DELETE_FILE_*
 .env.development
+
+# labeled as OLD
+*.old*

@@ -5,10 +5,11 @@ import { Space, Steps, Tag, Timeline, TimelineProps } from "antd";
 import dayjs from "dayjs";
 import { memo, useMemo } from "react";
 
-///
-
-const Routes = memo(function RouteItem(props: { data: Array<{ id: string; name: string; timestamp: string }> }) {
-    //generate markdown
+// ─── Timeline ────────────────────────────────────────────────────────────────
+const OfficeTimeLine = memo(function RouteItem(props: {
+    data: Array<{ id: string; name: string; timestamp: string }>;
+}) {
+    // ─────────────────────────────────────────────────────────────────────
     const items: TimelineProps["items"] = useMemo(() => {
         return props.data.map((item) => {
             return {
@@ -23,8 +24,7 @@ const Routes = memo(function RouteItem(props: { data: Array<{ id: string; name: 
             };
         });
     }, [props.data]);
-
-    //
+    // ─────────────────────────────────────────────────────────────────────────────
     return (
         <Space direction="vertical" style={{ width: "100%", textAlign: "left" }}>
             <Timeline items={items} mode="left" />
@@ -32,7 +32,8 @@ const Routes = memo(function RouteItem(props: { data: Array<{ id: string; name: 
     );
 });
 
-const TrackingDisplay = (props: { data: Array<{ name: string; final: boolean; tracking: any[] }> }) => {
+// ─── Main Render ─────────────────────────────────────────────────────────
+const DocumentSteps = (props: { data: Array<{ name: string; final: boolean; tracking: any[] }> }) => {
     const data = useMemo(() => {
         return props.data.map((item, idx) => {
             const status = (props.data[--idx]?.final || false) && !props.data[idx++]?.final;
@@ -59,12 +60,13 @@ const TrackingDisplay = (props: { data: Array<{ name: string; final: boolean; tr
                 description: (
                     <>
                         <br />
-                        {item?.tracking?.length > 0 ? <Routes data={item.tracking} /> : "No Routed Office Yet"}
+                        {item?.tracking?.length > 0 ? <OfficeTimeLine data={item.tracking} /> : "No Routed Office Yet"}
                     </>
                 ),
             };
         });
     }, [props.data]);
+    // ─────────────────────────────────────────────────────────────────────
     return (
         <>
             <Steps items={data as any} />
@@ -72,4 +74,4 @@ const TrackingDisplay = (props: { data: Array<{ name: string; final: boolean; tr
     );
 };
 
-export default TrackingDisplay;
+export default DocumentSteps;

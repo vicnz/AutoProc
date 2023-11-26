@@ -1,29 +1,25 @@
 "use client";
 
-import { Alert, Button, Modal, Space } from "antd";
-import { useEffect, useRef, useState } from "react";
-import dayjs from "dayjs";
 import { CheckCircleOutlined, InfoCircleOutlined } from "@ant-design/icons";
-import Scanner from "./scanner";
-
+import Scanner from "@components/qr-scanner";
+import { Alert, Button, Modal, Space, Spin } from "antd";
+import dayjs from "dayjs";
+import { useEffect, useRef, useState } from "react";
+// ─── Props ───────────────────────────────────────────────────────────────────
 type ScannerModalProps = {
     onSubmit?: (param: { token: string; timestamp: Object }) => any;
     open: boolean;
     setOpen: (value: boolean) => any;
 };
-
-/**
- *
- */
+// ─────────────────────────────────────────────────────────────────────────────
 function ScannerModal(props: Readonly<ScannerModalProps>) {
     const { open, setOpen, onSubmit: onOk } = props;
-
     const currentTimestamp = dayjs(); //get current timestamp
     const [tokenString, setTokenString] = useState(undefined); //set decoded string from QR SCANNER API
     const timer = useRef<any>(null); //timer
 
     const onSubmit = async () => {
-        //is token String is not
+        // ─── Submit Token String ─────────────────────────────
         if (typeof tokenString !== "undefined") {
             onOk &&
                 onOk({
@@ -34,20 +30,22 @@ function ScannerModal(props: Readonly<ScannerModalProps>) {
     };
 
     const onScannerResult = (result: any) => {
+        // ─── Set Decoded String ──────────────────────────────────────
         if (result) {
             setTokenString(result?.text);
         }
     };
 
     useEffect(() => {
-        //Close Scanner After 15 Seconds If There Are No Scanner Result
+        // ─── Close Modal Scanner After 15 Seconds ────────────────────
+        // ─── Prevent Memory Leaks ────────────────────────────────────
         timer.current = setTimeout(() => {
             setTokenString(undefined);
             setOpen(false);
         }, 15000);
 
         return () => {
-            clearTimeout(timer.current);
+            clearTimeout(timer.current); //Cear Out Timer
         };
     }, [props.open, setOpen, onOk]);
 
@@ -85,13 +83,17 @@ function ScannerModal(props: Readonly<ScannerModalProps>) {
                     style={{
                         position: "absolute",
                         left: 0,
-                        height: 300,
+                        height: 250,
                         display: "grid",
                         placeItems: "center",
                         width: "100%",
                     }}
                 >
-                    {tokenString ? <CheckCircleOutlined style={{ color: "white", fontSize: "4em" }} /> : null}
+                    {tokenString ? (
+                        <CheckCircleOutlined style={{ color: "white", fontSize: "4em" }} />
+                    ) : (
+                        <Spin spinning size="large" tip="Scanning" />
+                    )}
                 </div>
                 {/* SCANNER COMPONENT */}
                 <Scanner onError={() => {}} onScan={onScannerResult} style={{ width: "100%", borderRadius: 8 }} />

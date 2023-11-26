@@ -1,18 +1,21 @@
 "use client";
 
 import { ExpandOutlined } from "@ant-design/icons";
-import Preview from "./steps-view";
+import Preview from "./steps";
 import { Drawer } from "antd";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-
+// ─────────────────────────────────────────────────────────────────────────────
 function PreviewPR(props: { data: any; number: string }) {
-    const { back } = useRouter();
+    const { back } = useRouter(); //router
+    // ─────────────────────────────────────────────────────────────────────
     const [open, setOpen] = useState(false);
     const [expand, setExpand] = useState(false);
+    // ─────────────────────────────────────────────────────────────────────
     useEffect(() => {
         setOpen(true);
     }, []);
+    // ─────────────────────────────────────────────────────────────────────
     return (
         <>
             <Drawer
@@ -23,8 +26,6 @@ function PreviewPR(props: { data: any; number: string }) {
                     setOpen(false);
                     setExpand(false);
                     back();
-                    // setResult(undefined);
-                    // setDecodedString(undefined);
                 }}
                 placement="bottom"
                 size={expand ? "large" : "default"}

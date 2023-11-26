@@ -1,29 +1,16 @@
-import { fetchDepartmentsWithSection } from "@state/utility/preload";
-import { Affix, Cascader, Divider, Flex, Select, Space, Typography } from "antd";
-import Image from "next/image";
-import ScannerLogo from "@media/scanner-logo.svg";
-import ScannerInput from "./components/form";
+import { getServerSession } from "next-auth/next";
+import { options } from "@lib/auth/options";
+import { notFound, redirect } from "next/navigation";
 
-const Page = async function () {
-    const data = await fetchDepartmentsWithSection();
-    return (
-        <Space direction="vertical" style={{ width: "100%", padding: "0px 0px 0px 24px" }}>
-            <Flex vertical align="center" style={{ width: "100%" }}>
-                <br />
-                <br />
-                <Image alt="App Logo" src={ScannerLogo} height={150} width={175} />
-                <br />
-                <Image alt="App Logo" src="/logo-medium.png" height={38} width={300} />
-                <Divider />
-                <p style={{ textAlign: "center" }}>
-                    AutoProc Utility App (QRCODE SCANNER), Point the Scanner Camera onto an AutoProc Generated QR Code
-                    to Display Document Information
-                </p>
-            </Flex>
-            <Divider>Select Destination Office</Divider>
-            <ScannerInput data={data} />
-        </Space>
-    );
-};
+async function UtilityPage() {
+    const session = await getServerSession(options);
+    if (session?.user.role === "TRACKER") {
+        redirect("/utility/tracker");
+    } else if (session?.user.role === "CHECKER") {
+        redirect("/utility/checker");
+    } else {
+        notFound();
+    }
+}
 
-export default Page;
+export default UtilityPage;
