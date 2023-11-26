@@ -20,7 +20,7 @@ interface TopSectionProps {
 const TopSection = function (props: TopSectionProps) {
     return (
         <div style={{ padding: "5px 25px" }}>
-            <Descriptions bordered size="small" column={4} layout="vertical">
+            <Descriptions bordered size="small" column={4} layout="horizontal">
                 <Descriptions.Item label="PR Number" span={2}>
                     {props.data?.number}
                 </Descriptions.Item>
@@ -28,7 +28,7 @@ const TopSection = function (props: TopSectionProps) {
                     {dayjs(props.data.date).format("MM/DD/YYYY")}
                 </Descriptions.Item>
                 <Descriptions.Item label="Reference No." span={2}>
-                    BAC-RESO No. {props.data?.reference}
+                    {props.data?.reference}
                 </Descriptions.Item>
                 <Descriptions.Item label="OBR" span={2}>
                     {props.data?.obr}

@@ -79,15 +79,6 @@ function FormDrawer(props: FormDrawerProps) {
                         <AvatarUploader onSave={onImageUpload} initData={props.userData?.profile} />
                     </Form.Item>
                 </Flex>
-                <Flex align="center" justify="center">
-                    <Form.Item name="userType">
-                        <Radio.Group buttonStyle="solid">
-                            <Radio.Button value={"USER"}>USER</Radio.Button>
-                            <Radio.Button value={"TRACKER"}>TRACKER</Radio.Button>
-                            <Radio.Button value={"CHECKER"}>CHECKER</Radio.Button>
-                        </Radio.Group>
-                    </Form.Item>
-                </Flex>
                 <Divider>PERSONAL INFORMATION</Divider>
                 <Form.Item name="fname" label="First Name" rules={[{ required: true, message: "Required First Name" }]}>
                     <Input />
