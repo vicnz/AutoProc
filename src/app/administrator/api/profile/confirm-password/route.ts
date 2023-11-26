@@ -2,7 +2,7 @@
  * VALIDATE ADMINISTRATOR PASSWORD
  */
 
-import { validateAdmin } from '@lib/auth'
+import { validateAdmin, confirmPassword } from '@lib/auth'
 import { NextRequest, NextResponse } from 'next/server'
 
 export const POST = async (req: NextRequest) => {
@@ -10,7 +10,7 @@ export const POST = async (req: NextRequest) => {
         const body: { id: string, password: string } = await req.json()
         if (typeof body === 'undefined' || body === null) throw "No Body Provided"
 
-        const result = await validateAdmin(body.id, body.password)
+        const result = await confirmPassword(body.id, body.password)
         if (!result) {
             return NextResponse.json({ error: true, message: "Password Does Not Match" })
         } else {

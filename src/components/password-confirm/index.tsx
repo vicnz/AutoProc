@@ -4,7 +4,7 @@ import { App, Input, Modal } from "antd";
 import { useState } from "react";
 
 //use Password Confirm [ONLY AVAILABE FOR ADMIN FOR THE MEAN TIME]
-export const useConfirm = (userid: string, callback: (value: boolean) => any) => {
+export const useConfirm = (userid: string, api: string, callback: (value: boolean) => any) => {
     const [open, setOpen] = useState(false); //OPEN MODAL
 
     const trigger = () => {
@@ -18,7 +18,7 @@ export const useConfirm = (userid: string, callback: (value: boolean) => any) =>
     };
 
     //RENDER CONFIRM DIALOG
-    const RenderConfirmDialog = (props: { userid: string; onConfirm: (value: boolean) => any }) => {
+    const RenderConfirmDialog = (props: { userid: string; api: string; onConfirm: (value: boolean) => any }) => {
         const { message } = App.useApp();
         const [input, setInput] = useState(""); //INPUT PASSWORD
         const [loading, setLoading] = useState(false); //LOADING STATE
@@ -30,7 +30,7 @@ export const useConfirm = (userid: string, callback: (value: boolean) => any) =>
             } else {
                 setLoading(true);
                 //FETCH API
-                const request = await fetch("/administrator/api/profile/confirm-password", {
+                const request = await fetch(props.api, {
                     method: "POST",
                     body: JSON.stringify({
                         id: props.userid,
@@ -87,7 +87,7 @@ export const useConfirm = (userid: string, callback: (value: boolean) => any) =>
     };
 
     return {
-        Component: <RenderConfirmDialog userid={userid} onConfirm={onConfirmed} />,
+        Component: <RenderConfirmDialog userid={userid} onConfirm={onConfirmed} api={api} />,
         trigger: () => trigger(),
     };
 };

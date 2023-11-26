@@ -100,3 +100,21 @@ export const updateAdminPassword = async (id: string, password: string) => {
         return null
     }
 }
+
+// ─── Confirm Userpassword ────────────────────────────────────────────────────
+export const confirmPassword = async (id: string, password: string) => {
+    const user = await db.users.findUnique({
+        select: {
+            id: true,
+            password: true,
+        },
+        where: {
+            id,
+        },
+    });
+
+    if (!user) return null;
+    const compare = await comparePassword(user.password, password);
+    if (!compare) return null;
+    return { ok: true };
+}

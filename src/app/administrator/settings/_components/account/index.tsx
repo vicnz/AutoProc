@@ -26,7 +26,11 @@ function AccountView(props: { account: any }) {
         }
     };
 
-    const { Component, trigger } = useConfirm(props.account.id, callback); //USE CONFIRM
+    const { Component, trigger } = useConfirm(
+        props.account.id,
+        "/administrator/api/profile/confirm-password",
+        callback
+    ); //USE CONFIRM
 
     const onSubmit = async () => {
         //SHOW PASSWORD CONFIRM

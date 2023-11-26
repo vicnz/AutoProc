@@ -20,7 +20,7 @@ function PasswordReset(props: { account: any }) {
         setValid(value);
     };
 
-    const { Component, trigger } = useConfirm(id, onConfirmed);
+    const { Component, trigger } = useConfirm(id, "/administrator/api/profile/confirm-password", onConfirmed);
 
     const onSubmit = async () => {
         setLoading(true);
