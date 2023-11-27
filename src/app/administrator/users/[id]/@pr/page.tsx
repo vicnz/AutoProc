@@ -1,27 +1,33 @@
 import { Card, Empty, List } from "antd";
-import { fetchUserPurchaseRequest } from "@state/users/preload";
-import RenderListItem from "../_components/render-list";
+import { userPurchases } from "./preload";
 import { Fragment } from "react";
+import { notFound } from "next/navigation";
+import RenderParticularList from "./components/render-list";
 
 async function Page(props: { params: { id: string } }) {
     const { id } = props.params;
-    const data = await fetchUserPurchaseRequest(id);
+    const prs = await userPurchases(id);
+
+    if (typeof prs.data === "undefined" || prs.error) notFound();
+
     return (
-        <Card title="Purchase Requests">
-            {data.length < 1 ? (
-                <Empty />
-            ) : (
-                <List>
-                    {data.map((item: any) => {
-                        return (
-                            <Fragment key={item.id}>
-                                <RenderListItem item={item} />
-                            </Fragment>
-                        );
-                    })}
-                </List>
-            )}
-        </Card>
+        <div style={{ padding: 15 }}>
+            <Card title="Purchase Requests">
+                {prs.data.length < 1 ? (
+                    <Empty />
+                ) : (
+                    <List>
+                        {prs.data.map((item: any) => {
+                            return (
+                                <Fragment key={item.id}>
+                                    <RenderParticularList item={item} />
+                                </Fragment>
+                            );
+                        })}
+                    </List>
+                )}
+            </Card>
+        </div>
     );
 }
 
