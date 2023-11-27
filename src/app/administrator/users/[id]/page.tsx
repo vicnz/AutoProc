@@ -1,53 +1,62 @@
 //
-import { fetchUser } from "@state/users/preload";
+import { fetchUser } from "./preload";
 //
-import { Alert, Button, Card, Divider, Flex, Segmented } from "antd";
-import { CSSProperties } from "react";
-import AvatarPreview from "./_components/details/avatar-view";
-import UserType from "./_components/details/user-type";
-import Content from "./_components/details/content";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import EditUser from "./_components/edit/open-drawer-edit";
-import FormComponent from "./_components/edit/";
-
-const WrapperStyle: CSSProperties = {
-    position: "relative",
-    overflowY: "auto",
-    height: "calc(100vh - 170px)",
-    width: "100%",
-};
-
-const ScrollView: CSSProperties = {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100%",
-    padding: "15px 25px",
-};
+import { Alert, Button, Card, Divider } from "antd";
+import AvatarView from "./components/avatar-view";
+import UserInfo from "./components/content";
+import { DeleteOutlined } from "@ant-design/icons";
+import { notFound } from "next/navigation";
+import ScrollView from "@components/scrollview";
+import DrawerOpener from "@components/drawer";
+import EditUser from "./components/form";
 
 async function UserInfoPage(props: { params: { id: string } }) {
     const { id } = props.params;
     const data = await fetchUser(id);
+    if (data?.error) notFound();
+
     return (
         <Card
             title={`${data.fullname}`}
             style={{ borderRadius: 0, height: "inherit" }}
             bodyStyle={{ padding: 0, margin: 0 }}
+            extra={
+                <>
+                    <Button style={{ pointerEvents: "none" }} type="dashed" shape="round">
+                        {data.userType}
+                    </Button>
+                </>
+            }
         >
-            <div style={WrapperStyle}>
-                <div style={ScrollView}>
-                    <AvatarPreview profile={data.profile as any} name={data.fullname} />
-                    <UserType userType={data.userType} />
+            <ScrollView height={"calc(100vh - 170px)"}>
+                <div style={{ padding: "15px 25px" }}>
+                    <AvatarView profile={data.profile as string} name={data.fullname} />
                     <br />
-                    <Content data={data} />
+                    <UserInfo
+                        data={{
+                            fname: data.fname,
+                            lname: data.lname,
+                            mname: data.mname,
+                            suffix: data.suffix,
+                            username: data.username,
+                            department: data.department,
+                            section: data.section,
+                            email: data.email,
+                            phone: data.phone,
+                            link: data.link,
+                        }}
+                    />
                     <Divider />
-                    <EditUser
-                        content="Edit User Info"
-                        btnProps={{ icon: <EditOutlined />, block: true, type: "primary" }}
+                    <DrawerOpener
+                        drawerProps={{ destroyOnClose: true }}
                         title="Edit User"
+                        buttonChildren={<>Edit User</>}
+                        buttonProps={{ type: "primary", block: true, size: "middle" }}
                     >
-                        <FormComponent id={props.params.id} />
-                    </EditUser>
+                        <EditUser id={props.params.id} />
+                    </DrawerOpener>
+
+                    {/* TODO section */}
                     <Divider>Danger Section</Divider>
                     <Alert
                         message="Delete User"
@@ -67,8 +76,9 @@ async function UserInfoPage(props: { params: { id: string } }) {
                             </>
                         }
                     />
+                    {/* TODO Section */}
                 </div>
-            </div>
+            </ScrollView>
         </Card>
     );
 }

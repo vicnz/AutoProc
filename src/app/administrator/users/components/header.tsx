@@ -1,22 +1,27 @@
-//libs
 import { QuestionCircleOutlined, UserAddOutlined } from "@ant-design/icons";
 import { Divider } from "antd";
-//components
 import GlobalHeader from "@components/admin/header";
-import Paginate from "./paginate";
-import OpenAddDrawer from "./open-drawer-edit";
-import AddNewForm from "./add-new";
 import Manual from "@components/shared/manual";
+import OpenDrawer from "@components/drawer";
+import { ReactNode } from "react";
+import AddNewUser from "./add";
 
-const UserManagementHeader = function (props: { count: number; size: number }) {
+const UserManagementHeader = function (props: { children?: ReactNode }) {
     return (
         <>
             <GlobalHeader title="USER MANAGEMENT">
-                <Paginate count={props.count} size={props.size} />
+                {props.children}
                 <Divider type="vertical" />
-                <OpenAddDrawer content="Add New User" btnProps={{ icon: <UserAddOutlined /> }} title="Add New User">
-                    <AddNewForm />
-                </OpenAddDrawer>
+                <OpenDrawer
+                    title="Add New User"
+                    buttonProps={{ icon: <UserAddOutlined /> }}
+                    buttonChildren={<>Add New User</>}
+                    drawerProps={{ destroyOnClose: true }}
+                >
+                    {/* <AddNewForm /> */}
+                    <br />
+                    <AddNewUser />
+                </OpenDrawer>
                 <Divider type="vertical" />
                 <Manual
                     icon={<QuestionCircleOutlined />}

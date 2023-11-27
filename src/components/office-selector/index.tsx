@@ -1,3 +1,4 @@
+//TO BE USED INSIDE A ANTD FORM
 import { Cascader, CascaderProps } from "antd";
 import { forwardRef } from "react";
 
@@ -8,7 +9,7 @@ interface Option {
 }
 
 type OfficeDesignateSelectorProps = {
-    data: Option[];
+    data: CascaderProps["options"];
 } & CascaderProps;
 
 const OfficeDesignateSelector = forwardRef(function Wrapper(props: OfficeDesignateSelectorProps, ref) {

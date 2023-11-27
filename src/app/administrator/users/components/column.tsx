@@ -13,10 +13,10 @@ import {
     UserOutlined,
 } from "@ant-design/icons";
 import { Avatar, TableColumnsType, Button } from "antd";
-import toBase64 from "@lib/client/blob-to-base64";
 import BoringAvatar from "boring-avatars";
 import OpenLink from "@components/shared/open-link";
-import View from "./view-item";
+import LoadingButton from "@components/loading-btn";
+import Link from "next/link";
 
 const UserManagementColumns: TableColumnsType = [
     {
@@ -185,7 +185,11 @@ const UserManagementColumns: TableColumnsType = [
         dataIndex: "",
         key: "",
         render: (e: any) => {
-            return <View id={e.key} />;
+            return (
+                <Link href={`/administrator/users/${encodeURIComponent(e.key)}`} passHref>
+                    <LoadingButton icon={<EyeOutlined />}>Details</LoadingButton>
+                </Link>
+            );
         },
     },
 ];

@@ -1,6 +1,6 @@
 import { CSSProperties, PropsWithChildren, ReactNode } from "react";
 import Content from "@components/admin/content";
-import Header from "./_components/header";
+import Header from "./components/header";
 
 const SplitStyle: CSSProperties = {
     display: "grid",

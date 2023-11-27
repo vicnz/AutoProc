@@ -4,9 +4,9 @@ import ImgCrop from "antd-img-crop";
 import { useState } from "react";
 import { Upload } from "antd";
 import { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
-
-const AvatarEditor = (props: { onChange: (e: any) => any }) => {
-    const [file, setFile] = useState<UploadFile>();
+// ─────────────────────────────────────────────────────────────────────────────
+const AvatarEditor = (props: { onChange: (e: any) => any; initValue?: UploadFile }) => {
+    const [file, setFile] = useState<UploadFile | undefined>(props.initValue && props.initValue);
 
     const onChange: UploadProps["onChange"] = ({ file }) => {
         if (file.status === "removed") {
