@@ -1,13 +1,12 @@
-import AddNewSupplier from "./components/add";
 import RenderList from "./components/render-items";
-import { preload } from "@state/suppliers/preloads";
+import { preload } from "./preload";
 
 async function SupplierPage() {
     const data = await preload();
+    if (data.error || typeof data.data === "undefined") throw new Error("Server Error");
     return (
         <div style={{ padding: 10 }}>
-            <RenderList data={data} />
-            <AddNewSupplier />
+            <RenderList data={data.data} />
         </div>
     );
 }

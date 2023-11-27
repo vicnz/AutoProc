@@ -1,19 +1,15 @@
 "use client";
 
-//libs
 import { CSSProperties, PropsWithChildren, memo } from "react";
-//components
 import Header from "./components/header";
 import Content from "@components/admin/content";
 import { motion } from "framer-motion";
 
-//Content Styles
 const WrapperStyles: CSSProperties = {
     display: "grid",
     gridTemplateColumns: "1fr",
     height: "calc(100vh - 112px)",
 };
-//
 const SupplierLayout = function (props: PropsWithChildren<any>) {
     return (
         <Content header={<Header />}>

@@ -1,20 +1,14 @@
 "use client";
 
-import { Button, Card, Divider, List, Progress, Space, Statistic, Tag, Tooltip } from "antd";
+import { Card, List, Statistic, Tooltip } from "antd";
 import Avatar from "boring-avatars";
-import { memo, useEffect } from "react";
 import { motion } from "framer-motion";
-import { ArrowUpOutlined, EyeOutlined, LineChartOutlined } from "@ant-design/icons";
+import { EyeOutlined, LineChartOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import { PrismaModels } from "@lib/db";
-import { Chart as ChartJs, registerables } from "chart.js";
-import { Bar } from "react-chartjs-2";
+import LoadingButton from "@components/loading-btn";
 
 function RenderSupplierList(props: { data: Partial<PrismaModels["suppliers"]>[] }) {
-    useEffect(() => {
-        ChartJs.register(...registerables);
-    }, []);
-
     return (
         <List
             grid={{ gutter: 16, column: 3 }}
@@ -36,7 +30,7 @@ function RenderSupplierList(props: { data: Partial<PrismaModels["suppliers"]>[] 
                                 extra={
                                     <>
                                         <Link href={`/administrator/suppliers/${encodeURIComponent(item.id)}`} passHref>
-                                            <Button icon={<EyeOutlined />}>Details</Button>
+                                            <LoadingButton icon={<EyeOutlined />}>Details</LoadingButton>
                                         </Link>
                                     </>
                                 }
@@ -75,4 +69,4 @@ function RenderSupplierList(props: { data: Partial<PrismaModels["suppliers"]>[] 
     );
 }
 
-export default memo(RenderSupplierList);
+export default RenderSupplierList;

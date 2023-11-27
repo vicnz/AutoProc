@@ -4,13 +4,10 @@ import { SaveOutlined } from "@ant-design/icons";
 import { App, Button, Divider, Form, Input } from "antd";
 import { PrismaModels } from "@lib/db";
 import { useState } from "react";
-//actions
-import { addNewSupplier } from "@state/suppliers/actions";
-//
+import { addNewSupplier } from "./actions";
+import { objectToForm } from "@lib/converters/formData";
 
-type SupplierDataType = Partial<PrismaModels["suppliers"]>;
-
-function FormSupplier(props: { data: SupplierDataType; edit?: boolean; close?: () => void }) {
+function AddSupplier() {
     const { message } = App.useApp();
     const [loading, setLoading] = useState(false);
     const [form] = Form.useForm();
@@ -18,31 +15,32 @@ function FormSupplier(props: { data: SupplierDataType; edit?: boolean; close?: (
     //save
     const onFinish = async () => {
         setLoading(true);
-        const data = form.getFieldsValue();
-        const actions = await addNewSupplier(JSON.stringify(data));
-        if (actions?.error) {
-            message.error("An Error Occured Please Try Again");
+
+        const data = {
+            ...form.getFieldsValue(),
+        };
+        const formData = objectToForm(data);
+
+        const action = await addNewSupplier(formData);
+        if (action.error) {
+            message.error(`Error Occured ${action?.message}`);
             setLoading(false);
         } else {
-            message.success("Added New Supplier 👍🏻");
+            message.success("Added New Supplier");
             setLoading(false);
-            props?.close && props.close();
         }
     };
     //
     return (
-        <Form
-            form={form}
-            layout="vertical"
-            initialValues={{ ...props.data }}
-            method="PUT"
-            onFinish={onFinish}
-            preserve={false}
-        >
-            <Form.Item name="id" hidden>
-                <Input />
-            </Form.Item>
-            <Form.Item label="TIN" name="tin" rules={[{ required: true, message: "TIN Number is Required" }]}>
+        <Form form={form} layout="vertical" onFinish={onFinish}>
+            <Form.Item
+                label="TIN"
+                name="tin"
+                rules={[
+                    { required: true, message: "TIN Number is Required" },
+                    { pattern: /^\d{3}-\d{3}-\d{3}-\d{3}$/, message: "Invalid Tin No. Format" },
+                ]}
+            >
                 <Input />
             </Form.Item>
             <Form.Item label="Name" name="name" rules={[{ required: true, message: "Supplier Name Required" }]}>
@@ -66,6 +64,7 @@ function FormSupplier(props: { data: SupplierDataType; edit?: boolean; close?: (
             >
                 <Input />
             </Form.Item>
+            <Divider />
             <Button icon={<SaveOutlined />} type="primary" loading={loading} htmlType="submit" block>
                 Save Supplier
             </Button>
@@ -73,4 +72,4 @@ function FormSupplier(props: { data: SupplierDataType; edit?: boolean; close?: (
     );
 }
 
-export default FormSupplier;
+export default AddSupplier;

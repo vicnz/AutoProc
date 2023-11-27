@@ -4,7 +4,7 @@ import { Button, Divider, Space } from "antd";
 import { memo } from "react";
 //components
 import GlobalHeader from "@components/admin/header";
-import LoadingButton from "@components/loading-btn";
+import { Back } from "@components/loading-btn";
 // import BackButton from "./back-btn";
 import Link from "next/link";
 
@@ -19,11 +19,9 @@ const UserInfoHeader = function () {
                 }
                 back={
                     <>
-                        <Link href="/administrator/users" passHref>
-                            <LoadingButton icon={<ArrowLeftOutlined />} type="text">
-                                Back
-                            </LoadingButton>
-                        </Link>
+                        <Back icon={<ArrowLeftOutlined />} type="text">
+                            Back
+                        </Back>
                     </>
                 }
             >

@@ -5,15 +5,16 @@ import { Card, Descriptions, Modal, Space } from "antd";
 import Avatar from "boring-avatars";
 import { useRouter } from "next/navigation";
 import EditSupplier from "./form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function SupplierItem(props: { data: any }) {
+    const [open, setOpen] = useState(false);
     const router = useRouter();
     const onClose = () => {
-        router.push("/administrator/suppliers");
+        router.back();
     };
     useEffect(() => {
-        //
+        setOpen(true);
     }, []);
     return (
         <Modal
@@ -22,12 +23,13 @@ function SupplierItem(props: { data: any }) {
                     <ShopOutlined /> SUPPLIER INFORMATION
                 </span>
             }
-            open={true}
+            open={open}
             footer={false}
             onCancel={() => onClose()}
             onOk={() => onClose()}
             centered
             width={700}
+            maskClosable={false}
         >
             <Space style={{ display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "start", gap: 15 }}>
                 <div>
@@ -47,7 +49,7 @@ function SupplierItem(props: { data: any }) {
                         </Descriptions.Item>
                     </Descriptions>
                 </div>
-                <EditSupplier data={props.data} edit={true} />
+                <EditSupplier data={props.data} />
             </Space>
         </Modal>
     );

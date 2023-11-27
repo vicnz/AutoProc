@@ -8,7 +8,7 @@ async function Page(props: { params: { id: string } }) {
     const { id } = props.params;
     const prs = await userPurchases(id);
 
-    if (typeof prs.data === "undefined" || prs.error) notFound();
+    if (typeof prs.data === "undefined" || prs.error) throw new Error();
 
     return (
         <div style={{ padding: 15 }}>
