@@ -1,6 +1,5 @@
-import { Card, Result, Skeleton } from "antd";
-import React from "react";
-import ScrollView from "../components/scroll-view";
+import { Card, Result } from "antd";
+import ViewScroll from "@components/scrollview";
 import { TeamOutlined } from "@ant-design/icons";
 
 function Officers() {
@@ -14,7 +13,7 @@ function Officers() {
             style={{ height: 400 }}
             bodyStyle={{ padding: 0, margin: 0, height: "100%" }}
         >
-            <ScrollView height={400 - 75}>
+            <ViewScroll height={"calc(400px - 56px)"}>
                 <div style={{ padding: 10 }}>
                     <Result
                         title="Work In Progress"
@@ -22,7 +21,7 @@ function Officers() {
                         subTitle="Officer Management, Still A Work In Progress Feature"
                     />
                 </div>
-            </ScrollView>
+            </ViewScroll>
         </Card>
     );
 }

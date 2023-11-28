@@ -1,7 +1,8 @@
 import { SaveOutlined } from "@ant-design/icons";
-import { addSection } from "@state/entities/actions";
-import { Form, Input, Flex, Space, Button, Select, Divider } from "antd";
-import { useMemo } from "react";
+import { Form, Input, Flex, Space, Button, Select, Divider, App } from "antd";
+import { useMemo, useState } from "react";
+import { objectToForm } from "@lib/converters/formData";
+import { addSection } from "./actions";
 
 const initData = {
     name: null,
@@ -10,9 +11,20 @@ const initData = {
 
 function NewDepartment(props: { close: () => any; departmentList: Array<{ id: string; description: string }> }) {
     const [form] = Form.useForm();
+    const { message } = App.useApp();
+    const [loading, setLoading] = useState(false);
+
     const onFinish = async () => {
-        const data = form.getFieldsValue();
-        const result = await addSection(JSON.stringify({ ...data }));
+        setLoading(true);
+        const data = objectToForm(form.getFieldsValue());
+        const result = await addSection(data);
+        if (result?.error) {
+            setLoading(false);
+            message.error(`An Error Occured ${result.message}`);
+        } else {
+            setLoading(false);
+            message.success(`Added New Office`);
+        }
     };
 
     const options = useMemo(() => {
@@ -38,7 +50,11 @@ function NewDepartment(props: { close: () => any; departmentList: Array<{ id: st
                     <Select options={options} />
                 </Form.Item>
                 <Divider />
-                <Form.Item name="name" label="Name (Short Name)" rules={[{ required: true }]} tooltip="Unique">
+                <Form.Item
+                    name="name"
+                    label="Office Code"
+                    rules={[{ required: true }, { pattern: /^[A-Z0-9]{3,5}$/, message: "Enter Valid Office Code" }]}
+                >
                     <Input />
                 </Form.Item>
                 <Form.Item name="description" label="Description" rules={[{ required: true }]}>
@@ -46,7 +62,7 @@ function NewDepartment(props: { close: () => any; departmentList: Array<{ id: st
                 </Form.Item>
                 <Flex justify="end">
                     <Space>
-                        <Button type="primary" icon={<SaveOutlined />} htmlType="submit">
+                        <Button type="primary" icon={<SaveOutlined />} htmlType="submit" loading={loading}>
                             Save
                         </Button>
                         <Button onClick={() => props.close()}>Cancel</Button>

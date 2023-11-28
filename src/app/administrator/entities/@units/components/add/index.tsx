@@ -1,11 +1,11 @@
 "use client";
 
 import { SaveOutlined } from "@ant-design/icons";
-import db from "@lib/db";
-import { Button, ButtonProps, Drawer, DrawerProps, Flex, Form, Input, Modal, ModalProps, Select } from "antd";
-import { revalidatePath } from "next/cache";
-import React, { ReactNode, useState } from "react";
-import { addUnit } from "@state/entities/actions";
+import { App, Button, ButtonProps, Flex, Form, Input, Modal, ModalProps } from "antd";
+import { ReactNode, useState } from "react";
+// import { addUnit } from "@state/entities/actions";
+import { addUnit } from "./action";
+import { objectToForm } from "@lib/converters/formData";
 
 type AddNewUnitProps = {
     btnProps?: ButtonProps;
@@ -17,15 +17,21 @@ type AddNewUnitProps = {
 function AddNewUnit(props: AddNewUnitProps) {
     const [open, setOpen] = useState(false);
     const [form] = Form.useForm();
+    const { message } = App.useApp();
+    const [loading, setLoading] = useState(false);
     const { btnProps, modalProps, children, ...rest } = props;
 
     const onFinish = async () => {
-        const formData = form.getFieldsValue();
-        const result = await addUnit(JSON.stringify(formData));
+        setLoading(true);
+        const data = objectToForm(form.getFieldsValue());
+        const result = await addUnit(data);
+
         if (result?.error) {
-            console.log("error Occured");
+            message.error(`An Error Occured ${result.message}`);
+            setLoading(false);
         } else {
-            console.log("Add New Unit. Type..");
+            message.success("Added A New Unit Type");
+            setLoading(false);
             setOpen(false);
         }
     };
@@ -47,8 +53,7 @@ function AddNewUnit(props: AddNewUnitProps) {
                     <Form.Item
                         name="id"
                         label="Name (Short Name)"
-                        rules={[{ required: true }]}
-                        tooltip="Should Be Unique"
+                        rules={[{ required: true }, { pattern: /^[a-z]{2,3}$/, message: "Unit Code Invalid" }]}
                     >
                         <Input />
                     </Form.Item>
@@ -56,8 +61,8 @@ function AddNewUnit(props: AddNewUnitProps) {
                         <Input />
                     </Form.Item>
                     <Flex justify="end">
-                        <Button type="primary" icon={<SaveOutlined />} htmlType="submit">
-                            Save
+                        <Button type="primary" icon={<SaveOutlined />} htmlType="submit" loading={loading}>
+                            Create Unit
                         </Button>
                     </Flex>
                 </Form>

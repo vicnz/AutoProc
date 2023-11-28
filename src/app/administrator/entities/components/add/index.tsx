@@ -40,7 +40,7 @@ function EditDepartments(props: PropType) {
             <Button icon={<PlusCircleOutlined />} onClick={() => setOpen(true)}>
                 New Office
             </Button>
-            <Modal open={open} onCancel={() => setOpen(false)} footer={null} destroyOnClose>
+            <Modal open={open} onCancel={() => setOpen(false)} footer={null} destroyOnClose maskClosable={false}>
                 <Tabs items={tabs} tabPosition="top" destroyInactiveTabPane />
             </Modal>
         </Fragment>

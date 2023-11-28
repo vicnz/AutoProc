@@ -1,6 +1,8 @@
 import { SaveOutlined } from "@ant-design/icons";
-import { addDepartment } from "@state/entities/actions";
-import { Form, Input, Flex, Space, Button } from "antd";
+import { Form, Input, Flex, Space, Button, App } from "antd";
+import { addDepartment } from "./actions";
+import { objectToForm } from "@lib/converters/formData";
+import { useState } from "react";
 
 const initData = {
     name: null,
@@ -8,11 +10,21 @@ const initData = {
 };
 
 function NewDepartment(props: { close: () => any }) {
+    const { message } = App.useApp();
     const [form] = Form.useForm();
+    const [loading, setLoading] = useState(false);
+
     const onFinish = async () => {
-        //todo
-        const data = form.getFieldsValue();
-        const result = await addDepartment(JSON.stringify({ ...data }));
+        setLoading(true);
+        const formData = objectToForm(form.getFieldsValue());
+        const result = await addDepartment(formData);
+        if (result.error) {
+            setLoading(false);
+            message.error(`Server Error ${result?.message}`);
+        } else {
+            setLoading(false);
+            message.success(`Added New Office`);
+        }
     };
 
     return (
@@ -24,7 +36,12 @@ function NewDepartment(props: { close: () => any }) {
                 form={form}
                 onError={(e) => console.log(e)}
             >
-                <Form.Item name="name" label="Name (Short Name)" rules={[{ required: true }]} tooltip="Unique">
+                <Form.Item
+                    name="name"
+                    label="Office Code"
+                    rules={[{ required: true }, { pattern: /^[A-Z0-9]{3,5}$/, message: "Enter Valid Office Code" }]}
+                    tooltip="Must Be Unique"
+                >
                     <Input />
                 </Form.Item>
                 <Form.Item name="description" label="Description" rules={[{ required: true }]}>
@@ -32,7 +49,7 @@ function NewDepartment(props: { close: () => any }) {
                 </Form.Item>
                 <Flex justify="end">
                     <Space>
-                        <Button type="primary" icon={<SaveOutlined />} htmlType="submit">
+                        <Button type="primary" icon={<SaveOutlined />} htmlType="submit" loading={loading}>
                             Save
                         </Button>
                         <Button onClick={() => props.close()}>Cancel</Button>

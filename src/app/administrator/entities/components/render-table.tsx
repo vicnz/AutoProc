@@ -1,18 +1,9 @@
 "use client";
 
-import { Badge, Table, TableColumnsType, Tag } from "antd";
+import { Table, TableColumnsType } from "antd";
 import { useMemo } from "react";
-import Edit from "./edit";
-import {
-    BlockOutlined,
-    BranchesOutlined,
-    BuildOutlined,
-    FileDoneOutlined,
-    FileOutlined,
-    FolderOpenOutlined,
-    FolderOutlined,
-    SlackSquareOutlined,
-} from "@ant-design/icons";
+import { FileOutlined, FolderOutlined } from "@ant-design/icons";
+import EditOffice from "./edit";
 
 type DataType = {
     id: string;
@@ -67,7 +58,7 @@ function RenderTable(props: { data: DataTypes }) {
                 key: "edit",
                 width: 75,
                 render: (e: any) => {
-                    return <Edit data={e as any} type={e?.type} />;
+                    return <EditOffice data={e as any} type={e?.type} />;
                 },
             },
         ];

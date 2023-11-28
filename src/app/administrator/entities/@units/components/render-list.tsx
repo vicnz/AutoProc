@@ -1,8 +1,7 @@
 "use client";
 
-import { DeleteOutlined } from "@ant-design/icons";
-import { deleteUnit } from "@state/entities/actions";
-import { Card, List, Statistic, Button, Flex, Popconfirm } from "antd";
+import { Card, List, Statistic, Flex } from "antd";
+import DeleteUnit from "./delete";
 
 function UnitsList(props: { data: Array<{ id: string; name: string }> }) {
     const { data } = props;
@@ -16,21 +15,7 @@ function UnitsList(props: { data: Array<{ id: string; name: string }> }) {
                         <Card size="small">
                             <Flex justify="space-between" align="center">
                                 <Statistic title={item.name} value={`1 ${item.id}`} />
-                                <Popconfirm
-                                    onConfirm={async () => {
-                                        await deleteUnit(item.id);
-                                    }}
-                                    onCancel={() => {}}
-                                    title={`Delete ${item.name} Unit Type?`}
-                                >
-                                    <Button
-                                        key={item.id}
-                                        type="text"
-                                        icon={<DeleteOutlined />}
-                                        size="small"
-                                        shape="circle"
-                                    />
-                                </Popconfirm>
+                                <DeleteUnit id={item.id} name={item.name} />
                             </Flex>
                         </Card>
                     </List.Item>
