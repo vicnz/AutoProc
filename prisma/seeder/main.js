@@ -9,6 +9,7 @@ const suppliers = require('./suppliers')
 const units = require('./units')
 const officers = require('./officers')
 const settings = require('./settings')
+const secQuestions = require('./security_questions')
 //
 async function seeder() {
     return Promise.all([
@@ -18,7 +19,8 @@ async function seeder() {
         await suppliers(prisma),
         await users(prisma),
         await officers(prisma),
-        await settings(prisma)
+        await settings(prisma),
+        await secQuestions(prisma)
     ])
 }
 //run seeder
