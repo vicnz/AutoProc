@@ -1,7 +1,5 @@
-//libs
-import { QuestionCircleOutlined, UserAddOutlined } from "@ant-design/icons";
-import { Button, Divider } from "antd";
-//components
+import { QuestionCircleOutlined } from "@ant-design/icons";
+import { Button } from "antd";
 import GlobalHeader from "@components/admin/header";
 
 const SettingsLayout = function (props: any) {

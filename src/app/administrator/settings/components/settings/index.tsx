@@ -11,7 +11,15 @@ import SearchLimit from "./search-limit";
 import Notice from "./notice";
 import NotificationTrimmed from "./notification-trim";
 
-function Settings(props: { data: { name: string; value: string; description: string | null; id: string }[] }) {
+type DataProps = {
+    data?: Array<{
+        name: string;
+        value: string;
+        description: string | null;
+        id: string;
+    }>;
+};
+function Settings(props: DataProps) {
     const val = useMemo(() => {
         const paginate = _.find(props.data, { name: "paginate" });
         const searchLimit = _.find(props.data, { name: "search_limit" });

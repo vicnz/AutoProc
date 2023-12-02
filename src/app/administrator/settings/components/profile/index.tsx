@@ -5,7 +5,8 @@ import { Alert, Button, Card, Divider, Flex, Form, Input, Tooltip } from "antd";
 import Avatar from "boring-avatars";
 import { useConfirm } from "@components/password-confirm";
 import { useState } from "react";
-import { updateAdmin } from "../../_server/account.actions";
+import { updateAdmin } from "./actions";
+import { objectToForm } from "@lib/converters/formData";
 
 function AccountView(props: { account: any }) {
     const [form] = Form.useForm(); //FORM
@@ -15,8 +16,8 @@ function AccountView(props: { account: any }) {
         //UPDATE FORM DATA
         if (value === true) {
             setLoading(true);
-            const data = form.getFieldsValue();
-            const fetch = await updateAdmin(JSON.stringify(data)); //SERVER ACTION
+            const data = objectToForm(form.getFieldsValue());
+            const fetch = await updateAdmin(data); //SERVER ACTION
             if (fetch.error) {
                 console.log("Failed To Update");
                 setLoading(false);
@@ -26,11 +27,7 @@ function AccountView(props: { account: any }) {
         }
     };
 
-    const { Component, trigger } = useConfirm(
-        props.account.id,
-        "/administrator/api/profile/confirm-password",
-        callback
-    ); //USE CONFIRM
+    const { Component, trigger } = useConfirm(props.account.id, "/administrator/api/utils/confirm-password", callback); //USE CONFIRM
 
     const onSubmit = async () => {
         //SHOW PASSWORD CONFIRM

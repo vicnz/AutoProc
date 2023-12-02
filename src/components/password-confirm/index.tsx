@@ -77,6 +77,7 @@ export const useConfirm = (userid: string, api: string, callback: (value: boolea
                     <br />
                     <br />
                     <Input.Password
+                        autoFocus
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         placeholder="Your Current Password"

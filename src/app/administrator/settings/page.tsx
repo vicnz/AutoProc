@@ -1,39 +1,52 @@
-import { SettingOutlined, TeamOutlined } from "@ant-design/icons";
+import { SettingOutlined, SmileOutlined, TeamOutlined } from "@ant-design/icons";
 import { Alert, Card, Flex, Result } from "antd";
-import { fetchAccountInfo } from "./_server/account";
-import { fetchSettings } from "./_server/settings";
 import { options } from "@lib/auth/options";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
-//components
-import AccountView from "./_components/account";
-import PasswordReset from "./_components/password";
-import Options from "./_components/settings";
+// import AccountView from "./_components/account.old";
+// import PasswordReset from "./_components/password.old";
+import PasswordChange from "./components/password-change";
+import SecurityQuestions from "./components/security-questions";
+import Profile from "./components/profile";
+import Options from "./components/settings";
+import { getAdminInfo, getSettingsInfo } from "./preload";
 
 const Page = async function () {
     const session = await getServerSession(options);
     if (!session?.user.id) {
         notFound();
     }
-    const account = await fetchAccountInfo(session.user.id);
-    const settings = await fetchSettings();
+    //
+    const accountInfo = await getAdminInfo(session.user.id);
+    const settingsInfo = await getSettingsInfo();
+    if (accountInfo.error || settingsInfo.error) throw new Error("An Error Occured " + accountInfo.message);
+
     return (
         <Flex vertical align="center">
-            <div style={{ width: "600px", padding: "15px 0" }}>
+            <Flex style={{ width: "600px", padding: "15px 0" }} gap={15} vertical>
                 <Flex align="center" justify="space-between">
                     <span style={{ fontSize: "1.5em" }}>
                         <SettingOutlined /> Settings
                     </span>
                 </Flex>
-                <br />
-                <AccountView account={account.profile} />
-                <br />
-                <PasswordReset account={account.profile} />
-                <br />
+                <Profile account={accountInfo.profile} />
                 <Card
                     title={
                         <>
-                            <TeamOutlined /> Administrator Management
+                            <TeamOutlined /> Password Setting
+                        </>
+                    }
+                >
+                    <Flex vertical gap={20}>
+                        <PasswordChange account={accountInfo.profile} />
+                        <SecurityQuestions />
+                    </Flex>
+                </Card>
+                <Options data={settingsInfo.settings} />
+                <Card
+                    title={
+                        <>
+                            <TeamOutlined /> Multiple Administrator
                         </>
                     }
                 >
@@ -43,9 +56,19 @@ const Page = async function () {
                         subTitle="Multiple Administrators is yet to be implemented. Once the End-User Accounts feature is stable-this feature will also follow through."
                     />
                 </Card>
-                <br />
-                <Options data={settings.settings} />
-                <br />
+                <Card
+                    title={
+                        <>
+                            <SmileOutlined /> Global Theme
+                        </>
+                    }
+                >
+                    <Result
+                        status="warning"
+                        title="TODO"
+                        subTitle="Multiple Administrators is yet to be implemented. Once the End-User Accounts feature is stable-this feature will also follow through."
+                    />
+                </Card>
                 <Card title="Backup & Scheduling">
                     <Alert
                         type="info"
@@ -60,7 +83,7 @@ const Page = async function () {
                         }
                     />
                 </Card>
-            </div>
+            </Flex>
         </Flex>
     );
 };

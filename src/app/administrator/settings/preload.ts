@@ -1,10 +1,8 @@
 import fullname from '@lib/client/fullname'
 import db from '@lib/db'
-import _ from 'lodash'
-import { notFound } from 'next/navigation'
 import sharp from 'sharp'
 
-export const fetchAccountInfo = async (id: string) => {
+export const getAdminInfo = async (id: string) => {
     try {
         const admin = await db.users.findFirst({
             select: {
@@ -21,23 +19,42 @@ export const fetchAccountInfo = async (id: string) => {
             },
             where: {
                 id,
-                isDeleted: false //this is already determined on login
             }
         })
 
         if (admin) {
+            const thumbnail = admin.profile ? await sharp(admin.profile).resize({ height: 300, width: 300 }).toBuffer() : null
             return {
                 profile: {
                     ...admin,
-                    profile: admin.profile ? await sharp(admin.profile).resize({ height: 300, width: 300 }).toBuffer() : null,
+                    profile: thumbnail ? thumbnail.toString('base64') : null,
                     fullname: fullname({ fname: admin.fname, mname: admin.mname, lname: admin.lname, suffix: admin.suffix }, true)
                 }
             }
         } else {
-            notFound()
+            return { error: true, message: 'None Existing Administrator ID' }
         }
     } catch (err) {
-        notFound()
+        return { error: true, message: "Server Error" }
     }
 }
 
+///
+
+export const getSettingsInfo = async () => {
+    try {
+        const settings = await db.settings.findMany({
+            select: {
+                id: true,
+                name: true,
+                description: true,
+                value: true
+            }
+        })
+
+        return { settings };
+    } catch (err) {
+        console.log(err) //
+        return { error: true }
+    }
+}
