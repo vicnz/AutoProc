@@ -39,7 +39,7 @@ const Page = async function () {
                 >
                     <Flex vertical gap={20}>
                         <PasswordChange account={accountInfo.profile} />
-                        <SecurityQuestions />
+                        <SecurityQuestions userId={accountInfo.profile?.id as string} />
                     </Flex>
                 </Card>
                 <Options data={settingsInfo.settings} />

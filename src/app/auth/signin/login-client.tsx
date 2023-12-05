@@ -9,6 +9,7 @@ import Avatar from "boring-avatars";
 import { useRouter } from "next/navigation";
 // ─── Config ──────────────────────────────────────────────────────────────────
 import { THEME_COLORS } from "@lib/theme/constant";
+import Link from "next/link";
 // ─── Base Component ──────────────────────────────────────────────────────────
 function LoginClient() {
     const { message } = App.useApp();
@@ -114,6 +115,15 @@ function LoginClient() {
                     >
                         Sign In
                     </Button>
+                    <br />
+                    <br />
+                    <Flex align="center" justify="center">
+                        <Link href={`/auth/forgot-password`}>
+                            <Button type="link" style={{ color: THEME_COLORS.PRIMARY }}>
+                                Forgot Password?
+                            </Button>
+                        </Link>
+                    </Flex>
                 </Form>
             </Modal>
         </>

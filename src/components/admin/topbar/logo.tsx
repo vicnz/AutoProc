@@ -15,8 +15,8 @@ const PageLogo = function () {
                 <div />
                 <Image src={PageName} alt="Auto Proc" height={15} width={100} style={{ objectFit: "contain" }} />
                 {/* APP IS STILL IN IT'S ALPHA PHASE */}
-                <Tooltip title="The App is still in ALPHA Phase">
-                    <Tag color="red">ALPHA</Tag>
+                <Tooltip title="The App is still in BETA Phase">
+                    <Tag color="orange">BETA</Tag>
                 </Tooltip>
                 {/* APP IS STILL IN IT'S ALPHA PHASE */}
             </Space>
