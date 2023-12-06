@@ -19,11 +19,13 @@ function ManualWrapper(props: PropsWithChildren<ManualWrapperProps>) {
         <>
             <Button {...buttonProps} icon={icon} onClick={() => setOpen(true)} />
             <Drawer {...drawerProps} onClose={() => setOpen(false)} open={open}>
-                <Result
-                    status="warning"
-                    title={`TODO`}
-                    subTitle={`This Panel Contains the Manual For The Section ${props.pageProp?.name}`}
-                />
+                {props.children || (
+                    <Result
+                        status="warning"
+                        title={`TODO`}
+                        subTitle={`This Panel Contains the Manual For The Section ${props.pageProp?.name}`}
+                    />
+                )}
             </Drawer>
         </>
     );
