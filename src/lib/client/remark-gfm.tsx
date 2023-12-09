@@ -1,5 +1,5 @@
 import { THEME_COLORS } from "@lib/theme/constant";
-import { Divider, Typography, Image as AntImage, Skeleton } from "antd";
+import { Divider, Typography, Image as AntImage, Skeleton, List } from "antd";
 import { MDXProps } from "mdx/types";
 import Image from "next/image";
 
@@ -22,7 +22,7 @@ export const options: MDXProps = {
                 {children}
             </Typography.Paragraph>
         ),
-        hr: () => <Divider />,
+        hr: () => <Divider>* * *</Divider>,
         code: ({ children }) => <Typography.Text code>{children}</Typography.Text>,
         img: (props) => {
             return (
@@ -41,6 +41,35 @@ export const options: MDXProps = {
             <Typography.Link {...(props as any)} title={props.title} href={props.href} target={props.target}>
                 {props.children}
             </Typography.Link>
+        ),
+        ul: (props) => {
+            return <List {...(props as any)}>{props.children}</List>;
+        },
+        ol: (props) => {
+            return <List {...(props as any)}>{props.children}</List>;
+        },
+        li: (props) => {
+            return <List.Item key={props.key}>{props.children}</List.Item>;
+        },
+        strong: (props) => (
+            <Typography.Text strong {...(props as any)}>
+                {props.children}
+            </Typography.Text>
+        ),
+        b: (props) => (
+            <Typography.Text strong {...(props as any)}>
+                {props.children}
+            </Typography.Text>
+        ),
+        em: (props) => (
+            <Typography.Text italic {...(props as any)}>
+                {props.children}
+            </Typography.Text>
+        ),
+        i: (props) => (
+            <Typography.Text italic {...(props as any)}>
+                {props.children}
+            </Typography.Text>
         ),
     },
 };
