@@ -14,7 +14,7 @@ export const addUnit = async (formData: FormData) => {
             },
         });
 
-        revalidatePath("/administrator/entities/units");
+        revalidatePath("/administrator/entities");
         return { ok: true };
     } catch (err) {
         console.error(err)

@@ -15,7 +15,7 @@ const SearchComponent = forwardRef(function SearchPO(props: SelectProps & {}, re
 
     useDebounce(
         () => {
-            if (query !== "") {
+            if (query.length > 0) {
                 setFetching(true);
                 fetch(`/utility/checker/api/search?q=${query}`)
                     .then((res) => res.json())

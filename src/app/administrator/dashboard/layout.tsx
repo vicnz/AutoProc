@@ -2,13 +2,12 @@
 
 import { ReactNode } from "react";
 import { CompassOutlined, LineChartOutlined, ProjectOutlined, QuestionCircleOutlined } from "@ant-design/icons";
-import { Tabs } from "antd";
-//components
+import { Divider, Skeleton, Tabs, Typography } from "antd";
+import dynamic from "next/dynamic";
 import TabPane from "./components/tab-pane";
 import GlobalHeader from "@components/admin/header";
 import ContentWrapper from "@components/admin/content";
-import ManualPage from "@components/shared/manual"; //TODO CREATE A GLOBAL MANUAL INTERCEPT
-
+import ManualPage from "@components/shared/manual";
 //configs
 type DashboardLayoutProps = {
     children: ReactNode;
@@ -22,9 +21,9 @@ const DashboardLayout = function (props: DashboardLayoutProps) {
                     <ManualPage
                         icon={<QuestionCircleOutlined />}
                         buttonProps={{ type: "text" }}
-                        drawerProps={{ title: "Dashboard Manual" }}
+                        drawerProps={{ title: "Documentation" }}
                         pageProp={{ id: "", name: "Dashboard" }}
-                    />
+                    ></ManualPage>
                 </GlobalHeader>
             }
         >

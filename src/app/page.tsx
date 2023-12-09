@@ -12,7 +12,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 // ─────────────────────────────────────────────────────────────────────────────
-import { PRIMARY_COLOR } from "@lib/contants";
+import { THEME_COLORS } from "@lib/theme/constant";
 import styles from "./page.module.css";
 const { Text } = Typography;
 // ─── Component Base ──────────────────────────────────────────────────────────
@@ -20,7 +20,9 @@ export default function Index() {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     return (
-        <ConfigProvider theme={{ token: { fontFamily: "Poppins", colorPrimary: PRIMARY_COLOR, colorText: "#38424F" } }}>
+        <ConfigProvider
+            theme={{ token: { fontFamily: "Poppins", colorPrimary: THEME_COLORS.PRIMARY, colorText: "#38424F" } }}
+        >
             <div className={styles["page-pattern-wrapper"]}>
                 <div className={styles["page-pattern-opacity"]} />
                 <div className={styles["page-content"]}>
@@ -71,27 +73,27 @@ export default function Index() {
                     </div>
 
                     <div>
-                        <div className={styles["border-top"]} style={{ background: PRIMARY_COLOR }}></div>
+                        <div className={styles["border-top"]} style={{ background: THEME_COLORS.PRIMARY }}></div>
                         <div className={styles["page-texts"]}>
                             <div className={styles["logo-banner"]}>
                                 <Image height={50} width={58} alt="page-logo" src={"/logo-small.png"} />
                                 <Image height={30} width={220} alt="page-logo" src={"/logo-medium.png"} />
-                                <Text style={{ fontSize: "1.5em", fontWeight: "bold" }}>V0.80.2023</Text>
                             </div>
                             <br />
                             <br />
-                            <Text
+                            <span
                                 style={{ fontWeight: "bold", lineHeight: 1.2, color: "#38424F" }}
                                 className={styles.lead}
                             >
-                                SUPER-CHARGE YOUR <span style={{ color: PRIMARY_COLOR }}>PROCUREMENT WORKFLOWS</span>.
-                            </Text>
+                                SUPER-CHARGE YOUR{" "}
+                                <span style={{ color: THEME_COLORS.PRIMARY }}>PROCUREMENT WORKFLOWS</span>.
+                            </span>
                             <br />
                             <p className={styles.caption}>
                                 <VerticalLeftOutlined /> Elevate your{" "}
-                                <strong style={{ color: PRIMARY_COLOR }}>Procurement Workflow</strong> with our
+                                <strong style={{ color: THEME_COLORS.PRIMARY }}>Procurement Workflow</strong> with our
                                 intuitive{" "}
-                                <strong style={{ color: PRIMARY_COLOR, textDecoration: "underline" }}>
+                                <strong style={{ color: THEME_COLORS.PRIMARY, textDecoration: "underline" }}>
                                     Procurement Management System
                                 </strong>
                                 . From seamless requisitions to automated generations, our platform streamlines every
