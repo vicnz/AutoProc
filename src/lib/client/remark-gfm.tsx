@@ -1,5 +1,5 @@
 import { THEME_COLORS } from "@lib/theme/constant";
-import { Divider, Typography } from "antd";
+import { Divider, Typography, Image as AntImage, Skeleton } from "antd";
 import { MDXProps } from "mdx/types";
 import Image from "next/image";
 
@@ -24,11 +24,19 @@ export const options: MDXProps = {
         ),
         hr: () => <Divider />,
         code: ({ children }) => <Typography.Text code>{children}</Typography.Text>,
-        img: (props) => (
-            <div style={{ maxWidth: "100%", overflow: "auto" }}>
-                <Image src={props.src as string} style={{ height: "100%", width: "100%" }} alt="something" />
-            </div>
-        ),
+        img: (props) => {
+            return (
+                <div style={{ maxWidth: "100%", overflow: "auto" }}>
+                    <AntImage
+                        loading="lazy"
+                        placeholder={<Skeleton.Image active />}
+                        src={(props.src as any)?.src as string}
+                        style={{ height: "100%", width: "100%" }}
+                        alt={(props.alt as any).alt}
+                    />
+                </div>
+            );
+        },
         a: (props) => (
             <Typography.Link {...(props as any)} title={props.title} href={props.href} target={props.target}>
                 {props.children}
