@@ -6,7 +6,7 @@
 
 //libs
 import { ArrowLeftOutlined, ArrowRightOutlined, QuestionCircleOutlined } from "@ant-design/icons";
-import { Button, Divider } from "antd";
+import { Button, Divider, Result } from "antd";
 import { Dispatch, memo } from "react";
 //components
 import GlobalHeader from "@components/admin/header";
@@ -52,7 +52,12 @@ const ProcurementsHeader = function (props: ProcurementsHeaderProps) {
                     buttonProps={{ type: "text" }}
                     drawerProps={{ title: "Procurements Manual" }}
                     pageProp={{ id: "", name: "Procurement" }}
-                />
+                >
+                    <Result
+                        title="Documenting..."
+                        subTitle="Documentation is still underway, we are currently crafting the manual for the Section [Records and Records Item] 😊"
+                    />
+                </Manual>
             </GlobalHeader>
         </>
     );

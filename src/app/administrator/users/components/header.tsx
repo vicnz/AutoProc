@@ -1,10 +1,11 @@
 import { QuestionCircleOutlined, UserAddOutlined } from "@ant-design/icons";
-import { Divider } from "antd";
+import { Divider, Skeleton } from "antd";
 import GlobalHeader from "@components/admin/header";
-import Manual from "@components/shared/manual";
+import ManualWrapper from "@components/shared/manual";
 import OpenDrawer from "@components/drawer";
 import { ReactNode } from "react";
 import AddNewUser from "./add";
+import ManualSection from "./manual";
 
 const UserManagementHeader = function (props: { children?: ReactNode }) {
     return (
@@ -23,12 +24,7 @@ const UserManagementHeader = function (props: { children?: ReactNode }) {
                     <AddNewUser />
                 </OpenDrawer>
                 <Divider type="vertical" />
-                <Manual
-                    icon={<QuestionCircleOutlined />}
-                    buttonProps={{ type: "text" }}
-                    drawerProps={{ title: "Users Management Manual" }}
-                    pageProp={{ id: "", name: "User Management" }}
-                />
+                <ManualSection />
             </GlobalHeader>
         </>
     );

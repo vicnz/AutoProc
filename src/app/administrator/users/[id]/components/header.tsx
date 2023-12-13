@@ -5,8 +5,7 @@ import { memo } from "react";
 //components
 import GlobalHeader from "@components/admin/header";
 import { Back } from "@components/loading-btn";
-// import BackButton from "./back-btn";
-import Link from "next/link";
+import Manual from "./manual";
 
 const UserInfoHeader = function () {
     return (
@@ -26,7 +25,7 @@ const UserInfoHeader = function () {
                 }
             >
                 <Divider type="vertical" />
-                <Button icon={<QuestionCircleOutlined />} type="text" />
+                <Manual />
             </GlobalHeader>
         </>
     );
