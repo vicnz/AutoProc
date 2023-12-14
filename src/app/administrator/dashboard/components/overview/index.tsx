@@ -43,7 +43,7 @@ function Overview() {
             <Space wrap>
                 {new Array(4).fill(0).map((item, idx) => {
                     return (
-                        <Card key={idx}>
+                        <Card key={idx} loading>
                             <Statistic title={<Skeleton.Input style={{ height: 25 }} />} loading />
                         </Card>
                     );

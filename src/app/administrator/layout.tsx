@@ -1,13 +1,18 @@
 import { PropsWithChildren } from "react";
-import Layout from "@components/admin/root-layout";
-// import InitMonitoring from "@state/schedules/init-monitoring";
-//FIXME run only once -> build a logic that prevents it from re-initializing every server component build
+
+import AntDConfigProvider from "@lib/theme/theme-config";
+import LayoutContent from "./components/root-layout";
+import Topbar from "./components/topbar";
+import Navbar from "./components/navbar";
 
 const RootLayout = function (props: PropsWithChildren<any>) {
     return (
         <>
-            {/* <InitMonitoring /> */}
-            <Layout>{props.children}</Layout>
+            <AntDConfigProvider>
+                <LayoutContent Navbar={<Navbar />} Topbar={<Topbar />}>
+                    {props.children}
+                </LayoutContent>
+            </AntDConfigProvider>
         </>
     );
 };
