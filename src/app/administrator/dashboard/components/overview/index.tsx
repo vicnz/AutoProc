@@ -1,7 +1,7 @@
 "use client";
 
 import { ContainerOutlined, DollarOutlined, ShopOutlined, UserOutlined } from "@ant-design/icons";
-import { Card, Result, Skeleton, Space, Statistic } from "antd";
+import { Card, Result, Skeleton, Space, Spin, Statistic } from "antd";
 import useSWR from "swr";
 import PesoIcon from "@media/Peso";
 
@@ -43,8 +43,8 @@ function Overview() {
             <Space wrap>
                 {new Array(4).fill(0).map((item, idx) => {
                     return (
-                        <Card key={idx} loading>
-                            <Statistic title={<Skeleton.Input style={{ height: 25 }} />} loading />
+                        <Card key={idx} style={{ display: "grid", placeItems: "center", width: 168, height: 112 }}>
+                            <Spin spinning />
                         </Card>
                     );
                 })}

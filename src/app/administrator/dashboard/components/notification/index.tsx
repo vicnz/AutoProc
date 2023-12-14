@@ -28,7 +28,6 @@ function NotificationOutline(props: CardProps & { height: number }) {
                     <BellOutlined /> Notifications
                 </>
             }
-            extra={<span>Today</span>}
         >
             <div style={{ ...OverFlowStyle, height }}>
                 <RenderNotificationsItem data={data.data} />

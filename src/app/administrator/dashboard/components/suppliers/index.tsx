@@ -31,7 +31,7 @@ function TopSuppliers(props: { height: number }) {
                     <ShopOutlined /> Suppliers (Relevance)
                 </>
             }
-            extra={<>Current Year {dayjs().get("year")}</>}
+            extra={<>{dayjs().get("year")}</>}
             bodyStyle={{ ...BodyStyle, height: props.height }}
         >
             <div style={{ ...OverFlowStyle, height: props.height }}>

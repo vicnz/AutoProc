@@ -35,7 +35,7 @@ function ProcurementRendered(props: CardProps & { height: number }) {
                     <BarChartOutlined /> Procurements (SVP)
                 </>
             }
-            extra={<>Current Year : {dayjs().get("year")}</>}
+            extra={<>{dayjs().get("year")}</>}
         >
             <Graph data={result} />
         </Card>
