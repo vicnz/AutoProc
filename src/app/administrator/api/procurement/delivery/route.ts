@@ -250,7 +250,10 @@ export const PATCH = async (req: NextRequest) => {
 
             const extended = dayjs(endDate).add(extension, "days").toISOString(); //convert
 
-            await db.delivery.update({
+            const result = await db.delivery.update({
+                select: {
+                    po: true
+                },
                 data: {
                     endDate: extended,
                 },
@@ -258,6 +261,19 @@ export const PATCH = async (req: NextRequest) => {
                     id: id,
                 },
             });
+
+            const supplierInfo = JSON.parse(result.po?.supplier as string)
+
+            await db.supplier_rating.update({
+                data: {
+                    extends: {
+                        increment: 1
+                    }
+                },
+                where: {
+                    id: supplierInfo.id //! BUGGY REFERENCING
+                }
+            })
 
             return NextResponse.json({ ok: true });
         }

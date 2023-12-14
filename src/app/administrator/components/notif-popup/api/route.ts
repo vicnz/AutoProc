@@ -11,6 +11,31 @@ import dayjs from 'dayjs'
  */
 export const dynamic = "force-dynamic"; //REQUIRED for the streamable response to work
 
+/**
+ * * TIMELY FETCH ANY NEW NOTIFICATIONS EVERY MINUTE
+ * * RETURN TITLE, DESCRIPTION
+ */
+const DetectNewNotifications = async () => {
+    const new_notif = await db.notifications.findMany({
+        where: {
+            createdAt: {
+                lte: dayjs().toISOString(),
+                gte: dayjs().subtract(5, 'seconds').toISOString() //fetch notification every 10 seconds
+            },
+            read: false,
+            resolved: false
+        }
+    })
+
+    if (new_notif && new_notif.length > 0) {
+        return new_notif.map(item => {
+            const { title, description, source, type } = item
+            return { title, description, source, type };
+        })
+    }
+}
+
+///
 export async function GET(req: NextRequest) {
     try {
         /**
@@ -75,27 +100,3 @@ export async function GET(req: NextRequest) {
 }
 
 
-
-/**
- * * TIMELY FETCH ANY NEW NOTIFICATIONS EVERY MINUTE
- * * RETURN TITLE, DESCRIPTION
- */
-export const DetectNewNotifications = async () => {
-    const new_notif = await db.notifications.findMany({
-        where: {
-            createdAt: {
-                lte: dayjs().toISOString(),
-                gte: dayjs().subtract(5, 'seconds').toISOString() //fetch notification every 10 seconds
-            },
-            read: false,
-            resolved: false
-        }
-    })
-
-    if (new_notif && new_notif.length > 0) {
-        return new_notif.map(item => {
-            const { title, description, source, type } = item
-            return { title, description, source, type };
-        })
-    }
-}
