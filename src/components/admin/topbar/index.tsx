@@ -14,7 +14,7 @@ const Notification = dynamic(async () => await import("@components/admin/notific
 const AdminProfile = dynamic(async () => await import("@components/admin/admin-preview"), {
     loading: () => <Skeleton.Avatar />,
 });
-const Notify = dynamic(async () => await import("@components/admin/notifications/notify"), { ssr: false });
+// const Notify = dynamic(async () => await import("@components/admin/notifications/notify"), { ssr: false });
 import PageLogo from "./logo";
 import Styles from "./styles.module.css";
 
@@ -29,7 +29,7 @@ const Topbar = function () {
                 <Divider type="vertical" />
                 <AdminProfile />
                 {/* Start Listening to Notification */}
-                <Notify />
+                {/* <Notify /> */}
                 {/* Start Listening to Notification */}
             </Space>
         </nav>
