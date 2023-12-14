@@ -1,6 +1,6 @@
 "use client";
 
-import { Descriptions, Flex, Result, Skeleton } from "antd";
+import { Descriptions, Flex, Result, Skeleton, theme } from "antd";
 import { CSSProperties, useRef, useState } from "react";
 import Header from "./components/header";
 import useSWR from "swr";
@@ -54,7 +54,11 @@ function ReportsPage() {
                     ) : !data || isLoading ? (
                         <Skeleton active />
                     ) : (
-                        <Preview data={data} ref={printableComponent} />
+                        <Flex align="center" vertical style={{ padding: "10px 0" }}>
+                            <div style={{ width: "80%" }}>
+                                <Preview data={data} ref={printableComponent} />
+                            </div>
+                        </Flex>
                     )}
                 </div>
             </div>
