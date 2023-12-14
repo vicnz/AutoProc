@@ -1,3 +1,4 @@
+"use client";
 import { PropsWithChildren } from "react";
 
 import AntDConfigProvider from "@lib/theme/theme-config";

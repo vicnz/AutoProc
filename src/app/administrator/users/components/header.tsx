@@ -1,7 +1,6 @@
-import { QuestionCircleOutlined, UserAddOutlined } from "@ant-design/icons";
-import { Divider, Skeleton } from "antd";
+import { UserAddOutlined } from "@ant-design/icons";
+import { Divider } from "antd";
 import GlobalHeader from "@components/admin/header";
-import ManualWrapper from "@components/shared/manual";
 import OpenDrawer from "@components/drawer";
 import { ReactNode } from "react";
 import AddNewUser from "./add";

@@ -11,6 +11,15 @@ const Pages: PagesOptions = {
 };
 
 export const options: NextAuthOptions = {
+    jwt: {
+        maxAge: 4 * 60 * 60 // 4 hours
+        // maxAge: 10
+    },
+    session: {
+        strategy: 'jwt',
+        maxAge: 4 * 60 * 60 // 4 hours
+        // maxAge: 10
+    },
     providers: [
         CredentialsProvider({
             name: "Credentials",
