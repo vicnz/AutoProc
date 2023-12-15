@@ -25,7 +25,7 @@ const TopSection = function (props: TopSectionProps) {
                     {props.data?.number}
                 </Descriptions.Item>
                 <Descriptions.Item label="Date" span={2}>
-                    {dayjs(props.data.date).format("MM/DD/YYYY")}
+                    {dayjs(props.data.date).format("MMMM DD, YYYY")}
                 </Descriptions.Item>
                 <Descriptions.Item label="Reference No." span={2}>
                     {props.data?.reference}

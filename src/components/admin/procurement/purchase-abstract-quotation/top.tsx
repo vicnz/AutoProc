@@ -9,10 +9,10 @@ const TopSection = function (props: { data: any }) {
                     <p style={{ textTransform: "capitalize" }}>{props.data.location || "N/A"}</p>
                 </Descriptions.Item>
                 <Descriptions.Item label="Date" span={2}>
-                    {dayjs(props.data.date).format("MM/DD/YYYY")}
+                    {dayjs(props.data.date).format("MMMM DD, YYYY")}
                 </Descriptions.Item>
                 <Descriptions.Item span={4} label="Note">
-                    <div style={{ fontSize: ".9em" }}>
+                    <div style={{ fontSize: ".8em" }}>
                         {`(✅) Furnishing/delivery of supplies, and  materials or equipment`.padEnd(50)} <br></br>
                         {`(✅) Furnishing Labor, services, etc.`} <br></br>
                         {`(✅) Rental or use of transportation facilities equipment, quarters, rooms, lot or space, etc.`}

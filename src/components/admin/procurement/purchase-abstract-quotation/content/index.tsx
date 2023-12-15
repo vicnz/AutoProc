@@ -48,7 +48,7 @@ const RenderAbstractQuotations = function (props: {
     return (
         <div style={{ padding: "5px 25px" }}>
             <Table size="middle" columns={Columns as any} dataSource={dataSource} pagination={false} bordered />
-            <br />
+            <div style={{ height: 5 }}></div>
             <Descriptions size="small" layout="vertical" bordered>
                 <Descriptions.Item label="Lowest Bidder">{selectedSupplier?.padEnd(50, "\u2002")}</Descriptions.Item>
                 <Descriptions.Item label="Lowest Rendered Amount">

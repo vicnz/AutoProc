@@ -20,12 +20,12 @@ const BottomSection = function (props: { particulars: any[]; reference: string }
     }, [props.particulars]);
 
     return (
-        <div style={{ padding: "5px 25px" }}>
+        <div style={{ padding: "0 25px" }}>
             <Descriptions colon layout="vertical" size="small" column={2} bordered>
                 <Descriptions.Item label="Conforme" span={1}>
                     <div
                         style={{
-                            height: 75,
+                            height: 50,
                             display: "flex",
                             flexDirection: "column",
                             alignItems: "center",
@@ -44,7 +44,7 @@ const BottomSection = function (props: { particulars: any[]; reference: string }
                 <Descriptions.Item label="Very Truly Yours" span={1}>
                     <div
                         style={{
-                            height: 75,
+                            height: 50,
                             display: "flex",
                             flexDirection: "column",
                             alignItems: "center",
@@ -68,9 +68,11 @@ const BottomSection = function (props: { particulars: any[]; reference: string }
                     </div>
                 </Descriptions.Item>
             </Descriptions>
-            <p>Date: {"_".padEnd(25, "_")}</p>
-            <Divider>***</Divider>
-            <Descriptions bordered size="small" column={2}>
+            <p>
+                Date: <span style={{ display: "inline-block", width: 100, borderBottom: "1px solid black" }} />
+            </p>
+            <div style={{ height: 5 }}></div>
+            <Descriptions bordered size="small" column={2} labelStyle={{ padding: 8 }} contentStyle={{ padding: 8 }}>
                 <Descriptions.Item label="Funds Cluster" span={1}>
                     {"".padEnd(25, "\u2002")}
                 </Descriptions.Item>
@@ -87,18 +89,16 @@ const BottomSection = function (props: { particulars: any[]; reference: string }
                     {amount}
                 </Descriptions.Item>
             </Descriptions>
-            <br />
-            <br />
+            <div style={{ height: 15 }}></div>
             <div style={{ textAlign: "center", display: "grid", placeItems: "center" }}>
-                <div style={{ textAlign: "center", width: 400 }}>
+                <div style={{ textAlign: "center", width: 400, borderBottom: "black 1px solid" }}>
                     <span
                         style={{ width: "inherit", fontSize: "1em", fontWeight: "bold", textDecoration: "uppercase" }}
                     >
                         RHEA ANGELLICA B. ADDATU,CPA
                     </span>
-                    <hr />
-                    <span>Accountant I</span>
                 </div>
+                <span>Accountant I</span>
             </div>
             <div style={{ textAlign: "right" }}>REF NO: {props.reference}</div>
         </div>

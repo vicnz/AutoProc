@@ -60,7 +60,6 @@ const ApprovalBlock = function (props: ApprovalBlockProps) {
     //RENDER SIGNATURE BLOCK
     return (
         <>
-            <Divider>* * *</Divider>
             {props.approval ? (
                 <Approval officers={data} enduser={props.enduser} single={props.single} />
             ) : (

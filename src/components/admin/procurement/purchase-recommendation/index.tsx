@@ -64,7 +64,7 @@ const PurchaseRecommendation = function () {
                         </SubHeader>
 
                         <Preview ref={printableComponent}>
-                            <PreviewHeader height={150}>
+                            <PreviewHeader height={125}>
                                 <div
                                     style={{
                                         display: "flex",
@@ -88,7 +88,7 @@ const PurchaseRecommendation = function () {
                             </PreviewHeader>
                             <div>{/*Empty Block Accomodate for the Layout of this Preview having Four Children*/}</div>
                             <ContentPane approval={documentType === "approve"} data={data} />
-                            <div style={{ padding: "5px 25px" }}>
+                            <div style={{ padding: "0px 25px" }}>
                                 <SignatureBlock
                                     enduser={{ name: data.enduser, department: data.department }}
                                     approval={documentType === "approve"}

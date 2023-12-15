@@ -9,6 +9,7 @@ import PreviewHeader from "@components/admin/layouts/procurement-item/preview-wr
 //local
 import Columns from "./columns";
 import RenderSummary from "./renderSummary";
+import ContentEditable from "@components/admin/features/content-editable";
 const { Text } = Typography;
 
 const PriceQuotationPreview = function (props: { data: any; supplier: any }) {
@@ -37,28 +38,28 @@ const PriceQuotationPreview = function (props: { data: any; supplier: any }) {
                     {props.supplier?.padEnd(50, "\u2002")}
                 </Descriptions.Item>
                 <Descriptions.Item label="Date" span={1} contentStyle={{ maxWidth: 200 }}>
-                    {dayjs(props?.data.date).format("MM/DD/YYYY")}
+                    {dayjs(props?.data.date).format("MMMM DD, YYYY")}
                 </Descriptions.Item>
                 <Descriptions.Item label="Note" span={5}>
                     <List size="small">
-                        <List.Item key={0} style={{ fontSize: ".9em" }}>
+                        <List.Item key={0} style={{ fontSize: ".7em" }}>
                             Please give us your best and final price offer for the item/s listed below, have this signed
                             and submit this by you or by your duly authorized representative WITHIN SEVEN (7) CALENDAR
                             DAYS upon receipt to Procurement Section, Batanes State College.
                         </List.Item>
-                        <List.Item key={1} style={{ fontSize: ".8em" }}>
+                        <List.Item key={1} style={{ fontSize: ".7em" }}>
                             1. THE DEFAULT MODE OF PRICE EVALUATION SHALL BE ON A LOT BASIS, OTHERWISE PER ITEMS
                             EVALUATION SHALL BE USED IF THERE WILL BE LACKING ITEMS IN ALL RFQ&apos;s AND SUBJECT TO
                             END-USER APPROVAL., (Clause 15.2, Section I, Instruction to Bidders of the Philippine
                             Bidding Documents for goods and infrastructure projects)
                         </List.Item>
-                        <List.Item key={2} style={{ fontSize: ".8em" }}>
+                        <List.Item key={2} style={{ fontSize: ".7em" }}>
                             2. DELIVERY PERIOD: &lt;30, 60, OR 90 calendar days&gt;
                         </List.Item>
-                        <List.Item key={3} style={{ fontSize: ".8em" }}>
+                        <List.Item key={3} style={{ fontSize: ".7em" }}>
                             3. Submission of price quotation shall be in sealed envelope.
                         </List.Item>
-                        <List.Item key={4} style={{ fontSize: ".8em" }}>
+                        <List.Item key={4} style={{ fontSize: ".7em" }}>
                             4. THE APPROVED BUDGET FOR THIS PROCUREMENT IS{" "}
                             {Intl.NumberFormat("en-US", {
                                 style: "currency",
@@ -66,13 +67,13 @@ const PriceQuotationPreview = function (props: { data: any; supplier: any }) {
                             }).format(props?.data?.total)}{" "}
                             ({NumToWords(props?.data?.total).toUpperCase()} PESOS) (GPPB Resolution No. 09-2009)
                         </List.Item>
-                        <List.Item key={5} style={{ fontSize: ".8em" }}>
+                        <List.Item key={5} style={{ fontSize: ".7em" }}>
                             5. PURSUANT TO ANNEX &lsquo;H&rsquo;, APPENDIX A, SECTION II, SUBMISSION OF APPLICABLE
                             DOCUMENTS (e.g.MAYORS/BUSINESS PERMIT, PROFESSIONAL LICENSE/CURRICULUM VITAE (CONSULTING
                             SEERVICES),PHILGEPS CERT. NO., PCAB LICENSE (INFRA), INCOME/BUSINESS TAX RETURN,OMNIBUS
                             SWORN STATEMENT SHALL BE REQUIRED BEFORE THE ISSUANCE OF NOA OR PRIOR TO PAYMENT.
                         </List.Item>
-                        <List.Item key={6} style={{ fontSize: ".8em" }}>
+                        <List.Item key={6} style={{ fontSize: ".7em" }}>
                             6. In case the item is not availble, please write &lsquo;None&rsquo;.
                         </List.Item>
                     </List>
@@ -90,7 +91,7 @@ const PriceQuotationPreview = function (props: { data: any; supplier: any }) {
             />
             {/* PARTICULARS VIEW */}
             <div style={{ padding: "5px 25px" }}>
-                <p style={{ fontSize: ".9em" }}>
+                <p style={{ fontSize: ".8em" }}>
                     After having carefully read and accepted your conditions, I/We have place my /our best and final
                     price offer on the item/s listed above.
                 </p>
@@ -98,7 +99,7 @@ const PriceQuotationPreview = function (props: { data: any; supplier: any }) {
                     <Descriptions.Item label="Representative" span={1}>
                         <div
                             style={{
-                                height: 100,
+                                height: 75,
                                 display: "flex",
                                 flexDirection: "column",
                                 alignItems: "center",
@@ -117,14 +118,15 @@ const PriceQuotationPreview = function (props: { data: any; supplier: any }) {
                     <Descriptions.Item label="Approval" span={1}>
                         <div
                             style={{
-                                height: 100,
+                                height: 75,
                                 display: "flex",
                                 flexDirection: "column",
                                 alignItems: "center",
                                 justifyContent: "center",
                             }}
                         >
-                            <Text
+                            <ContentEditable
+                                text={`DR. DJOVI R. DURANTE`}
                                 style={{
                                     width: "100%",
                                     borderBottom: "solid lightgray 2px",
@@ -132,9 +134,7 @@ const PriceQuotationPreview = function (props: { data: any; supplier: any }) {
                                     textTransform: "uppercase",
                                     textAlign: "center",
                                 }}
-                            >
-                                {approval}
-                            </Text>
+                            />
                             <Text style={{ width: "100%", textAlign: "center" }}>{office}</Text>
                         </div>
                     </Descriptions.Item>

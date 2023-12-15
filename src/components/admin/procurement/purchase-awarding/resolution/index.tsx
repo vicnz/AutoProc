@@ -18,17 +18,15 @@ const BACResolutionPreview = function (props: { type: "approve" | "review" | "no
             </Paragraph>
             <Paragraph style={{ textIndent: "2em", lineHeight: "2em" }}>
                 <Text strong>WHEREAS</Text>&nbsp;
-                <Text>
-                    from the period the Request for Price Quotation (RFQ) has started up to the time of bid submission
-                    and opening, Nine (9) prospective bidder were able to submit the RFQ;
-                </Text>
+                <ContentEditable
+                    text={`from the period the Request for Price Quotation (RFQ) has started up to the time of bid submission and opening, Nine (9) prospective bidder were able to submit the RFQ;`}
+                />
             </Paragraph>
             <Paragraph style={{ textIndent: "2em", lineHeight: "2em" }}>
                 <Text strong>WHEREAS</Text>&nbsp;
-                <Text>
-                    the Price Quotation based on the Lowest Calculated & Responsive Bid (LCRB) format of the bidders
-                    were opened and its bid price was read as follows:
-                </Text>
+                <ContentEditable
+                    text={`the Price Quotation based on the Lowest Calculated & Responsive Bid (LCRB) format of the bidders were opened and its bid price was read as follows:`}
+                />
             </Paragraph>
             <Content data={quotations} abc={subTotal} />
             {props.type === "review" ? (
@@ -45,7 +43,12 @@ const BACResolutionPreview = function (props: { type: "approve" | "review" | "no
                     </Paragraph>
                     <Paragraph style={{ lineHeight: "2em" }}>
                         <Text strong>RESOLVED FINALLY</Text>, at the Bids & Award Committee Office, Batanes State
-                        College, this _______day of________
+                        College, this{" "}
+                        <span style={{ display: "inline-block", width: 50, borderBottom: "1px solid black" }} />
+                        day of <span
+                            style={{ display: "inline-block", width: 100, borderBottom: "1px solid black" }}
+                        />{" "}
+                        {dayjs().format("YYYY")}
                     </Paragraph>
                     <Approval approval={false} enduser={props.data.enduser} />
                 </>
@@ -68,8 +71,12 @@ const BACResolutionPreview = function (props: { type: "approve" | "review" | "no
                         {props.data.number} dated {dayjs(props.data.rfqDate).format(`MMMM D, YYYY`)}.
                     </Paragraph>
                     <Paragraph style={{ lineHeight: "2em" }}>
-                        Done this _______day of________ {dayjs().format("YYYY")}
+                        Done this{" "}
+                        <span style={{ display: "inline-block", width: 100, borderBottom: "1px solid black" }} /> day of{" "}
+                        <span style={{ display: "inline-block", width: 100, borderBottom: "1px solid black" }} />
+                        {dayjs().format("YYYY")}
                     </Paragraph>
+
                     <Approval approval={true} single={true} />
                 </>
             )}

@@ -69,7 +69,7 @@ const PurchaseAwarding = function () {
                         </SubHeader>
 
                         <Preview ref={printableComponent}>
-                            <PreviewHeader height={175}>
+                            <PreviewHeader height={100}>
                                 <div
                                     style={{
                                         display: "flex",

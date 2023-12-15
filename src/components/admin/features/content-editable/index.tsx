@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 /**
  * * - CONTENT EDITABLE
@@ -8,13 +8,7 @@
 
 import { Typography } from "antd";
 import { TextProps } from "antd/es/typography/Text";
-import {
-    ForwardedRef,
-    forwardRef,
-    memo,
-    PropsWithChildren,
-    useState,
-} from "react";
+import { ForwardedRef, forwardRef, memo, PropsWithChildren, useState } from "react";
 
 const { Text } = Typography;
 ///

@@ -19,10 +19,13 @@ const MakeDeliveryFinal = function (props: { final: boolean; id: string; progres
     //* SET DOCUMENT FINAL
     const setFinal = async () => {
         setLoading(true); //start loading
-        const request = await fetch(`/administrator/api/procurement/delivery?_id=${encodeURIComponent(props.id)}&final=true`, {
-            method: "PATCH",
-            body: JSON.stringify({}),
-        });
+        const request = await fetch(
+            `/administrator/api/procurement/delivery?_id=${encodeURIComponent(props.id)}&final=true`,
+            {
+                method: "PATCH",
+                body: JSON.stringify({}),
+            }
+        );
 
         if (request.ok) {
             message.success(
@@ -44,7 +47,7 @@ const MakeDeliveryFinal = function (props: { final: boolean; id: string; progres
             {/* Toggle Modal Confirmation */}
             <Button
                 icon={props.final === true ? <CheckOutlined /> : <LockOutlined />}
-                type="primary"
+                type="default"
                 onClick={() => setShow(true)}
             >
                 {props.final === true ? `Delivery Completed` : `Mark As Delivered`}

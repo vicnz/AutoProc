@@ -12,7 +12,7 @@ const RenderPurchaseOrderParticulars = function (props: { data: any }) {
     }, [props.data]);
 
     return (
-        <div style={{ padding: "5px 25px" }}>
+        <div style={{ padding: "0px 25px" }}>
             <Table
                 size="middle"
                 columns={columns as any}
@@ -21,7 +21,7 @@ const RenderPurchaseOrderParticulars = function (props: { data: any }) {
                 summary={renderSummary as any}
                 bordered
             />
-            <br />
+            <div style={{ height: 5 }}></div>
             <Descriptions layout="vertical" bordered size="small">
                 <Descriptions.Item label="Purpose">{props.data.purpose}</Descriptions.Item>
             </Descriptions>

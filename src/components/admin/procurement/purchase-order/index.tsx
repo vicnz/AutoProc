@@ -69,7 +69,7 @@ const PurchaseOrder = function () {
                             <EditPO type="edit" prId={prId} final={data.final} />
                         </SubHeader>
                         <Preview ref={printableComponent}>
-                            <PreviewHeader>
+                            <PreviewHeader height={75}>
                                 <p
                                     style={{
                                         textAlign: "center",

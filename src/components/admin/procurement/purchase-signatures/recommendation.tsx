@@ -23,7 +23,7 @@ const SignatureBlockItem: CSSProperties = {
     fontWeight: "bold",
     textTransform: "uppercase",
     whiteSpace: "nowrap",
-    width: "100%",
+    width: "auto",
 };
 //
 const Recommendation = function (props: RecommendationProps) {
@@ -100,16 +100,11 @@ const Recommendation = function (props: RecommendationProps) {
             <div style={WrapperStyles}>
                 {signatureBlockItems.map((item) => {
                     return (
-                        <div
-                            key={item?.name}
-                            style={{ flex: "1 1 200px", margin: 5, textAlign: "center" }}
-                        >
+                        <div key={item?.name} style={{ flex: "1 1 200px", margin: "0px 5px", textAlign: "center" }}>
                             <br />
                             <br />
                             <div style={SignatureBlockItem}>{item?.name}</div>
-                            <span style={{ textTransform: "capitalize", fontSize: ".9em" }}>
-                                {item?.department}
-                            </span>
+                            <span style={{ textTransform: "capitalize", fontSize: ".9em" }}>{item?.department}</span>
                         </div>
                     );
                 })}

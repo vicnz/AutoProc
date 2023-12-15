@@ -28,7 +28,7 @@ const AcknowledgementReceipt = function (props: { data: any }) {
                     pagination={false}
                     summary={renderExtraReceipt as any}
                 />
-                <br />
+                <div style={{ height: 5 }}></div>
                 <Descriptions bordered size="small" layout="vertical">
                     <Descriptions.Item label="Note">
                         <List size="small">
