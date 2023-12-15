@@ -1,11 +1,12 @@
 "use client";
 
 import { ShopOutlined } from "@ant-design/icons";
-import { Card, Descriptions, Modal, Space } from "antd";
+import { Card, Descriptions, Divider, Modal, Space } from "antd";
 import Avatar from "boring-avatars";
 import { useRouter } from "next/navigation";
 import EditSupplier from "./form";
 import { useEffect, useState } from "react";
+import DeleteSupplier from "./delete-supplier";
 
 function SupplierItem(props: { data: any }) {
     const [open, setOpen] = useState(false);
@@ -48,6 +49,8 @@ function SupplierItem(props: { data: any }) {
                             </Card>
                         </Descriptions.Item>
                     </Descriptions>
+                    <Divider>Danger Section</Divider>
+                    <DeleteSupplier id={props.data.id} />
                 </div>
                 <EditSupplier data={props.data} />
             </Space>
