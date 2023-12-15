@@ -1,14 +1,14 @@
 //
 import { fetchUser } from "./preload";
 //
-import { Alert, Button, Card, Divider } from "antd";
+import { Button, Card, Divider } from "antd";
 import AvatarView from "./components/avatar-view";
 import UserInfo from "./components/content";
-import { DeleteOutlined } from "@ant-design/icons";
 import { notFound } from "next/navigation";
 import ScrollView from "@components/scrollview";
 import DrawerOpener from "@components/drawer";
 import EditUser from "./components/form";
+import DeleteUser from "./components/delete-user";
 
 async function UserInfoPage(props: { params: { id: string } }) {
     const { id } = props.params;
@@ -56,27 +56,8 @@ async function UserInfoPage(props: { params: { id: string } }) {
                         <EditUser id={props.params.id} />
                     </DrawerOpener>
 
-                    {/* TODO section */}
                     <Divider>Danger Section</Divider>
-                    <Alert
-                        message="Delete User"
-                        type="error"
-                        description={
-                            <>
-                                <span>
-                                    This Feature is heavily under Testing-Phase to assure proper clean data integrity
-                                    and prevent unhandle system errors. We temporarily disabled this feature for the
-                                    sole purpose of testing its back-end business layer.
-                                </span>
-                                <br />
-                                <br />
-                                <Button danger icon={<DeleteOutlined />} block type="primary" disabled>
-                                    Delete User
-                                </Button>
-                            </>
-                        }
-                    />
-                    {/* TODO Section */}
+                    <DeleteUser id={props.params.id} />
                 </div>
             </ScrollView>
         </Card>
