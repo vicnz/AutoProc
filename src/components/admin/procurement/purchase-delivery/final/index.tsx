@@ -23,7 +23,7 @@ const MakeDeliveryFinal = function (props: { final: boolean; id: string; progres
             `/administrator/api/procurement/delivery?_id=${encodeURIComponent(props.id)}&final=true`,
             {
                 method: "PATCH",
-                body: JSON.stringify({}),
+                body: JSON.stringify({ final: true }),
             }
         );
 

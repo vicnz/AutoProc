@@ -6,8 +6,8 @@ import { computeDelivery, computeParcels, checkForCompleteFn } from "./utility";
 import { ParcelItem, ParcelViewItem } from "./type";
 import { logger } from "@logger";
 
-//
-const notifyWhen = 2; //TODO how many days before notifiying manager of the purchase request
+// ─────────────────────────────────────────────────────────────────────────────
+
 export const GET = async function (req: NextRequest) {
     const { searchParams } = new URL(req.url);
 
@@ -67,7 +67,8 @@ export const GET = async function (req: NextRequest) {
     }
 };
 
-//THIS WILL BE CALLED UPON THE RELEASE OF DOCUMENT
+// ─────────────────────────────────────────────────────────────────────────────
+
 export const POST = async function (req: NextRequest) {
     const { searchParams } = new URL(req.url);
     try {
@@ -145,7 +146,9 @@ export const POST = async function (req: NextRequest) {
     }
 };
 
-//
+// ─────────────────────────────────────────────────────────────────────────────
+
+
 export const PUT = async (req: NextRequest) => {
     const { searchParams } = new URL(req.url);
     try {
@@ -175,6 +178,9 @@ export const PUT = async (req: NextRequest) => {
         return new Response("", { status: 500 });
     }
 };
+
+// ─────────────────────────────────────────────────────────────────────────────
+
 export const PATCH = async (req: NextRequest) => {
     const { searchParams } = new URL(req.url);
     try {
@@ -219,11 +225,18 @@ export const PATCH = async (req: NextRequest) => {
             });
 
             //@DEBUGGING
-            const supplierInfo = JSON.parse(completed.po?.supplier as string) //! BUGGY CODE
+            const supplierInfo = completed.po?.supplier as any //! BUGGY CODE
             const calculateIfDelayed = dayjs(completed.endDate).diff(dayjs(), 'day')
             //?update supplier status
-            await db.supplier_rating.update({
-                data: {
+            await db.supplier_rating.upsert({
+                create: {
+                    delays: calculateIfDelayed <= 0 ? 1 : 0,
+                    onTime: calculateIfDelayed > 0 ? 1 : 0,
+                    id: supplierInfo.id,
+                    extends: 0,
+                    supplierId: supplierInfo.id,
+                },
+                update: {
                     delays: {
                         increment: calculateIfDelayed <= 0 ? 1 : 0
                     },
@@ -280,6 +293,7 @@ export const PATCH = async (req: NextRequest) => {
     } catch (err) {
         console.log(err);
         if (err instanceof APIError) {
+            console.log(err.message)
             return new Response(err.message, { status: 500 });
         }
         return new Response("", { status: 500 });
