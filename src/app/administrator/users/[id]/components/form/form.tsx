@@ -1,6 +1,6 @@
 "use client";
 
-import { App, Button, Card, CascaderProps, Divider, Flex, Form, Input, Switch } from "antd";
+import { App, Badge, Button, Card, CascaderProps, Divider, Flex, Form, Input, Radio, RadioChangeEvent, Switch, Tooltip } from "antd";
 import { useMemo, useState } from "react";
 import OfficeSelector from "@components/office-selector";
 import { LockOutlined } from "@ant-design/icons";
@@ -15,12 +15,12 @@ type AddUserFormProps = {
 };
 
 function EditUserForm(props: AddUserFormProps) {
-    const { message } = App.useApp();
+    const { message, modal } = App.useApp();
     const [form] = Form.useForm();
     const [passwordEdit, setPasswordEdit] = useState(false);
     const [fileObj, setFileObj] = useState(
         props.preloadData.profile &&
-            srcToFile("data:image/png;base64," + props.preloadData.profile, "sample-img.png", "image/png")
+        srcToFile("data:image/png;base64," + props.preloadData.profile, "sample-img.png", "image/png")
     );
 
     const [loading, setLoading] = useState(false);
@@ -62,10 +62,25 @@ function EditUserForm(props: AddUserFormProps) {
             message.error(`Error Occured ${action?.message}`, 3);
             setLoading(false);
         } else {
-            message.success(`Added New User`, 3);
+            message.success(`Updated User`, 3);
             setLoading(false);
         }
     };
+
+    const onRoleChange = (e: RadioChangeEvent) => {
+
+        if (e.target.value !== preload.userType) {
+            modal.confirm({
+                closeIcon: null,
+                width: 300,
+                title: "Confirm Update of User Role",
+                content: "NOTE: Updating User Role is still an ALPHA Feature, this is due to the fact that referenced PR may affect data integrity",
+                onCancel: () => {
+                    form.setFieldValue('userType', preload.userType)
+                }
+            })
+        }
+    }
     return (
         <Form form={form} layout="vertical" initialValues={{ ...preload }} onFinish={onFinish}>
             <Flex align="center" justify="center">
@@ -81,6 +96,17 @@ function EditUserForm(props: AddUserFormProps) {
                 </div>
             </Flex>
             <br />
+            <Flex align="center" justify="center">
+                <Tooltip color="orange" title="ALPHA" placement="bottom">
+                    <Form.Item name="userType">
+                        <Radio.Group onChange={onRoleChange}>
+                            <Radio.Button value="USER">User</Radio.Button>
+                            <Radio.Button value="TRACKER">Tracker</Radio.Button>
+                            <Radio.Button value="CHECKER">Checker</Radio.Button>
+                        </Radio.Group>
+                    </Form.Item>
+                </Tooltip>
+            </Flex>
             <Form.Item
                 name="username"
                 label="Username"

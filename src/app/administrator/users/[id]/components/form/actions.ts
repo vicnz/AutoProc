@@ -37,6 +37,7 @@ export const updateUser = async (data: FormData) => {
     }
 
     const mapped: Partial<PrismaModels['users']> = {
+        userType: object.userType,
         username: object.username,
         fname: object.fname,
         mname: object.mname,
