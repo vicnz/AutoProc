@@ -1,7 +1,7 @@
 "use client";
 
-import { EditOutlined, SaveOutlined } from "@ant-design/icons";
-import { App, Button, Flex, Form, Input, Modal, Space } from "antd";
+import { DeleteOutlined, EditOutlined, SaveOutlined } from "@ant-design/icons";
+import { App, Button, Flex, Form, Input, Modal, Space, Tooltip } from "antd";
 import { Fragment, useState } from "react";
 // import { updateDepartment, updateSection } from "@state/entities/actions";
 import { objectToForm } from "@lib/converters/formData";
@@ -79,13 +79,19 @@ function EditDepartments(props: PropType) {
                     <Form.Item name="description" label="Description" rules={[{ required: true }]}>
                         <Input />
                     </Form.Item>
-                    <Flex justify="end">
-                        <Space>
-                            <Button type="primary" icon={<SaveOutlined />} htmlType="submit" loading={loading}>
-                                Save
-                            </Button>
-                            <Button onClick={() => setOpen(false)}>Cancel</Button>
-                        </Space>
+                    <br />
+                    <Flex align="center" justify="space-between">
+                        <Tooltip title="TODO">
+                            <Button icon={<DeleteOutlined />} danger type='dashed' disabled>Remove Office</Button>
+                        </Tooltip>
+                        <Flex justify="end">
+                            <Space>
+                                <Button type="primary" icon={<SaveOutlined />} htmlType="submit" loading={loading}>
+                                    Save
+                                </Button>
+                                <Button onClick={() => setOpen(false)}>Cancel</Button>
+                            </Space>
+                        </Flex>
                     </Flex>
                 </Form>
             </Modal>

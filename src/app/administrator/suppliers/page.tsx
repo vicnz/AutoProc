@@ -1,6 +1,8 @@
 import RenderList from "./components/render-items";
 import { preload } from "./preload";
 
+export const revalidate = 60;
+
 async function SupplierPage() {
     const data = await preload();
     if (data.error || typeof data.data === "undefined") throw new Error("Server Error");

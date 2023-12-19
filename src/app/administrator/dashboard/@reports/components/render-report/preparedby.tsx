@@ -20,7 +20,7 @@ function PreparedBy() {
         return (
             <div><span style={{ fontSize: 12 }}>Prepared By:</span>
                 <div style={{ height: 50, marginLeft: 75, width: 300, textAlign: 'center' }}>
-                    <Typography.Text strong>{name}</Typography.Text>
+                    <Typography.Text strong style={{ textTransform: 'uppercase' }}>{name}</Typography.Text>
                     <hr style={{ margin: 0 }} />
                     <Typography.Text italic>Administrator</Typography.Text>
                 </div>

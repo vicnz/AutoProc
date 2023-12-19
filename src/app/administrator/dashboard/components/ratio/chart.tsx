@@ -12,8 +12,8 @@ function PlotGraph(props: PlotGraphProps) {
     const [labels, values] = useMemo(() => {
         const types = new Array();
         const counts = props.data.map((item) => {
-            types.push(item?.type);
-            return item?.count;
+            types.push(item?.type === 'SVP' ? item?.type : item?.type + " *");
+            return item?.count === 0 ? 1 : item?.count;
         });
 
         return [types, counts];
@@ -22,6 +22,7 @@ function PlotGraph(props: PlotGraphProps) {
     return (
         <Doughnut
             options={{
+                //#region 
                 responsive: true,
                 aspectRatio: 2,
                 plugins: {
@@ -30,14 +31,16 @@ function PlotGraph(props: PlotGraphProps) {
                         position: "left",
                     },
                 },
+
             }}
             data={{
                 labels: labels,
                 datasets: [
                     {
                         label: "Procured Types",
-                        // data: values,
-                        data: demoData,
+                        data: values,
+                        // data: demoData,
+                        backgroundColor: labels.map(item => item === 'SVP' ? '#C0252A60' : 'lightgray')
                     },
                 ],
             }}

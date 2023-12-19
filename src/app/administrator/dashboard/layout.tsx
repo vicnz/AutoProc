@@ -1,8 +1,8 @@
 "use client";
 
 import { ReactNode } from "react";
-import { CompassOutlined, LineChartOutlined, ProjectOutlined, QuestionCircleOutlined, ReloadOutlined } from "@ant-design/icons";
-import { Button, Divider, Skeleton, Tabs, Typography } from "antd";
+import { LineChartOutlined, ProjectOutlined, QuestionCircleOutlined, ReloadOutlined } from "@ant-design/icons";
+import { Button, Divider, Skeleton, Tabs } from "antd";
 import dynamic from "next/dynamic";
 import TabPane from "./components/tab-pane";
 import GlobalHeader from "@components/admin/header";
@@ -56,16 +56,6 @@ const DashboardLayout = function (props: DashboardLayoutProps) {
                             </>
                         ),
                         children: <TabPane>{props.reports}</TabPane>,
-                    },
-                    {
-                        disabled: true,
-                        key: "activity",
-                        label: (
-                            <>
-                                <CompassOutlined /> Activity
-                            </>
-                        ),
-                        children: <TabPane></TabPane>,
                     },
                 ]}
             />
