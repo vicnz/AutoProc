@@ -100,7 +100,7 @@ const AbstractQuotationForm = function (props: AbstractQuotationFormProps) {
                     banner
                     closeIcon={null}
                     closable={false}
-                    type="info"
+                    type="error"
                     message="Enter The Total Quotationed"
                     description={
                         <>

@@ -275,7 +275,7 @@ export const PATCH = async (req: NextRequest) => {
                 },
             });
 
-            const supplierInfo = JSON.parse(result.po?.supplier as string)
+            const supplierInfo = result.po?.supplier as any
 
             await db.supplier_rating.update({
                 data: {
