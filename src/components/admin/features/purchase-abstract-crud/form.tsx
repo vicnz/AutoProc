@@ -14,10 +14,6 @@ import dynamic from "next/dynamic";
 const SelectLowestBidder = dynamic(async () => await import("./select-lowest-bidder"), {
     loading: () => <Skeleton.Input />,
 });
-//PREVIEW PURCHASE REQUEST
-const PurchaseRequestPreview = dynamic(async () => await import("@components/admin/features/pr-mini-preview"), {
-    loading: () => <Skeleton active />,
-});
 
 import QuotationEdit from "./quotations";
 import { usePRId } from "@components/admin/procurement/purchase-id-context";
@@ -86,8 +82,6 @@ const AbstractQuotationForm = function (props: AbstractQuotationFormProps) {
     return (
         <>
             <Form layout="vertical" initialValues={preloadedData} form={form} onFinish={onFinish}>
-                <PurchaseRequestPreview showAmount />
-                <Divider>Abstracts</Divider>
                 <Space>
                     <Form.Item
                         label="Place of Bidding"
