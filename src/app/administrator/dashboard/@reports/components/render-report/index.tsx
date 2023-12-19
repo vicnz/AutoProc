@@ -4,6 +4,7 @@ import React, { forwardRef } from "react";
 import { ToPeso } from "@lib/intl/currency";
 import Image from "next/image";
 import DocumentHeader from "@media/templates/document-header.png";
+import PreparedBy from "./preparedby";
 
 type ReportProps = {
     data: {
@@ -104,6 +105,8 @@ const Index = forwardRef(function WrapperComponent(props: ReportProps, ref) {
                         <Descriptions.Item label="Subtotal">{ToPeso(meta.subTotal)}</Descriptions.Item>
                     </Descriptions>
                 </Flex>
+                <br />
+                <PreparedBy />
             </div>
         </div>
     );
