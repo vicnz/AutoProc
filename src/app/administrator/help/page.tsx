@@ -1,6 +1,3 @@
-//TODO HELP & FEEDBACK
-// Requires In Solicited Data
-
 import { Empty, Flex, Result } from "antd";
 
 const Page = function () {

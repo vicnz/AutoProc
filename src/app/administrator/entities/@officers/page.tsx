@@ -1,28 +1,31 @@
-import { Card, Result } from "antd";
-import ViewScroll from "@components/scrollview";
-import { TeamOutlined } from "@ant-design/icons";
+import Card from './card'
+import db from '@lib/db'
 
-function Officers() {
+const preload = async () => {
+    const response = await db.officers.findMany({ where: { isDeleted: false } })
+
+    if (!(response.length > 0)) {
+        throw new Error("No Officers")
+    }
+
+    let members: any[] = []
+    let chairman: any = {}
+    let vice: any = {}
+    let head: any = {}
+
+    response.forEach((item: { position: string }) => {
+        if (item.position === 'VICE') vice = { ...item }
+        if (item.position === 'HEAD') head = { ...item }
+        if (item.position === 'CHAIR') chairman = { ...item }
+        if (item.position === 'MEMBER') members.push(item)
+    })
+
+    return { members, chairman, vicechairman: vice, head }
+}
+async function Officers() {
+    const response = await preload()
     return (
-        <Card
-            title={
-                <span>
-                    <TeamOutlined /> BAC Organization
-                </span>
-            }
-            style={{ height: 400 }}
-            bodyStyle={{ padding: 0, margin: 0, height: "100%" }}
-        >
-            <ViewScroll height={"calc(400px - 56px)"}>
-                <div style={{ padding: 10 }}>
-                    <Result
-                        title="Work In Progress"
-                        status="info"
-                        subTitle="Officer Management, Still A Work In Progress Feature"
-                    />
-                </div>
-            </ViewScroll>
-        </Card>
+        <Card data={response} />
     );
 }
 

@@ -10,19 +10,7 @@ interface UserManagementHeaderProps {}
 const OtherLayout = function (props: UserManagementHeaderProps) {
     return (
         <>
-            <GlobalHeader
-                title={
-                    <Space>
-                        <span>DEPARTMENTS</span>
-                        <Divider type="vertical" />
-                        <span>SECTIONS</span>
-                        <Divider type="vertical" />
-                        <span>OFFICERS</span>
-                        <Divider type="vertical" />
-                        <span>UNITS</span>
-                    </Space>
-                }
-            >
+            <GlobalHeader title={<span>OTHERS</span>}>
                 <Manual
                     icon={<QuestionCircleOutlined />}
                     buttonProps={{ type: "text" }}

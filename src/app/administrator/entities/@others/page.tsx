@@ -16,7 +16,7 @@ function Others() {
             <ViewScroll height={"calc(400px - 56px)"}>
                 <div style={{ padding: 10, display: "grid", placeItems: "center", height: "100%" }}>
                     <Result
-                        title="Conceptual Phase"
+                        title="Maintenance Mode"
                         status="warning"
                         subTitle="Content Editor, Change and Update BAC Resolution, Awarding, Letter Of Notice and, etc. Contents"
                     />
