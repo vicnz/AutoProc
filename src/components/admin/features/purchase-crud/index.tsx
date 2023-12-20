@@ -40,10 +40,9 @@ const PurchaseRequestEditor = function (props: PurchaseRequestEditorProps) {
             {props.type === "add" && typeof props.prId === "undefined" ? (
                 <Button
                     icon={<PlusCircleOutlined />}
-                    type="text"
                     onClick={() => setOpen(true)}
                 >
-                    {props.children || "Add PR"}
+                    {props.children || "New Purchase Request"}
                 </Button>
             ) : (
                 <Button

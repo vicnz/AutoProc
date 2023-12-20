@@ -1,7 +1,7 @@
 import { ShoppingCartOutlined, DesktopOutlined, WarningOutlined } from "@ant-design/icons";
 import { Empty, List, Card, Avatar } from "antd";
 import dayjs from "dayjs";
-
+import styles from './items.module.css'
 const RenderNotificationsItem = (props: { data: Array<any> }) => {
     if (props.data.length < 1) {
         return <Empty description="No New Notifications For Today" />;
@@ -13,10 +13,11 @@ const RenderNotificationsItem = (props: { data: Array<any> }) => {
             renderItem={(item: any) => {
                 return (
                     <List.Item key={item.id}>
-                        <Card style={{ width: "100%" }}>
+                        <Card style={{ width: "100%" }} className={styles.card}>
                             <Card.Meta
                                 avatar={
                                     <Avatar
+                                        style={{ background: '#C0252A60' }}
                                         icon={
                                             <>
                                                 {

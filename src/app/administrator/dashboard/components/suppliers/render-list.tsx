@@ -31,7 +31,7 @@ const RenderTopSuppliers = (props: { data: ResponseType[] }) => {
                         extra={
                             <>
                                 <Link href={`/administrator/suppliers/${item.supplier.id}`} passHref>
-                                    <LoadingButton icon={<ArrowRightOutlined />} type="text" />
+                                    <LoadingButton icon={<ArrowRightOutlined />} type="text">Info</LoadingButton>
                                 </Link>
                             </>
                         }
@@ -42,8 +42,8 @@ const RenderTopSuppliers = (props: { data: ResponseType[] }) => {
                                 <>
                                     <Space>
                                         <span>{item.supplier.name}</span>
-                                        <Button size="small" style={{ pointerEvents: "none" }} type="primary">
-                                            Selection : {item.selection}
+                                        <Button size="small" style={{ pointerEvents: "none" }} type="dashed">
+                                            {item.selection}
                                         </Button>
                                     </Space>
                                 </>
@@ -51,13 +51,13 @@ const RenderTopSuppliers = (props: { data: ResponseType[] }) => {
                             description={
                                 <>
                                     <Space>
-                                        <Button size="small" style={{ pointerEvents: "none" }}>
+                                        <Button size="small" style={{ pointerEvents: "none", backgroundColor: '#C0252A60', border: 'none', boxShadow: 'none' }}>
                                             OnTime : {item.onTime}
                                         </Button>
-                                        <Button size="small" style={{ pointerEvents: "none" }}>
+                                        <Button size="small" style={{ pointerEvents: "none", backgroundColor: 'transparent', border: 'none', boxShadow: 'none' }}>
                                             Extends : {item.extends}
                                         </Button>
-                                        <Button size="small" style={{ pointerEvents: "none" }}>
+                                        <Button size="small" style={{ pointerEvents: "none", backgroundColor: 'transparent', border: 'none', boxShadow: 'none' }}>
                                             Delays : {item.delays}
                                         </Button>
                                     </Space>

@@ -25,7 +25,7 @@ function NotificationOutline(props: CardProps & { height: number }) {
             bodyStyle={{ ...BodyStyle, height }}
             title={
                 <>
-                    <BellOutlined /> Notifications
+                    <BellOutlined /> Deliveries
                 </>
             }
         >

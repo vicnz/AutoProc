@@ -1,0 +1,15 @@
+.card {
+    position: relative;
+}
+
+.card::after {
+    content: "";
+    position: absolute;
+    height: 50%;
+    width: 8px;
+    top: 50%;
+    left: -4px;
+    transform: translateY(-50%);
+    background-color: #C0252A60;
+    border-radius: 25px;
+}

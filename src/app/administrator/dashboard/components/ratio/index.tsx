@@ -34,7 +34,7 @@ function Ratio(props: CardProps & { height: number }) {
                         <BlockOutlined /> Proc Type Ratio <Tag color="orange">PREVIEW</Tag>
                     </>
                 }
-                extra={<>Current Year {dayjs().get("year")}</>}
+                extra={<>{dayjs().get("year")}</>}
             >
                 <Graph data={result} />
             </Card>
