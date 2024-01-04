@@ -3,13 +3,14 @@
 import useSWR from "swr";
 import { Error, Loading } from "../status";
 import { ShopOutlined } from "@ant-design/icons";
-import { Card } from "antd";
+import { Card, DatePicker } from "antd";
 import dayjs from "dayjs";
 import { BodyStyle, OverFlowStyle } from "./styles";
 import RenderSuppliers from "./render-list";
+import { useState } from "react";
 
 function TopSuppliers(props: { height: number }) {
-    const { data, isLoading, error } = useSWR("/administrator/dashboard/api/supplier");
+    const { data, isLoading, error } = useSWR(`/administrator/dashboard/api/supplier`);
 
     if (error) {
         return (
@@ -31,7 +32,6 @@ function TopSuppliers(props: { height: number }) {
                     <ShopOutlined /> Suppliers (Relevance)
                 </>
             }
-            extra={<>{dayjs().get("year")}</>}
             bodyStyle={{ ...BodyStyle, height: props.height }}
         >
             <div style={{ ...OverFlowStyle, height: props.height }}>

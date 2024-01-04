@@ -10,8 +10,6 @@ type ReturnType = {
 export const GET = async (req: NextRequest) => {
 
     const searchParams = req.nextUrl.searchParams
-    const endMonthDate = dayjs().endOf('year').toISOString() //current active month
-    const startMonthDate = dayjs().startOf('year').toISOString() //current active month
 
     let currentYear: number | string = dayjs().get('year').toString()
 

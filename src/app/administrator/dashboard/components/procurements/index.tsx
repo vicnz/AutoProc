@@ -1,16 +1,17 @@
 "use client";
 
 import { BarChartOutlined } from "@ant-design/icons";
-import { Card, CardProps } from "antd";
+import { Card, CardProps, DatePicker } from "antd";
 import dayjs from "dayjs";
-import { memo } from "react";
+import { memo, useState } from "react";
 import useSWR from "swr";
 
 import Graph from "./chart";
 import { Loading, Error } from "../status";
 
 function ProcurementRendered(props: CardProps & { height: number }) {
-    const { data, isLoading, error } = useSWR("/administrator/dashboard/api/summary", { refreshInterval: 30 * 60 });
+    const [year, setYear] = useState(dayjs().get('year'))
+    const { data, isLoading, error } = useSWR(`/administrator/dashboard/api/summary?year=${year}`, { refreshInterval: 30 * 60 });
     const { height, ...rest } = props;
 
     if (error) {
@@ -35,7 +36,11 @@ function ProcurementRendered(props: CardProps & { height: number }) {
                     <BarChartOutlined /> Procurements (SVP)
                 </>
             }
-            extra={<>{dayjs().get("year")}</>}
+            extra={
+                <>
+                    <DatePicker.YearPicker value={dayjs().set('year', year)} onChange={(e) => setYear(e?.get('year') as number)} />
+                </>
+            }
         >
             <Graph data={result} />
         </Card>

@@ -41,8 +41,8 @@ function Graph(props: { data: { count: number }[] }) {
                 datasets: [
                     {
                         label: "Purchase Requests",
-                        // data: props.data.map((item: { count: number }) => item?.count),
-                        data: demoData, //TOGGLE THIS FOR TESTING
+                        data: props.data.map((item: { count: number }) => item?.count),
+                        // data: demoData, //TOGGLE THIS FOR TESTING
                         borderColor: "#C0252A",
                         backgroundColor: "#C0252A60",
                     },

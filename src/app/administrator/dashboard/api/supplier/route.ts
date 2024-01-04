@@ -3,17 +3,9 @@
  */
 
 import db from "@lib/db";
-import dayjs from "dayjs";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest) => {
-    const currentYear = dayjs() //GET CURRENT YEAR
-
-    const range = {
-        start: currentYear.startOf('year').toISOString(),
-        end: currentYear.endOf('year').toISOString()
-    }
-
     //FETCH
     const topSuppliers = await db.supplier_rating.findMany({
         select: {
@@ -33,10 +25,6 @@ export const GET = async (req: NextRequest) => {
             isDeleted: false,
             supplier: {
                 isDeleted: false
-            },
-            updatedAt: {
-                gt: range.start,
-                lte: range.end
             }
         },
         orderBy: {
