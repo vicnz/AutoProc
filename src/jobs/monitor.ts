@@ -1,10 +1,11 @@
 import { schedule } from "node-cron";
 import dayjs from "dayjs";
 import db, { PrismaModels } from "@lib/db";
+import { logger } from "@logger";
 
-const interval = `*/60 * * * * *`; //every 1 Minute check for Incoming Delayed Deliveries
+const interval = `* * * * *`; //every 1 Minute check for Incoming Delayed Deliveries
 export async function MonitorDeliveries() {
-    console.log("Init Monitoring Deliveries .... ");
+    logger.info("Initialed Monitoring Delayed Deliveries")
 
     const setting = await db.settings.findFirst({
         select: { value: true },

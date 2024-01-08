@@ -1,14 +1,14 @@
 import { schedule } from "node-cron";
 import dayjs from "dayjs";
-import db, { PrismaModels } from "@lib/db";
+import db from "@lib/db";
+import { logger } from '@logger';
 
-// const interval = `*/10 * * * * *`;
+// TODO add on exclude option for notifications marked as PERSISTENT
+
 const interval = `0 0 1 */1 *`; //every 30 days
 
 export async function NotificationFilter() {
-
-    console.log("Init Notification Filterer .... ");
-
+    logger.info("Initialized Notification Filtering")
     const settings = await db.settings.findFirst({
         select: { value: true },
         where: { name: 'notif_clear' }
@@ -33,7 +33,7 @@ export async function NotificationFilter() {
         })
 
         if (result.count > 0) {
-            console.log(`Deleted ${result.count} Notifications...`)
+            logger.info(`Deleted ${result.count} Notifications`)
         }
     });
     return notifStrip;

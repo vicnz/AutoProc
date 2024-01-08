@@ -63,3 +63,7 @@ DELETE_FILE_*
 
 # labeled as OLD
 *.old*
+
+# Backup
+.backups
+.backups/*.*

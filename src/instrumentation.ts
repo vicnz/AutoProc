@@ -1,15 +1,16 @@
 /**process.env.NEXT_RUNTIME */
 export async function register() {
     if (process.env.NEXT_RUNTIME === 'nodejs') {
-        console.log('running in nodejs')
-        //! MIGRATE ALL LONG RUNNING SERVER CODE HERE
+        console.log('RUNNING ON NODEJS')
+        const { autoBackup } = await import('./jobs/backup')
         const { MonitorDeliveries } = await import('./jobs/monitor')
-        const { NotificationFilter } = await import('./jobs/notification')
-        const monitor = (await MonitorDeliveries()).start()
-        const notifStrip = (await NotificationFilter()).start()
+        const { NotificationFilter } = await import('./jobs/notification');
+        (await MonitorDeliveries()).start();
+        (await NotificationFilter()).start();
+        (await autoBackup()).start()
     }
     if (process.env.NEXT_RUNTIME === 'edge') {
-        console.log('running on edge')
+        console.log('RUNNING ON EDGE')
     }
 }
 

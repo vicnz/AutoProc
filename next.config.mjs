@@ -6,7 +6,10 @@ import createMDX from '@next/mdx'
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     experimental: {
-        instrumentationHook: true
+        serverActions: {
+            allowedOrigins: ['https://cj5bscgj-3000.asse.devtunnels.ms/', 'localhost:3000']
+        },
+        instrumentationHook: true,
     },
     // Configure `pageExtensions`` to include MDX files
     pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],

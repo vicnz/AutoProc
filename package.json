@@ -10,8 +10,6 @@
     "start": "next start",
     "start:custom": "SET NODE_OPTIONS='--inspect' && npm start",
     "lint": "next lint",
-    "test": "vitest",
-    "test:ui": "vitest --ui",
     "prisma:migrate": "prisma migrate dev --schema=./prisma/schema.migrate.prisma"
   },
   "dependencies": {
@@ -25,8 +23,10 @@
     "antd": "^5.10.1",
     "antd-img-crop": "^4.15.0",
     "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^9.2.2",
     "boring-avatars": "^1.10.1",
     "chart.js": "^4.3.3",
+    "compressing": "^1.10.0",
     "dayjs": "^1.11.9",
     "eventsource": "^2.0.2",
     "framer-motion": "^10.16.4",
@@ -35,6 +35,7 @@
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "lowdb": "^6.1.1",
+    "mysql2": "^3.6.5",
     "next": "^14.0.3",
     "next-auth": "^4.24.5",
     "node-cron": "^3.0.2",
@@ -60,20 +61,20 @@
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.3",
+    "@types/better-sqlite3": "^7.6.8",
     "@types/js-cookie": "^3.0.3",
     "@types/jsonwebtoken": "^9.0.3",
     "@types/lodash": "^4.14.201",
-    "@types/node": "^20.4.5",
+    "@types/node": "^20.10.6",
     "@types/node-cron": "^3.0.10",
     "@types/node-schedule": "^2.1.5",
     "@types/react": "^18.2.17",
     "@types/react-dom": "^18.2.7",
-    "@vitest/ui": "^0.34.3",
+    "@types/tar": "^6.1.10",
     "eslint": "^8.46.0",
     "eslint-config-next": "^14.0.3",
     "prisma": "^5.6.0",
-    "typescript": "^5.1.6",
-    "vitest": "^0.34.3"
+    "typescript": "^5.1.6"
   },
   "prisma": {
     "seed": "node ./prisma/seeder/main.js"
