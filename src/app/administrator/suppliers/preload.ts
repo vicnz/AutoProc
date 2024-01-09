@@ -24,7 +24,9 @@ export const preload = async () => {
                 isDeleted: false,
             },
             orderBy: {
-                updatedAt: "desc",
+                supplier_rating: {
+                    selection: 'desc',
+                },
             },
         });
 
