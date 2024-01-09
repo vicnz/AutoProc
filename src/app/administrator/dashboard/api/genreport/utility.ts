@@ -15,6 +15,8 @@ export interface ReturnType {
         purpose: string;
         type: string;
     };
+    final: boolean,
+    released: boolean,
     date: string
 }
 
@@ -29,6 +31,8 @@ export const fetchReports = async (req: NextRequest, startDate: string, endDate:
             supplier: true,
             date: true,
             createdAt: true,
+            final: true,
+            released: true,
             pr: {
                 select: {
                     purpose: true,
@@ -76,6 +80,8 @@ const parseResult = async (result: ReturnType[]) => {
                 particulars: toListLimited(item.particulars.map(item => item.description), 3),
                 date: item.createdAt,
                 type: item.pr.type,
+                final: item.final,
+                released: item.released
             }
         })
 

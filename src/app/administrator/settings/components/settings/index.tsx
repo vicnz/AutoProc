@@ -60,7 +60,7 @@ function Settings(props: DataProps) {
                     <strong>
                         <DeleteOutlined /> Clear Notifications <Tag color="red">PREVIEW</Tag>
                     </strong>
-                    <br />
+                    <hr />
                     Number of Days before automatically remove notifications. By Default it&apos;s set to 30 Days
                 </div>
             </div>

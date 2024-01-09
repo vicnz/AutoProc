@@ -1,4 +1,4 @@
-import { Descriptions, Divider, Flex, Table, TableColumnsType } from "antd";
+import { Descriptions, Divider, Flex, Table, TableColumnsType, Tag } from "antd";
 import dayjs from "dayjs";
 import React, { forwardRef } from "react";
 import { ToPeso } from "@lib/intl/currency";
@@ -54,6 +54,18 @@ const columns: TableColumnsType = [
         key: "supplier",
         dataIndex: "supplier",
         title: "Supplier",
+    },
+    {
+        key: 'final_key',
+        dataIndex: 'final',
+        title: "Status",
+        render: (e: boolean) => {
+            if (e === true) {
+                return <Tag title="Completed" color="green">COMPLETED</Tag>
+            } else {
+                return <Tag title="Pending" color="blue">PENDING</Tag>
+            }
+        }
     },
     {
         key: "date",
