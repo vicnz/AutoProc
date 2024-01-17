@@ -10,7 +10,7 @@ const AcknowledgementReceipt = function (props: { data: any }) {
                 <div style={{ display: "flex", justifyContent: "center", width: "100%" }}>
                     <div style={{ fontSize: "1.2em", fontWeight: "bold", width: 700, textAlign: "center" }}>
                         <br />
-                        AKNOWLEDGEMENT OF PRICE OF QUOTATION
+                        ACKNOWLEDGEMENT OF PRICE OF QUOTATION
                     </div>
                 </div>
             </PreviewHeader>

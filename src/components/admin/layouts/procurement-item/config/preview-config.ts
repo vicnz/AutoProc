@@ -3,16 +3,17 @@ import { ThemeConfig } from "antd";
 export const DocumentPreviewThemeConfig: ThemeConfig = {
     token: {
         colorPrimary: '#C0252A',
-        colorBorder: 'darkslategray',
-        colorBorderBg: 'darkgray',
     },
     components: {
         Table: {
-            borderColor: 'lightgray',
+            borderColor: 'dimgray',
             rowHoverBg: 'transparent'
         },
         Descriptions: {
             colorSplit: 'lightgray',
-        }
+            colorBorder: 'dimgray',
+            lineWidth: 2,
+            lineHeight: 2,
+        },
     }
 }

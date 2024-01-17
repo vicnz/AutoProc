@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server'
 // ─── Next-auth Middleware Wrapper ────────────────────────────────────────────
 
 export default withAuth(
-    function middleware(request: NextRequestWithAuth) {
+    async function middleware(request: NextRequestWithAuth) {
 
         // ─── Allow Only Users With Role Admin ────────────────────────
 

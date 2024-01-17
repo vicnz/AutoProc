@@ -2,8 +2,15 @@ import { App } from "antd";
 import { PropsWithChildren } from "react";
 import Config from "@lib/theme/theme-config";
 import { THEME_COLORS } from "@lib/theme/constant";
+import { adminExists } from '@lib/init/undefined-admin'
+import { redirect } from "next/navigation";
+
+const preload = async () => {
+    return await adminExists()
+}
 // ─── Component Base ──────────────────────────────────────────────────────────
-function AuthLayout(props: PropsWithChildren<any>) {
+async function AuthLayout(props: PropsWithChildren<any>) {
+    // if (await preload()) redirect('/init');
     return (
         <Config token={{ colorPrimary: THEME_COLORS.PRIMARY }}>
             <App>
