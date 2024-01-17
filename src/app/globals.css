@@ -43,3 +43,21 @@ body {
   width: 8px;
   height: 8px;
 }
+
+
+.dark-border>td {
+  border: .5px solid dimgray !important;
+}
+
+.dark-border thead>tr>th {
+  border: .5px solid dimgray !important;
+  border-bottom: 1px solid slategray !important;
+}
+
+.dark-border .ant-descriptions-bordered {
+  border-color: dimgray !important;
+}
+
+.dark-border .ant-descriptions-bordered table {
+  border-color: dimgray !important;
+}

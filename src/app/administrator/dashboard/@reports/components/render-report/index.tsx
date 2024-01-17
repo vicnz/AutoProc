@@ -93,7 +93,7 @@ const Index = forwardRef(function WrapperComponent(props: ReportProps, ref) {
                 </Flex>
                 <br />
                 <Flex align="center" justify="center">
-                    <Descriptions column={5} layout="vertical" size="small" bordered>
+                    <Descriptions column={5} layout="vertical" size="small" bordered className="dark-border" prefixCls="dark-border">
                         <Descriptions.Item label="Generated At">
                             {dayjs(meta.generated).format("MMMM DD, YYYY (hh:mm A)")}
                         </Descriptions.Item>
@@ -110,7 +110,7 @@ const Index = forwardRef(function WrapperComponent(props: ReportProps, ref) {
                     </Descriptions>
                 </Flex>
                 <Divider />
-                <Table dataSource={reports} columns={columns as any} pagination={false} size="small" bordered />
+                <Table dataSource={reports} columns={columns as any} pagination={false} size="small" bordered className="dark-border" rowClassName={'dark-border'} />
                 <br />
                 <Flex justify="end" align="center">
                     <Descriptions size="small" bordered>

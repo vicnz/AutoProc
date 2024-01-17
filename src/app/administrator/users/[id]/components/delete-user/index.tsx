@@ -29,11 +29,11 @@ function Delete(props: { id: string }) {
             type="error"
             description={
                 <>
-                    <span>This Will Disable This Users Availability In Some Parts of AutoProc</span>
+                    <span>This will disable this users availability in some parts of AutoProc</span>
                     <br />
                     <br />
                     <Popconfirm
-                        title="Are You Sure You Want To Disable this User?"
+                        title="Are you sure you want to disable this User?"
                         onCancel={() => {
                             setLoading(false);
                         }}
