@@ -106,16 +106,3 @@ export async function updateNewUser(formData: FormData) {
         return { error: true }
     }
 }
-
-
-// function base64toFile(base64: string, fileName: string) {
-//     const byteChar = atob(base64)
-//     const byteNumbers = new Array(byteChar.length)
-//     for (let i = 0; i < byteChar.length; i++) {
-//         byteNumbers[i] = byteChar.charCodeAt(i)
-//     }
-//     const byteArray = new Uint8Array(byteNumbers)
-//     const blob = new Blob([byteArray], { type: 'application/octet-stream' })
-//     const file = new File([blob], fileName, { type: 'application/octet-stream' })
-//     return file;
-// }

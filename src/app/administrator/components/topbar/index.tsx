@@ -1,3 +1,4 @@
+export const revalidate = 0;
 //libs
 import { Divider, Flex, Skeleton } from "antd";
 import { memo } from "react";

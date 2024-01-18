@@ -1,16 +1,16 @@
 "use client";
 
-import ShadedContainer from "@components/admin/content/container";
+import { Template } from "@components/content";
 import { Skeleton } from "antd";
 import React from "react";
 
 function SupplierLoadingComponent() {
     return (
-        <ShadedContainer>
+        <Template>
             <div style={{ padding: 15 }}>
                 <Skeleton active />
             </div>
-        </ShadedContainer>
+        </Template>
     );
 }
 

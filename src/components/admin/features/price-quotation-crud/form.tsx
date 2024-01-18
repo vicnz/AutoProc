@@ -12,9 +12,9 @@ import { memo, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 
 //Supplier Management
-const SupplierManagement = dynamic(async () => await import("@components/admin/features/suppliers-crud"), {
-    loading: () => <Skeleton.Input active />,
-});
+// const SupplierManagement = dynamic(async () => await import("@components/admin/features/suppliers-crud"), {
+//     loading: () => <Skeleton.Input active />,
+// });
 
 const SelectSupplier = dynamic(async () => await import("./supplier-select"), {
     loading: () => <Skeleton.Input active />,

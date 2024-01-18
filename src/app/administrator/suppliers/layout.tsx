@@ -2,7 +2,7 @@
 
 import { CSSProperties, PropsWithChildren, memo } from "react";
 import Header from "./components/header";
-import Content from "@components/admin/content";
+import Content from "@components/content";
 import { motion } from "framer-motion";
 
 const WrapperStyles: CSSProperties = {

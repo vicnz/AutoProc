@@ -1,12 +1,12 @@
 import { PlusCircleOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import { memo } from "react";
-import GlobalHeader from "@components/admin/header";
+import GlobalHeader from "@components/global-header";
 import OpenDrawer from "@components/drawer";
 import AddForm from "./add";
 import Manual from "@components/shared/manual";
 import { Divider } from "antd";
 //types
-interface UserManagementHeaderProps {}
+interface UserManagementHeaderProps { }
 //
 const SupplierManagementHeader = function (props: UserManagementHeaderProps) {
     return (

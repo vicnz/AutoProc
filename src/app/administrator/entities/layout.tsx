@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import Content from "@components/admin/content";
+import Content from "@components/content";
 import { Flex } from "antd";
 import Header from "./components/header";
 

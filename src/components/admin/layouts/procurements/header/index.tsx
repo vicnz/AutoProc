@@ -9,7 +9,7 @@ import { ArrowLeftOutlined, ArrowRightOutlined, QuestionCircleOutlined } from "@
 import { Button, Divider, Result } from "antd";
 import { Dispatch, memo } from "react";
 //components
-import GlobalHeader from "@components/admin/header";
+import GlobalHeader from "@components/global-header";
 import AddNewPR from "@components/admin/features/purchase-crud";
 import Manual from "@components/shared/manual";
 //types

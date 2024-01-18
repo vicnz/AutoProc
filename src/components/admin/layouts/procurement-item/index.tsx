@@ -4,7 +4,7 @@
 import { CSSProperties, PropsWithChildren, memo } from 'react';
 //components
 import Header from '@components/admin/layouts/procurement-item/header'
-import Content from '@components/admin/content'
+import Content from '@components/content'
 
 //Content Styles
 const WrapperStyles: CSSProperties = {

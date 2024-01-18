@@ -1,5 +1,5 @@
 import { CSSProperties, PropsWithChildren, ReactNode } from "react";
-import Content from "@components/admin/content";
+import Content from "@components/content";
 import Header from "./components/header";
 
 const SplitStyle: CSSProperties = {

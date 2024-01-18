@@ -1,4 +1,4 @@
-import { fetchUnits } from "@state/entities/preload";
+import { fetchUnits } from "./preload";
 import RenderList from "./components/render-list";
 import { Card } from "antd";
 import { BranchesOutlined, PlusCircleOutlined } from "@ant-design/icons";

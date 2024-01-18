@@ -8,7 +8,7 @@ import { useReactToPrint } from "react-to-print";
 //components
 //
 import { usePRId } from "@components/admin/procurement/purchase-id-context";
-import NetworkError from "@components/admin/network-error";
+import NetworkError from "@components/network-error";
 import CreateNewPO from "./createnew";
 import Preview from "@components/admin/layouts/procurement-item/preview-wrapper";
 import PreviewHeader from "@components/admin/layouts/procurement-item/preview-wrapper/header";

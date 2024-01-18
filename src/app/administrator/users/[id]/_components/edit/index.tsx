@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
-import { fetchUser } from "@state/users/preload";
+import { fetchUser } from "./preload";
 import Form from "./form";
-import { fetchOfficeDesignation } from "@state/users/preload";
+import { fetchOfficeDesignation } from "./preload";
 
 async function PreloadFormData(props: { id: string }) {
     const user = await fetchUser(props.id);

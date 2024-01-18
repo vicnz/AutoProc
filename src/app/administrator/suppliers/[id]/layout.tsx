@@ -1,7 +1,7 @@
 import { PropsWithChildren } from "react";
-import SharedContainer from "@components/admin/content/container";
+import { Template } from '@components/content'
 function SupplierItemLayout(props: PropsWithChildren<any>) {
-    return <SharedContainer>{props.children}</SharedContainer>;
+    return <Template>{props.children}</Template>;
 }
 
 export default SupplierItemLayout;

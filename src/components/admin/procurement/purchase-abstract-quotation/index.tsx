@@ -7,7 +7,7 @@ import useSWR from "swr";
 import { useReactToPrint } from "react-to-print";
 //components
 import { usePRId } from "@components/admin/procurement/purchase-id-context";
-import NetworkError from "@components/admin/network-error";
+import NetworkError from "@components/network-error";
 import Preview from "@components/admin/layouts/procurement-item/preview-wrapper";
 import PreviewHeader from "@components/admin/layouts/procurement-item/preview-wrapper/header";
 import SubHeader from "@components/admin/layouts/procurement-item/header/sub";

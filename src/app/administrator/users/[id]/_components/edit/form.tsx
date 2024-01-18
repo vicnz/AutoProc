@@ -2,7 +2,7 @@
 
 import { SaveOutlined } from "@ant-design/icons";
 import { Form, Flex, Divider, Input, Button, Radio, App } from "antd";
-import { updateNewUser } from "@state/users/actions";
+import { updateNewUser } from "./actions";
 
 import DepartmentSelector from "./office-selector";
 import AvatarUploader from "./avatar";

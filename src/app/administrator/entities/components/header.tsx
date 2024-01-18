@@ -2,10 +2,10 @@
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import { Divider, Space } from "antd";
 //components
-import GlobalHeader from "@components/admin/header";
+import GlobalHeader from "@components/global-header";
 import Manual from "@components/shared/manual";
 //types
-interface UserManagementHeaderProps {}
+interface UserManagementHeaderProps { }
 //
 const OtherLayout = function (props: UserManagementHeaderProps) {
     return (
