@@ -1,7 +1,7 @@
 import fullname from "@lib/client/fullname";
 import db, { PrismaModels } from "@lib/db";
 import { NextRequest, NextResponse } from "next/server";
-import { parseQuotation, parseCreateQuotation, computeLowestAmount } from "./utility";
+import { parseCreateQuotation, computeLowestAmount, calculateQuotationsNew, parseQuotation } from "./utility";
 import type { CreateQuotationItem, QuotationItem } from "./type";
 import { logger } from "@logger";
 import APIError, { METHOD } from "@lib/server/api-error";
@@ -79,7 +79,7 @@ export const GET = async function (req: NextRequest) {
             } else {
                 //parse quotations data from RFQ
                 const quotations = await parseQuotation(result?.quotations as QuotationItem[]);
-
+                const calculatedQuotation = await calculateQuotationsNew(result.pr.particulars as any[], result?.quotations as QuotationItem[])
                 const mapped = {
                     id: result.id,
                     final: result.final,
@@ -91,6 +91,8 @@ export const GET = async function (req: NextRequest) {
                     prId: result.prId,
                     rfqId: result.rfq?.id as string,
                     quotations,
+                    calculatedQuotations: calculatedQuotation.rows ?? [],
+                    calculatedQuotationsSum: calculatedQuotation.totals ?? [],
                     enduser: {
                         name: fullname(
                             {

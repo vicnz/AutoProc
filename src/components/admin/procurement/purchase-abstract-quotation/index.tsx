@@ -18,7 +18,7 @@ import CreateNewAbstract from "./create-new";
 import RequireFinal from "./requirefinal";
 import MakeFinal from "./final";
 import TopSection from "./top";
-import Abstracts from "./content";
+import AbstractsNew from './content-new'
 //configs
 const WrapperStyles: CSSProperties = {
     display: "grid",
@@ -85,8 +85,9 @@ const AbstractOfQuotation = function () {
                             </p>
                         </PreviewHeader>
                         <TopSection data={data} />
-                        <Abstracts
-                            quotations={data.quotations}
+                        <AbstractsNew
+                            quotationsSum={data.calculatedQuotationsSum}
+                            quotations={data.calculatedQuotations}
                             suppliers={data.suppliers}
                             bidder={{
                                 supplier: data.lowestBidder,

@@ -29,7 +29,7 @@ interface AbstractQuotationEditProps {
 
 //
 const AbstractQuotationEdit = function (props: AbstractQuotationEditProps) {
-    const { lowestBidder, location, quotations, date, suppliers, id, final } =
+    const { lowestBidder, location, quotations, date, suppliers, id, final, calculatedQuotations } =
         props.data;
 
     const [open, setOpen] = useState(false); //OPEN DRAWER

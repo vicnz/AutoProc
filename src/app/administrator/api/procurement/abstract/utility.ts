@@ -49,3 +49,39 @@ export const computeLowestAmount = async (quotation: Array<{ id: string, total: 
     }
     return bidderAmount;
 }
+// 
+
+export const calculateQuotationsNew = async (products: Array<any>, items: QuotationItem[]) => {
+    const columns = products.map(item => item.description);
+
+    // console.log(items[0].particulars)
+    const totals = new Array(items.length).fill(0)
+    const result = columns.map(item => {
+        const supplier = items.map((subItem, idx) => {
+
+            const particulars = subItem.particulars.find(subItem => subItem.description === item)
+            // console.log(subItem.supplier, " ", particulars?.total)
+            totals[idx] += particulars?.total
+            return {
+                supplier: subItem.supplier,
+                total: particulars?.total
+            }
+        })
+
+        const suppliers = convertArrayToObject(supplier, 'supplier')
+        return {
+            id: item,
+            item: item,
+            ...suppliers,
+        }
+    })
+
+    return { rows: result, totals };
+}
+
+const convertArrayToObject = (array: Array<any>, key: string) => {
+    return array.reduce((accumulator, currentItem) => {
+        accumulator[currentItem[key]] = currentItem;
+        return accumulator;
+    }, {});
+};
