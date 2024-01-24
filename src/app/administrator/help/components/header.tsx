@@ -8,7 +8,7 @@ import Feedback from "./feedback";
 const HelpLayout = function (props: any) {
     return (
         <>
-            <GlobalHeader title="HELP & FEEDBACK">
+            <GlobalHeader title="MANUAL">
                 <Feedback />
             </GlobalHeader>
         </>
