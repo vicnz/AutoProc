@@ -38,6 +38,7 @@ const MakeDocumentFinal = function (props: { final: boolean; id: string, recomme
                 icon={props.final === true ? <CheckOutlined /> : <LockOutlined />}
                 type="text"
                 onClick={() => setShow(true)}
+                disabled={!props.recommendFinal || props.final}
             >
                 {props.final === true ? `Completed` : `Make Final`}
             </Button>
