@@ -9,18 +9,27 @@ const RenderSummary = (pageData: any[]) => {
         return accumulator + currentValue.total;
     }, 0);
 
+    const rowPadding = Math.max(10 - count)
     return (
         <>
             {/* EXTRA FIELDS */}
-            {new Array(10 - count).fill(0).map((item, idx) => {
-                return (
-                    <Table.Summary.Row key={idx + "row"}>
-                        {new Array(5).fill(0).map((item, idx) => {
-                            return <Table.Summary.Cell index={idx} key={idx + "cell"}></Table.Summary.Cell>;
-                        })}
-                    </Table.Summary.Row>
-                );
-            })}
+            {
+                (rowPadding > 0) ?
+                    (
+                        <>
+                            {new Array(rowPadding).fill(0).map((item, idx) => {
+                                return (
+                                    <Table.Summary.Row key={idx + "row"}>
+                                        {new Array(5).fill(0).map((item, idx) => {
+                                            return <Table.Summary.Cell index={idx} key={idx + "cell"}></Table.Summary.Cell>;
+                                        })}
+                                    </Table.Summary.Row>
+                                );
+                            })}
+                        </>
+
+                    ) : null
+            }
             {/* EXTRA FIELDS */}
             {/* SUMMARY ROW */}
             <Table.Summary.Row>

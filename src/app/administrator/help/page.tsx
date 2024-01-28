@@ -1,14 +1,12 @@
-import { Empty, Flex, Result } from "antd";
+'use client';
+import { Empty, Flex, Result, Skeleton } from "antd";
+import dynamic from 'next/dynamic'
 
+const Manual = dynamic(async () => await import('./components/render-pdf'), { loading: () => <Skeleton loading />, ssr: false })
 const Page = function () {
     return (
         <Flex align="center" justify="center">
-            <Result
-                icon={<Empty description="" />}
-                title="Help & Feedback"
-                subTitle="This section holds the Autoproc Manual and Bug Tracker Utilities"
-                status={"warning"}
-            />
+            <Manual />
         </Flex>
     );
 };

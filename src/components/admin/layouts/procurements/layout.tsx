@@ -3,15 +3,15 @@
 import useSWR from "swr";
 import { PropsWithChildren, createContext, useState } from "react";
 //components
-import ContentWrapper from "@components/admin/content";
-import LoadingTemplate from "@components/admin/content/container";
+import ContentWrapper from "@components/content"
+import { Template } from '@components/content'
 import Header from "./header";
 
 //constants
 const SIZE = 8; //TODO FETCH THIS FROM SERVER SETTINGS
 //types
 import type { ResponseType } from "@api/admin/procurements/route";
-import NetworkError from "@components/admin/network-error";
+import NetworkError from "@components/network-error";
 import { Skeleton } from "antd";
 interface ProcurementListContextType {
     data?: ResponseType[];
@@ -43,11 +43,11 @@ const ProcurementsLayout = function (props: PropsWithChildren<any>) {
     } else {
         if (!data || isLoading) {
             return (
-                <LoadingTemplate>
+                <Template>
                     <div style={{ padding: "25" }}>
                         <Skeleton active />
                     </div>
-                </LoadingTemplate>
+                </Template>
             );
         } else {
             return (

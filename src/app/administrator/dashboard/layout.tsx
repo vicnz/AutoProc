@@ -6,8 +6,8 @@ import { LineChartOutlined, ProjectOutlined, QuestionCircleOutlined, ReloadOutli
 import { Button, Divider, Skeleton, Tabs } from "antd";
 import dynamic from "next/dynamic";
 import TabPane from "./components/tab-pane";
-import GlobalHeader from "@components/admin/header";
-import ContentWrapper from "@components/admin/content";
+import GlobalHeader from "@components/global-header";
+import ContentWrapper from "@components/content";
 import ManualPage from "@components/shared/manual";
 import { options } from "@lib/client/remark-gfm";
 import { useRouter } from "next/navigation";

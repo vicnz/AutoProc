@@ -9,7 +9,7 @@ import { Table } from "antd";
 //components
 import TableColumns from "@components/admin/layouts/procurements/columns";
 import { ProcurementListContext } from "@components/admin/layouts/procurements/layout";
-import NetworkError from '@components/admin/network-error'
+import NetworkError from '@components/network-error'
 //
 const ProcurementsTable = function () {
     const { data, error, isLoading } = useContext(ProcurementListContext);

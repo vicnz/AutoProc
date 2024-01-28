@@ -8,7 +8,7 @@ import { useReactToPrint } from "react-to-print";
 import dynamic from "next/dynamic";
 import useSWR from "swr";
 //components
-import NetworkError from "@components/admin/network-error";
+import NetworkError from "@components/network-error";
 import SubHeader from "@components/admin/layouts/procurement-item/header/sub";
 import EditPriceQuotation from "@components/admin/features/price-quotation-crud";
 import Preview from "@components/admin/layouts/procurement-item/preview-wrapper";

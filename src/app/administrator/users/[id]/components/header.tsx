@@ -3,7 +3,7 @@ import { ArrowLeftOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import { Button, Divider, Space } from "antd";
 import { memo } from "react";
 //components
-import GlobalHeader from "@components/admin/header";
+import GlobalHeader from "@components/global-header";
 import { Back } from "@components/loading-btn";
 import Manual from "./manual";
 

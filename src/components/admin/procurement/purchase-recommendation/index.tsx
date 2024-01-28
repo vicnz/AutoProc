@@ -5,7 +5,7 @@ import { Button, Divider, Empty, Result, Segmented, Skeleton } from "antd";
 import { CSSProperties, useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
 //components
-import NetworkError from "@components/admin/network-error"; //Network Error
+import NetworkError from "@components/network-error"; //Network Error
 import SubHeader from "@components/admin/layouts/procurement-item/header/sub"; //Sub Header
 import Preview from "@components/admin/layouts/procurement-item/preview-wrapper"; //Preview
 import { usePRId } from "@components/admin/procurement/purchase-id-context"; //PR ID

@@ -7,7 +7,7 @@ import useSWR from "swr";
 import { useReactToPrint } from "react-to-print";
 //components
 import { usePRId } from "@components/admin/procurement/purchase-id-context";
-import NetworkError from "@components/admin/network-error";
+import NetworkError from "@components/network-error";
 import Preview from "@components/admin/layouts/procurement-item/preview-wrapper";
 import PreviewHeader from "@components/admin/layouts/procurement-item/preview-wrapper/header";
 import SubHeader from "@components/admin/layouts/procurement-item/header/sub";
@@ -18,7 +18,7 @@ import CreateNewAbstract from "./create-new";
 import RequireFinal from "./requirefinal";
 import MakeFinal from "./final";
 import TopSection from "./top";
-import Abstracts from "./content";
+import AbstractsNew from './content-new'
 //configs
 const WrapperStyles: CSSProperties = {
     display: "grid",
@@ -85,8 +85,9 @@ const AbstractOfQuotation = function () {
                             </p>
                         </PreviewHeader>
                         <TopSection data={data} />
-                        <Abstracts
-                            quotations={data.quotations}
+                        <AbstractsNew
+                            quotationsSum={data.calculatedQuotationsSum}
+                            quotations={data.calculatedQuotations}
                             suppliers={data.suppliers}
                             bidder={{
                                 supplier: data.lowestBidder,

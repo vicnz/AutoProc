@@ -37,6 +37,7 @@ const MakeDocumentFinal = function (props: { final: boolean; id: string, prFinal
                 icon={props.final === true ? <CheckOutlined /> : <LockOutlined />}
                 type="text"
                 onClick={() => setShow(true)}
+                disabled={!props.prFinal || props.final}
             >
                 {props.final === true ? `Completed` : `Make Final`}
             </Button>

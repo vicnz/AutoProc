@@ -1,6 +1,6 @@
 import db from '@lib/db'
 import { NextRequest, NextResponse } from 'next/server'
-
+export const revalidate = 0;
 export const GET = async function (req: NextRequest) {
     try {
         const result = await db.units.findMany({

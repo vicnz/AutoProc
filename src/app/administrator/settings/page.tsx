@@ -58,19 +58,6 @@ const Page = async function () {
                         subTitle="Multiple Administrators is yet to be implemented. Once the End-User Accounts feature is stable-this feature will also follow through."
                     />
                 </Card>
-                <Card
-                    title={
-                        <>
-                            <SmileOutlined /> Global Theme
-                        </>
-                    }
-                >
-                    <Result
-                        status="warning"
-                        title="TODO"
-                        subTitle="Multiple Administrators is yet to be implemented. Once the End-User Accounts feature is stable-this feature will also follow through."
-                    />
-                </Card>
             </Flex>
         </Flex>
     );

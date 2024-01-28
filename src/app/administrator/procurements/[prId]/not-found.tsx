@@ -3,12 +3,12 @@
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { Button, Result } from "antd";
 import { useRouter } from 'next/navigation'
-import SectionContainer from '@components/admin/content/container'
+import { Template } from '@components/content'
 
 export default function NotFound() {
     const { back } = useRouter()
     return (
-        <SectionContainer>
+        <Template>
             <div style={{ display: 'grid', placeItems: 'center', width: '100%', height: '100%' }}>
                 <Result
                     title="Purchase Request Not Found"
@@ -21,6 +21,6 @@ export default function NotFound() {
                     }
                 />
             </div>
-        </SectionContainer>
+        </Template>
     )
 }

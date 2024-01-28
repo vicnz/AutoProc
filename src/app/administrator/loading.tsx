@@ -1,6 +1,6 @@
 "use client";
 
-import ShadedContainer from "@components/admin/content/container";
+import { Template as ShadedContainer } from '@components/content'
 import { Skeleton } from "antd";
 import React from "react";
 

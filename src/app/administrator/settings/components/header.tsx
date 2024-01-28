@@ -1,6 +1,6 @@
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import { Button } from "antd";
-import GlobalHeader from "@components/admin/header";
+import GlobalHeader from "@components/global-header";
 
 const SettingsLayout = function (props: any) {
     return (

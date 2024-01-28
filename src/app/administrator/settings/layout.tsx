@@ -1,4 +1,4 @@
-import Content from "@components/admin/content";
+import Content from "@components/content";
 import { PropsWithChildren } from "react";
 import Header from "./components/header";
 

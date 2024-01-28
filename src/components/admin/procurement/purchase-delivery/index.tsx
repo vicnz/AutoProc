@@ -15,7 +15,7 @@ import dynamic from "next/dynamic";
 //components
 import SubHeader from "@components/admin/layouts/procurement-item/header/sub"; //Subheader
 import { usePRId } from "@components/admin/procurement/purchase-id-context";
-import NetworkError from "@components/admin/network-error";
+import NetworkError from "@components/network-error";
 import RequireFinal from "./requirefinal";
 import CreateNewDelivery from "./create";
 //preloaded

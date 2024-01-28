@@ -5,6 +5,7 @@ import createMDX from '@next/mdx'
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    output: 'standalone',
     experimental: {
         serverActions: {
             allowedOrigins: ['https://cj5bscgj-3000.asse.devtunnels.ms/', 'localhost:3000']

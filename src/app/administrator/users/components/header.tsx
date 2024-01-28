@@ -1,6 +1,6 @@
 import { UserAddOutlined } from "@ant-design/icons";
 import { Divider } from "antd";
-import GlobalHeader from "@components/admin/header";
+import GlobalHeader from "@components/global-header";
 import OpenDrawer from "@components/drawer";
 import { ReactNode } from "react";
 import AddNewUser from "./add";

@@ -25,9 +25,6 @@ import dayjs from "dayjs";
 import { mutate } from "swr";
 import dynamic from "next/dynamic";
 //coomponents
-const PreviewPR = dynamic(async () => await import("@components/admin/features/pr-mini-preview"), {
-    loading: () => <Skeleton active />,
-});
 //types
 interface PurchaseOrderFormProps {
     close: () => any;
@@ -98,9 +95,6 @@ const PurchaseOrderForm = function (props: PurchaseOrderFormProps) {
 
     return (
         <Form layout="vertical" ref={formRef} onFinish={onFinish} autoComplete="false" colon initialValues={preload}>
-            <PreviewPR />
-            <br />
-            <Divider>CREATE NEW</Divider>
             <Space style={{ width: "100%" }}>
                 <Form.Item label="Entity/Agency" name="entity" rules={[{ required: true }]}>
                     <Input allowClear />

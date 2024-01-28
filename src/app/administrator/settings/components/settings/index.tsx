@@ -8,8 +8,8 @@ import _ from "lodash";
 //options
 import Pagination from "./pagination";
 import SearchLimit from "./search-limit";
-import Notice from "./notice";
-import NotificationTrimmed from "./notification-trim";
+// import Notice from "./notice";
+// import NotificationTrimmed from "./notification-trim";
 
 type DataProps = {
     data?: Array<{
@@ -41,7 +41,7 @@ function Settings(props: DataProps) {
                 </>
             }
         >
-            <div style={{ display: "grid", gridTemplateColumns: "200px 1fr", gap: 10 }}>
+            {/* <div style={{ display: "grid", gridTemplateColumns: "200px 1fr", gap: 10 }}>
                 <Notice default={val.notice as any} />
                 <div>
                     <strong>
@@ -64,7 +64,7 @@ function Settings(props: DataProps) {
                     Number of Days before automatically remove notifications. By Default it&apos;s set to 30 Days
                 </div>
             </div>
-            <br />
+            <br /> */}
             {/* PAGINATE OPTIONS */}
             <div style={{ display: "grid", gridTemplateColumns: "200px 1fr", gap: 10 }}>
                 <Pagination default={val.paginate as any} />

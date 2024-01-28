@@ -70,29 +70,3 @@ export const generateBackup = async (now: any, label?: string) => {
         }
     }
 }
-
-
-// const fs = require('fs');
-
-// const cmdContent = `
-// @echo off
-// SET MYSQL_EXE=mysql
-// SET USER=root
-// SET PASSWORD=your_password
-// SET DATABASE=your_database
-// SET HOSTNAME=localhost
-// SET PORT=3306
-
-// echo Creating database structure from create-statements.sql...
-// %MYSQL_EXE% -h %HOSTNAME% -P %PORT% -u %USER% -p%PASSWORD% < create-statements.sql
-
-// echo Restoring data from data.sql...
-// %MYSQL_EXE% -h %HOSTNAME% -P %PORT% -u %USER% -p%PASSWORD% %DATABASE% < data.sql
-
-// echo Database restoration complete.
-// `;
-
-// fs.writeFile('sample.cmd', cmdContent, (err) => {
-//   if (err) throw err;
-//   console.log('The CMD script has been saved!');
-// });

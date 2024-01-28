@@ -63,7 +63,7 @@ const NotificationSection = function () {
                         <Segmented
                             options={[
                                 { label: "Today", value: "today" },
-                                { label: "30 Days", value: "month" },
+                                { label: "All", value: "month" },
                             ]}
                             onChange={(e: any) => setNotifyCategory(e)}
                             defaultValue={"today"}

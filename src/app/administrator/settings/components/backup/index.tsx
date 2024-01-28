@@ -87,8 +87,7 @@ function Index(props: PropsWithChildren<{ userid: string }>) {
           }>Create Backup</Button>
         </div>
       </div>
-      <br />
-      <div style={{ display: 'grid', gridTemplateColumns: '200px 1fr', gap: 10 }}>
+      {/* <div style={{ display: 'grid', gridTemplateColumns: '200px 1fr', gap: 10 }}>
         <div>
           <strong>Scheduling</strong>
         </div>
@@ -106,7 +105,7 @@ function Index(props: PropsWithChildren<{ userid: string }>) {
             }
           />
         </div>
-      </div>
+      </div> */}
     </>
   )
 }

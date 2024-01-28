@@ -1,6 +1,7 @@
 'use server';
 import { formToObject } from '@lib/converters/formData';
 import db from '@lib/db'
+import { logger } from '@logger';
 import { revalidatePath } from 'next/cache';
 
 export const updateOfficer = async (formData: FormData) => {
@@ -57,6 +58,8 @@ export const removeOfficer = async (id: string) => {
         revalidatePath('/administrator/entities/officers');
         return { ok: true }
     } catch (err) {
+        //@ts-ignore
+        logger.error(err?.message)
         return {
             error: true
         }

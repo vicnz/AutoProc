@@ -80,7 +80,7 @@ const SelectParticulars = forwardRef(function Particulars(props, ref) {
                         <Button
                             type="dashed"
                             onClick={() => {
-                                if (limit >= 10) {
+                                if (limit >= 50) {
                                     message.warning("Maximum Particular Items Reached");
                                 } else {
                                     add();

@@ -11,7 +11,7 @@ import { Button, Divider, Skeleton, Space, Tag } from "antd";
 import { memo } from "react";
 import dynamic from "next/dynamic";
 //components
-import GlobalHeader from "@components/admin/header";
+import GlobalHeader from "@components/global-header";
 import Manual from "@components/shared/manual";
 import { usePRId } from "@components/admin/procurement/purchase-id-context";
 import Link from "next/link";
