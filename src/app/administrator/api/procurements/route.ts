@@ -1,3 +1,4 @@
+export const revalidate = 0;
 import { NextRequest, NextResponse } from "next/server";
 import db from "@lib/db";
 import fullname from "@lib/client/fullname";

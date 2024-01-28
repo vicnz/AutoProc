@@ -1,3 +1,4 @@
+export const revalidate = 0;
 /**
  * * USER API
  * * USER [ID] SPECIFIC

@@ -1,3 +1,4 @@
+export const revalidate = 0;
 /**
  * VALIDATE ADMINISTRATOR PASSWORD
  */

@@ -1,3 +1,4 @@
+export const revalidate = 0;
 import db from "@lib/db";
 import { NextRequest, NextResponse } from "next/server";
 

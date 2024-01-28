@@ -1,3 +1,4 @@
+export const revalidate = 0;
 /**
  * * FETCH CURRENT LOGIN ADMINSTRATOR'S BASIC INFO
  */

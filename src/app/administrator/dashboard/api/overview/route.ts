@@ -1,3 +1,4 @@
+export const revalidate = 0;
 /**
  * * FETCH OVERVIEW DATA
  * * TOTAL PRS (CURRENT YEAR)

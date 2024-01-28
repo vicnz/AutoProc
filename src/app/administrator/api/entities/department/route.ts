@@ -1,3 +1,4 @@
+export const revalidate = 0;
 import { NextRequest } from "next/server";
 import { getPickedDepartments, getPickedSections } from './utility'
 export const GET = async (req: NextRequest) => {

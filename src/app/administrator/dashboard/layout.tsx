@@ -1,4 +1,5 @@
 "use client";
+export const revalidate = 0;
 
 import { ReactNode } from "react";
 import { LineChartOutlined, ProjectOutlined, QuestionCircleOutlined, ReloadOutlined } from "@ant-design/icons";

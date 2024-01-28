@@ -1,3 +1,4 @@
+export const revalidate = 0;
 /**
  * * PR NUMBER GENERATOR
  * * GENERATE PR-NUMBER WITH AUTO-RESET
