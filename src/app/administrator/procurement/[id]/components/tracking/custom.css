@@ -1,0 +1,8 @@
+.dark-border>td {
+    border-color: dimgray !important;
+}
+
+.dark-border thead th {
+    border: 1px solid dimgray;
+    border-bottom: 1px solid darkslategray !important;
+}
