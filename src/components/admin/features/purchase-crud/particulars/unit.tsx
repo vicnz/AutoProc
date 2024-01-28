@@ -15,7 +15,7 @@ import useSWR from "swr";
 // import AddUnit from "@components/admin/features/units-crud";
 
 //
-const SelectUnit = forwardRef(function SelectUnit(props, ref) {
+const SelectUnit = forwardRef(function SelectUnit(props: SelectProps, ref) {
     const { data, isLoading, error } = useSWR<Array<{ id: string; name: string }>, any>(
         "/administrator/api/entities/units"
     );
@@ -43,8 +43,8 @@ const SelectUnit = forwardRef(function SelectUnit(props, ref) {
         <Select
             {...props}
             ref={ref as any}
-            style={{ width: 135 }}
-            placeholder="Unit of Issue"
+            style={{ width: 100 }}
+            placeholder="Unit"
             options={options}
             dropdownRender={(menu) => (
                 <>

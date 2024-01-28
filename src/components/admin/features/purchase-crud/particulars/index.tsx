@@ -7,7 +7,7 @@
 
 //libs
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
-import { Form, Space, InputNumber, Input, Button, App, Tooltip } from "antd";
+import { Form, Space, InputNumber, Input, Button, App, Tooltip, Avatar } from "antd";
 import { forwardRef, memo, useState } from "react";
 // ─────────────────────────────────────────────────────────────────────────────
 import SelectUnit from "./unit";
@@ -37,16 +37,19 @@ const SelectParticulars = forwardRef(function Particulars(props, ref) {
         >
             {(fields, { add, remove }, { errors }) => (
                 <>
-                    {fields.map((field) => {
+                    {fields.map((field, idx) => {
                         return (
                             <Space key={field.key} style={{ marginBottom: 16 }}>
+                                <div style={{ width: 30 }}>
+                                    {idx + 1}
+                                </div>
                                 {/* QUANTITY ENTRY */}
                                 <Form.Item noStyle name={[field.name, "qty"]} rules={[{ required: true }]}>
-                                    <InputNumber placeholder="Quantity" style={{ width: 75 }} min={1} />
+                                    <InputNumber placeholder="Qty" style={{ width: 75 }} min={1} />
                                 </Form.Item>
                                 {/* TYPE OF UNIT ENTRY */}
                                 <Form.Item noStyle name={[field.name, "unit"]} rules={[{ required: true }]}>
-                                    <SelectUnit />
+                                    <SelectUnit style={{ width: 20 }} />
                                 </Form.Item>
                                 {/* ITEM DESCRIPTION ENTRY */}
                                 <Form.Item noStyle name={[field.name, "description"]} rules={[{ required: true }]}>
