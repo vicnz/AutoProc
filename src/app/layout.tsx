@@ -1,3 +1,4 @@
+export const revalidate = 0;
 import "./globals.css";
 import { Metadata, Viewport } from "next";
 // ─── Utilies ─────────────────────────────────────────────────────────────────

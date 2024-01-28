@@ -66,21 +66,6 @@ function EditUserForm(props: AddUserFormProps) {
             setLoading(false);
         }
     };
-
-    const onRoleChange = (e: RadioChangeEvent) => {
-
-        if (e.target.value !== preload.userType) {
-            modal.confirm({
-                closeIcon: null,
-                width: 300,
-                title: "Confirm Update of User Role",
-                content: "NOTE: Updating User Role is still an ALPHA Feature, this is due to the fact that referenced PR may affect data integrity",
-                onCancel: () => {
-                    form.setFieldValue('userType', preload.userType)
-                }
-            })
-        }
-    }
     return (
         <Form form={form} layout="vertical" initialValues={{ ...preload }} onFinish={onFinish}>
             <Flex align="center" justify="center">
@@ -96,17 +81,6 @@ function EditUserForm(props: AddUserFormProps) {
                 </div>
             </Flex>
             <br />
-            <Flex align="center" justify="center">
-                <Tooltip color="orange" title="ALPHA" placement="bottom">
-                    <Form.Item name="userType">
-                        <Radio.Group onChange={onRoleChange}>
-                            <Radio.Button value="USER">User</Radio.Button>
-                            <Radio.Button value="TRACKER">Tracker</Radio.Button>
-                            <Radio.Button value="CHECKER">Checker</Radio.Button>
-                        </Radio.Group>
-                    </Form.Item>
-                </Tooltip>
-            </Flex>
             <Form.Item
                 name="username"
                 label="Username"
